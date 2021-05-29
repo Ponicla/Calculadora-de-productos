@@ -11,6 +11,7 @@
 <script src="../../../resources/libraries/jquery/jquery.dataTables.min.js"></script>
 <script src="../../../resources/libraries/jquery/dataTables.bootstrap5.min.js"></script>
 <script src="../../../resources/libraries/sweetalert/sweetalert2@11.js" ></script>
+<script src="../../../main/functions/javascript/ruta.js"></script> 
 <script src="../../../main/pages/accesorios/accesorios.js"></script>
 <script src="../../../main/pages/productos/productos.js"></script>
 <script src="../../../main/pages/almacen/almacen.js"></script>

@@ -1,4 +1,4 @@
-if(window.location.pathname == '/rincon/main/pages/productos/productos.php'){
+if(window.location.pathname == ruta+'productos/productos.php'){
 
 
     /* DECLARACION DE VARIABLES */

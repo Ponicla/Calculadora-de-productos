@@ -1,4 +1,4 @@
-if(window.location.pathname == '/rincon/main/pages/accesorios/accesorios.php'){
+if(window.location.pathname == ruta+'accesorios/accesorios.php'){
 
     /* DEFINICION VARIABLES */
     var fila;

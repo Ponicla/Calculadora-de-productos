@@ -1,4 +1,4 @@
-if(window.location.pathname == '/rincon/main/pages/almacen/almacen.php'){
+if(window.location.pathname == ruta+'almacen/almacen.php'){
     
     /* DECLARACION DE VARIABLES */
     var $deck_cartas_productos = document.querySelector('#deck_cartas_productos');
