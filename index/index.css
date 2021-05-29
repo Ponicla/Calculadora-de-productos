@@ -1,0 +1,16 @@
+html, body {
+    /* background-image: url("fondo.jpeg"); */
+    background-size: cover;
+    background-repeat: no-repeat;
+    height: 100%;
+    
+}
+
+
+.container-fluid {
+    background-color: green; 
+    /* border: 2px solid black; */
+    display: flex;
+    justify-content: center;	
+}
+
