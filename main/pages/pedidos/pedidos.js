@@ -163,7 +163,6 @@ function get_productos(){
 
 function agregar_producto_al_pedido(id, nombre, precio) {
 
-        console.log("<<",lista_productos);
         var indice = crea_indice(lista_productos.length, lista_productos);
         
         let obj = {
@@ -236,7 +235,6 @@ $('#btn-pedido').click(function (e) {
    
     lista_productos.forEach(function(elemento, index, object) {
         var id_contenedor = "ingrediente_fila_"+cont;
-        console.log(">>>",elemento);
         template += `
         <div class="row" id=${id_contenedor}>
             <div class="col-md-10">
