@@ -14,10 +14,20 @@
         <div class="col-md-4 form-group">
             <input id="nombre" id="nombre" type="text" class="form-control" placeholder="Que quieres agregar?" autocomplete="off">
         </div>
+        <div class="col-md-3">
+            <select id="criterio_sort" class="form-control" onchange="filtrado_lista(this.value)">
+                <option value="" selected>Ordenar por</option>
+                <option value="1">Precio de mayor a menor</option>
+                <option value="2">Precio de menor a mayor</option>
+                <option value="3" data-content='<i class="bi bi-sort-alpha-down">'></i>Nombre A - Z</option>
+                <option value="4">Nombre Z - A</option>
+            </select> 
+        </div>
         <div class="col-md-4 form-group">
             <Button hidden id="btn-piezas" class="btn btn-success"><i class="bi bi-recycle"></i> Formula</Button>
             <Button hidden onclick="limpiar_producto2()" id="btn-limpia-producto" class="btn btn-danger"><i class="bi bi-trash"></i> Destruir</Button>
         </div>
+        
     </div>
 </div>
 
@@ -64,7 +74,7 @@
 <!-- MODAL CANTIDAD CERA-->
 <div class="modal fade" id="modal_cantidad_cera"  data-target="bd-example-modal-sm" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
     aria-hidden="true">
-    <div class="modal-dialog" role="document">
+    <div class="modal-dialog modal-sm modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header bg-success text-white">
                 <h5 class="modal-title" id="exampleModalLabel">Cantidad de cera</h5>    

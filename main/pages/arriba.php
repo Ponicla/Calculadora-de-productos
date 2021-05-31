@@ -10,6 +10,8 @@
     <!-- <link rel="stylesheet" href="../../../resources/libraries/datatables/datatables.min.css"> -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
     <link rel="stylesheet" href="../../../resources/libraries/datatables/DataTables-1.10.24/css/dataTables.bootstrap4.min.css">
+    <link rel="stylesheet" href="../../../resources/libraries/select2/select2.min.css">
+    <link rel="stylesheet" href="../../../resources/libraries/select2/select2-bootstrap.css">
     <link rel="stylesheet" href="../accesorios/accesorios.css">
     <link rel="stylesheet" href="../principal/principal.css"> 
     <link rel="stylesheet" href="../productos/productos.css"> 

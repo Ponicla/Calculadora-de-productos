@@ -6,6 +6,7 @@ if(window.location.pathname == ruta+'productos/productos.php'){
     var $fila_producto = document.querySelector('#fila_producto');
     var $total_producto = document.querySelector('#total_producto');
     var lista_ingredientes = [];
+    var lista_accesorios = [];
     const Toast = Swal.mixin({
         toast: true,
         position: 'top-end',
@@ -25,6 +26,7 @@ if(window.location.pathname == ruta+'productos/productos.php'){
 
     /* LANZADORES JQUERY */
     $("#nombre").keyup(function() {
+        lista_accesorios = [];
         var nombre = $("#nombre").val();
         $.ajax({
             url: "../../functions/php/productos/get_accesorios.php",
@@ -40,6 +42,7 @@ if(window.location.pathname == ruta+'productos/productos.php'){
             var mes = date.toLocaleString("es-ES", { month: "long" });
             var ano = date.getFullYear();
             var edicion = dia + " " + mes + " " +ano;
+            accesorio.precio = parseFloat((accesorio.precio));
             template += `<div class="col-sm-3 mt-1">
                             <div class='card' style="max-width: 24rem;">
                                 <div class='card-body'>
@@ -61,6 +64,7 @@ if(window.location.pathname == ruta+'productos/productos.php'){
 
             $deck_cartas.innerHTML = template;
           })
+          lista_accesorios = array;
         })
         .fail(function () {
           console.log('Err'); 
@@ -136,7 +140,20 @@ if(window.location.pathname == ruta+'productos/productos.php'){
             nombre: nombre,
             precio: precio,
             cantidad_de_cera: cantidad_de_cera,
-            indice: indice
+            indice: indice,
+            id_tipo : 2
+        } 
+        var buscado = lista_ingredientes.find(elemento => elemento.id_tipo == 2);
+        if (buscado) {
+            var nueva_cera = parseInt(buscado.cantidad_de_cera) + parseInt(obj.cantidad_de_cera); 
+            var sumar_este_valor_cera = parseFloat((precio).toFixed(2))
+            buscado.nombre = 'Cera de soja ' + nueva_cera + ' gramos';
+            buscado.precio = buscado.precio + sumar_este_valor_cera;
+            buscado.precio = parseFloat((buscado.precio).toFixed(2));
+
+        }else{
+            lista_ingredientes.push(obj);
+            
         }
 
         Toast.fire({
@@ -144,11 +161,12 @@ if(window.location.pathname == ruta+'productos/productos.php'){
             title: 'Agregaste '+ nombre.toLowerCase() +' a la preparación'
         })
 
-        lista_ingredientes.push(obj);
         ordenar_lista(lista_ingredientes);
         $('#btn-piezas').removeAttr('hidden');
         $('#btn-limpia-producto').removeAttr('hidden');
-        $('#modal_cantidad_cera').modal('hide'); 
+        $('#modal_cantidad_cera').modal('hide');
+
+          
     });
 
     $('#form_modal_nuevo_producto').submit(function (e) { 
@@ -206,9 +224,9 @@ if(window.location.pathname == ruta+'productos/productos.php'){
 
     
     /* DECLARACION DE FUNCIONES */
-     function crea_indice(indice) {
+    function crea_indice(indice) {
         if (indice == 0) {
-             return 1;
+             return indice;
         } else {
             const found = lista_ingredientes.find(elemento => elemento.indice == indice);
             if (!found) {
@@ -220,6 +238,7 @@ if(window.location.pathname == ruta+'productos/productos.php'){
     } 
 
     function get_accesorios(){
+        lista_accesorios = [];
         $.ajax({
             url: "../../functions/php/productos/get_accesorios_1.php",
             type: "GET"
@@ -228,11 +247,13 @@ if(window.location.pathname == ruta+'productos/productos.php'){
             var array = JSON.parse(res);
             var template = ``;
           array.forEach((accesorio) => {
+            
             var date = new Date(accesorio.edicion);
             var dia = date.getDate();
             var mes = date.toLocaleString("es-ES", { month: "long" });
             var ano = date.getFullYear(); 
             var edicion = dia + " " + mes + " " +ano;
+            accesorio.precio = parseFloat((accesorio.precio));
                 template += `<div class="col-sm-3 mt-1">
                                 <div class='card' style="max-width: 24rem;">
                                     <div class='card-body'>
@@ -253,6 +274,7 @@ if(window.location.pathname == ruta+'productos/productos.php'){
                             </div>`
                 $deck_cartas.innerHTML = template;
           })
+          lista_accesorios = array;
         })
         .fail(function () {
           console.log('Err'); 
@@ -274,7 +296,8 @@ if(window.location.pathname == ruta+'productos/productos.php'){
                 id_accesorio: id,
                 nombre: nombre,
                 precio: precio,
-                indice: indice
+                indice: indice,
+                id_tipo : id_tipo
             }
             Toast.fire({
                 icon: 'success',
@@ -381,5 +404,90 @@ if(window.location.pathname == ruta+'productos/productos.php'){
         })
     }
 
+    function mostrar_lista_ordenada_por_criterio(array) {
+        var template = ``;
+        array.forEach((accesorio) => {
+            var date = new Date(accesorio.edicion);
+            var dia = date.getDate();
+            var mes = date.toLocaleString("es-ES", { month: "long" });
+            var ano = date.getFullYear(); 
+            var edicion = dia + " " + mes + " " +ano;
+                template += `<div class="col-sm-3 mt-1">
+                                <div class='card' style="max-width: 24rem;">
+                                    <div class='card-body'>
+                                    <div class='row'>
+                                        <div class='col-md-10'>
+                                        <h5 class='text-success'>${accesorio.nombre}</h5>
+                                        </div>
+                                        <div class='col-md-2'>
+                                            <a onclick="agregar_accesorio_al_producto(${accesorio.id},${accesorio.precio},'${accesorio.nombre}', ${accesorio.id_tipo})" role="button" class="btn btn-success btn-sm"><i class="bi bi-plus-circle"></i></a>
+                                        </div>
+                                    </div>
+                                        <hr>
+                                        <p class='card-text'>Tipo ${accesorio.tipo}</p>
+                                        <small class='card-text'><small class="text-danger" style="font-size: 1rem">$${accesorio.precio}</small> <small style="font-size: 0.6rem">(${edicion})</small></small>
+                                    </div>
+                                    
+                                </div>
+                            </div>`
+                $deck_cartas.innerHTML = template;
+        })
+    }
+
+    function filtrado_lista(criterio) {
+        // console.log(lista_accesorios);
+        switch (criterio) {
+            case "1":
+                lista_accesorios.sort(function (a, b) {
+                    if (a.precio < b.precio) {
+                        return 1;
+                    }
+                    if (a.precio > b.precio) {
+                        return -1;
+                    }
+                    return 0;
+                });
+                mostrar_lista_ordenada_por_criterio(lista_accesorios);
+              break;
+            case "2":
+                lista_accesorios.sort(function (a, b) {
+                    if (a.precio > b.precio) {
+                        return 1;
+                    }
+                    if (a.precio < b.precio) {
+                        return -1;
+                    }
+                    return 0;
+                });
+                mostrar_lista_ordenada_por_criterio(lista_accesorios);
+              break;
+            case "3": 
+            lista_accesorios.sort(function (a, b) {
+                if (a.nombre > b.nombre) {
+                    return 1;
+                }
+                if (a.nombre < b.nombre) {
+                    return -1;
+                }
+                return 0;
+            });
+            mostrar_lista_ordenada_por_criterio(lista_accesorios);
+              break; 
+            case "4":
+                lista_accesorios.sort(function (a, b) {
+                    if (a.nombre < b.nombre) {
+                        return 1;
+                    }
+                    if (a.nombre > b.nombre) {
+                        return -1;
+                    }
+                    return 0;
+                });
+                mostrar_lista_ordenada_por_criterio(lista_accesorios);
+            break;
+          }
+        
+        
+    }
   
 }
