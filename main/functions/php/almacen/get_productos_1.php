@@ -8,8 +8,9 @@ session_start();
     producto.nombre,
     producto.descripcion,
     sum( accesorio.precio ) AS precio,
-    producto.cantidad_cera
-    FROM
+    producto.cantidad_cera,
+    producto.estado
+    FROM    
     accesorio
     INNER JOIN accesorio_producto
     ON accesorio.id = accesorio_producto.fk_id_accesorio

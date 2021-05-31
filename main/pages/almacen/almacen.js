@@ -1,5 +1,5 @@
 if (window.location.pathname == ruta + 'almacen/almacen.php') {
-
+    
     /* DECLARACION DE VARIABLES */
     var $deck_cartas_productos = document.querySelector('#deck_cartas_productos');
     var $fila_producto = document.querySelector('#fila_producto');
@@ -243,11 +243,28 @@ if (window.location.pathname == ruta + 'almacen/almacen.php') {
                                                 
                                             </div>
 
-                                            <div class='card-footer'>
-                                                    <button onclick="ver_detalles_producto(${producto.id}, '${nombre_vela}', '${id_contenedor_cantidad}', ${producto.cantidad_cera}, '${producto.descripcion}')" class="btn btn-success btn-block">Ver detalles</button>
+                                            <div class='card-footer d-flex'>
+                                            <div class='p-0 col-md-8'>
+                                                <button onclick="ver_detalles_producto(${producto.id}, '${nombre_vela}', '${id_contenedor_cantidad}', ${producto.cantidad_cera}, '${producto.descripcion}')" class="btn btn-success btn-block">Ver detalles</button>
+                                            </div>
+                                            <div class='p-0 col-md-4'>`
+
+
+                            if (producto.estado == false ) {
+                            template += `
+                                                <button onclick="deshabilitar_producto(${producto.id})" class=" ml-1 btn btn-danger btn-block pt-6 pb-6">Boveda</button>
+                                                `;
+                            } else {
+                                template += `
+                                <button onclick="habilitar_producto(${producto.id})" class=" ml-1 btn btn-primary btn-block pt-6 pb-6">Activar</button>
+                                `;
+                            }
+                        
+                                                template += `             
                                                 </div>
                                         </div>
-                                    </div>`
+                                    </div>
+                                </div>`;
                         $deck_cartas_productos.innerHTML = template;
                     } else {
                         cont = cont + 1;
@@ -267,11 +284,28 @@ if (window.location.pathname == ruta + 'almacen/almacen.php') {
                                             
                                         </div>
 
-                                        <div class='card-footer'>
+                                        <div class='card-footer d-flex'>
+                                            <div class='p-0 col-md-8'>
                                                 <button onclick="ver_detalles_producto(${producto.id}, '${nombre_vela}', '${id_contenedor_cantidad}', ${producto.cantidad_cera}, '${producto.descripcion}')" class="btn btn-success btn-block">Ver detalles</button>
                                             </div>
+                                            <div class='p-0 col-md-4'>`
+
+
+                            if (producto.estado == false ) {
+                            template += `
+                                                <button onclick="deshabilitar_producto(${producto.id})" class=" ml-1 btn btn-danger btn-block pt-6 pb-6">Boveda</button>
+                                                `;
+                            } else {
+                                template += `
+                                <button onclick="habilitar_producto(${producto.id})" class=" ml-1 btn btn-primary btn-block pt-6 pb-6">Activar</button>
+                                `;
+                            }
+                        
+                                                template += `             
+                                                </div>
+                                        </div>
                                     </div>
-                                </div>`
+                                </div>`;
                         $deck_cartas_productos.innerHTML = template;
                     }
                     lista_productos = array;
@@ -515,16 +549,34 @@ if (window.location.pathname == ruta + 'almacen/almacen.php') {
                                                 
                                             </div>
 
-                                            <div class='card-footer'>
-                                                    <button onclick="ver_detalles_producto(${producto.id}, '${nombre_vela}', '${id_contenedor_cantidad}', ${producto.cantidad_cera}, '${producto.descripcion}')" class="btn btn-success btn-block">Ver detalles</button>
+                                            <div class='card-footer d-flex'>
+                                            <div class='p-0 col-md-8'>
+                                                <button onclick="ver_detalles_producto(${producto.id}, '${nombre_vela}', '${id_contenedor_cantidad}', ${producto.cantidad_cera}, '${producto.descripcion}')" class="btn btn-success btn-block">Ver detalles</button>
+                                            </div>
+                                            <div class='p-0 col-md-4'>`
+
+
+                            if (producto.estado == false ) {
+                            template += `
+                                                <button onclick="deshabilitar_producto(${producto.id})" class=" ml-1 btn btn-danger btn-block pt-6 pb-6">Boveda</button>
+                                                `;
+                            } else {
+                                template += `
+                                <button onclick="habilitar_producto(${producto.id})" class=" ml-1 btn btn-primary btn-block pt-6 pb-6">Activar</button>
+                                `;
+                            }
+                        
+                                                template += `             
                                                 </div>
                                         </div>
-                                    </div>`
+                                    </div>
+                                </div>`;
                         $deck_cartas_productos.innerHTML = template;
                     } else {
                         cont = cont + 1;
                         var id_contenedor_cantidad = "cantidad_cera_traida_" + cont;
                         let nombre_vela = capitalize(producto.nombre);
+
                         template += `<div class="col-sm-3 mt-1">
                                     <div class='card' style="max-width: 24rem;">
                                         <div class='card-body'>
@@ -539,11 +591,28 @@ if (window.location.pathname == ruta + 'almacen/almacen.php') {
                                             
                                         </div>
 
-                                        <div class='card-footer'>
+                                        <div class='card-footer d-flex'>
+                                            <div class='p-0 col-md-8'>
                                                 <button onclick="ver_detalles_producto(${producto.id}, '${nombre_vela}', '${id_contenedor_cantidad}', ${producto.cantidad_cera}, '${producto.descripcion}')" class="btn btn-success btn-block">Ver detalles</button>
                                             </div>
+                                            <div class='p-0 col-md-4'>`
+
+
+                            if (producto.estado == false ) {
+                            template += `
+                                                <button onclick="deshabilitar_producto(${producto.id})" class=" ml-1 btn btn-danger btn-block pt-6 pb-6">Boveda</button>
+                                                `;
+                            } else {
+                                template += `
+                                <button onclick="habilitar_producto(${producto.id})" class=" ml-1 btn btn-primary btn-block pt-6 pb-6">Activar</button>
+                                `;
+                            }
+                        
+                                                template += `             
+                                                </div>
+                                        </div>
                                     </div>
-                                </div>`
+                                </div>`;
                         $deck_cartas_productos.innerHTML = template;
                     }
 
@@ -554,6 +623,42 @@ if (window.location.pathname == ruta + 'almacen/almacen.php') {
                 console.log('Err');
             });
     }
+
+    function deshabilitar_producto(id) {
+        $.ajax({
+            url: "../../functions/php/almacen/cambiar_estado_producto.php",
+            type: "POST",
+            data: {
+                id: id,
+                nuevo_estado: 1
+            },
+        })
+        .done(function (res) {
+            get_productos();
+        })
+        .fail(function () {
+            console.log('Err');
+        });
+}
+
+function habilitar_producto(id) {
+    $.ajax({
+        url: "../../functions/php/almacen/cambiar_estado_producto.php",
+        type: "POST",
+        data: {
+            id: id,
+            nuevo_estado: 0
+        },
+    })
+    .done(function (res) {
+        get_productos();
+    })
+    .fail(function () {
+        console.log('Err');
+    });
+}
+
+
 
     function mostrar_lista_ordenada_por_criterio(array) {
         var template = ``;
@@ -576,11 +681,28 @@ if (window.location.pathname == ruta + 'almacen/almacen.php') {
 
                             </div>
 
-                            <div class='card-footer'>
-                                    <button onclick="ver_detalles_producto(${producto.id}, '${nombre_vela}', '${id_contenedor_cantidad}', ${producto.cantidad_cera}, '${producto.descripcion}')" class="btn btn-success btn-block">Ver detalles</button>
-                                </div>
-                        </div>
-                    </div>`
+                            <div class='card-footer d-flex'>
+                                            <div class='p-0 col-md-8'>
+                                                <button onclick="ver_detalles_producto(${producto.id}, '${nombre_vela}', '${id_contenedor_cantidad}', ${producto.cantidad_cera}, '${producto.descripcion}')" class="btn btn-success btn-block">Ver detalles</button>
+                                            </div>
+                                            <div class='p-0 col-md-4'>`
+
+
+                            if (producto.estado == false ) {
+                            template += `
+                                                <button onclick="deshabilitar_producto(${producto.id})" class=" ml-1 btn btn-danger btn-block pt-6 pb-6">Boveda</button>
+                                                `;
+                            } else {
+                                template += `
+                                <button onclick="habilitar_producto(${producto.id})" class=" ml-1 btn btn-primary btn-block pt-6 pb-6">Activar</button>
+                                `;
+                            }
+                        
+                                                template += `             
+                                                </div>
+                                        </div>
+                                    </div>
+                                </div>`;
             $deck_cartas_productos.innerHTML = template;
         })
     }
