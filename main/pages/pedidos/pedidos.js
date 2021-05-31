@@ -6,8 +6,6 @@ if(window.location.pathname == ruta+'pedidos/pedidos.php'){
      var $fila_producto = document.querySelector('#fila_producto');
      var $fila_producto_total = document.querySelector('#fila_producto_total');
      var $total_producto = document.querySelector('#total_producto');
-     var $porcentaje_producto = document.querySelector('#porcentaje_producto');
-     var $sub_total_producto = document.querySelector('#sub_total_producto');
      var $id_pedido = document.querySelector('#id_pedido');
 
 
