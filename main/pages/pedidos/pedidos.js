@@ -82,7 +82,7 @@ function ver_detalles_pedido(id, precio){
         data: { id : id },
     })
     .done(function (res) {
-        var array = JSON.parse(res);
+        var array1 = JSON.parse(res);
 
 
 
@@ -91,16 +91,36 @@ function ver_detalles_pedido(id, precio){
 
         $id_pedido.innerHTML= id;
 
-        array.forEach(elemento => {
+//console.log(array); //nombre: , precio:
+        var array2 = [];
+        var contador = 0; //cantidad de x producto encontrado
+
+
+
+        array1.forEach(elemento => {
+            if (array2.some(item => item.nombre === elemento.nombre)){
+                array2.findIndex(function(post, index) {
+                if(post.nombre == elemento.nombre) {
+                    array2[index].cantidad ++;
+                    array2[index].total = array2[index].total + elemento.precio;
+                }
+                }); 
+            } else {
+                array2.push({nombre: elemento.nombre, cantidad: 1, total: elemento.precio, unidad: elemento.precio});
+            }          
+        });     
+
+
+        array2.forEach(elemento => {
             var id_contenedor = "producto_fila_"+cont;
             
             template += `
             <div class="row" id=${id_contenedor}>
-                <div class="col-md-9">
-                    <p> ${elemento.nombre}</p>
+                <div class="col-md-6">
+                    <p> ${elemento.nombre} x ${elemento.cantidad}</p>
                 </div>
-                <div class="col-md-3">
-                    <p> $ ${elemento.precio}</p>
+                <div class="col-md-6">
+                    <p> Unidad $ ${elemento.unidad} Subtotal ${elemento.total}</p>
                 </div>
                
             </div>`
