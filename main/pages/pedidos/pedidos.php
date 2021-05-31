@@ -81,10 +81,10 @@
                    
                     <p class="text-success" style="font-size: 0.7rem;">Productos</p>
 
-                    <div id="fila_producto"></div>
+                    <div id="fila_producto2"></div>
                     <hr>
                     <p class="text-success" style="font-size: 0.7rem;">Precio final</p>
-                    <div id="total_pedido"></div>
+                    <div id="total_pedido2"></div>
 
                     <div class="modal-footer pr-0">
                         <button type="button" class="btn btn-success" data-dismiss="modal">Volver</button>

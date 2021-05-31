@@ -4,12 +4,14 @@ if(window.location.pathname == ruta+'pedidos/pedidos.php'){
      var $deck_cartas_pedidos = document.querySelector('#deck_cartas_pedidos');
      var $deck_cartas_productos = document.querySelector('#deck_cartas_productos');
      var $fila_producto = document.querySelector('#fila_producto');
+     var $fila_producto2 = document.querySelector('#fila_producto2');
+     var $total_pedido2 = document.querySelector('#total_pedido2');
      var $fila_producto_total = document.querySelector('#fila_producto_total');
      var $total_producto = document.querySelector('#total_producto');
      var $id_pedido = document.querySelector('#id_pedido');
 
 
-     var lista_ingredientes = [];
+     var lista_productos = [];
 
      const Toast = Swal.mixin({
          toast: true,
@@ -36,7 +38,6 @@ get_productos();
         .done(function (res) {
    
             var array = JSON.parse(res);
-            console.log(array);
             var template = ``;
             array.forEach((producto) => {
                 let nombre_vela = capitalize(producto.nombre);
@@ -82,7 +83,6 @@ function ver_detalles_pedido(id, precio){
     })
     .done(function (res) {
         var array = JSON.parse(res);
-        console.log(array);
 
 
 
@@ -142,7 +142,7 @@ function get_productos(){
                                     <h5 class='text-success'>${accesorio.nombre}</h5>
                                     </div>
                                     <div class='col-md-2'>
-                                        <a onclick="agregar_producto_al_pedido(${accesorio.id},'${accesorio.nombre}')" role="button" class="btn btn-success btn-sm"><i class="bi bi-plus-circle"></i></a>
+                                        <a onclick="agregar_producto_al_pedido(${accesorio.id},'${accesorio.nombre}',${accesorio.precio})" role="button" class="btn btn-success btn-sm"><i class="bi bi-plus-circle"></i></a>
                                     </div>
                                 </div>
                                 <div>
@@ -161,20 +161,23 @@ function get_productos(){
     });
 }
 
-function agregar_producto_al_pedido(id, nombre) {
+function agregar_producto_al_pedido(id, nombre, precio) {
 
-        //var indice = crea_indice(lista_ingredientes.length);
+        console.log("<<",lista_productos);
+        var indice = crea_indice(lista_productos.length, lista_productos);
         
         let obj = {
-            id_accesorio: id,
+            id_producto: id,
             nombre: nombre,
+            precio: precio,
+            indice: indice
         }
         Toast.fire({
             icon: 'success',
             title: 'Agregaste ' + nombre + ' al Pedido'
         })
-        lista_ingredientes.push(obj);
-        //ordenar_lista(lista_ingredientes);
+        lista_productos.push(obj);
+        //ordenar_lista(lista_productos);
         $('#btn-pedido').removeAttr('hidden');
         $('#btn-limpia-pedido').removeAttr('hidden');
     
@@ -183,16 +186,177 @@ function agregar_producto_al_pedido(id, nombre) {
 function limpiar_pedido() {}
 
 $('#form_modal_nuevo_pedido').submit(function (e) { 
-    //Acá va el modal de generar nuevo pedido
+    e.preventDefault();
+    var lista_id_productos = [];
+   
+    
+    lista_productos.forEach(elemento => {
+        lista_id_productos.push(elemento.id_producto);
+    });
+    $.ajax({
+        url: "../../functions/php/pedidos/nuevo_pedido.php",
+        type: "POST",
+        data: { lista_productos : lista_id_productos
+            }
+    })
+    .done(function (res) {
+        if(res == 'true'){
+            limpiar_pedido();
+            $('#modal_nuevo_pedido').modal('hide');
+            Swal.fire({
+                title: 'Felicitaciones por tu nuevo pedido ',
+                width: 600,
+                padding: '3em',
+                confirmButtonText: 'A disfrutar',
+                background: '#fff url("https://images.vexels.com/media/users/3/166834/preview2/4213467a1f2589af7c27350ca54428f7-patron-de-flores-y-hojas-tropicales.jpg")',
+                backdrop: `
+                  rgba(50,150,50,0.4)
+                  url("https://i.pinimg.com/originals/04/5f/eb/045feb8f000006137ae43ea7a7ec9be1.gif")
+                  left top
+                  no-repeat
+                `
+              })
+            
+        }
+    })
+    .fail(function () {
+      console.log('Err'); 
+    });
 
 });
 
+
 $('#btn-pedido').click(function (e) { 
-    //Acá va el modal del nuevo pedido
+    e.preventDefault();
+    var template = ``;
+    var template2 = ``;
+    var cont = 1;
+    var precio = 0;
+    var cantidad_de_cera = 0;
+   
+    lista_productos.forEach(function(elemento, index, object) {
+        var id_contenedor = "ingrediente_fila_"+cont;
+        console.log(">>>",elemento);
+        template += `
+        <div class="row" id=${id_contenedor}>
+            <div class="col-md-10">
+                <p><i onclick="quitar_producto_pedido(${elemento.id_producto}, ${id_contenedor}, ${elemento.indice})" class="text-danger bi bi-trash"></i> ${elemento.nombre}</p>
+            </div>
+            <div class="col-md-2" style="text-align: right;">
+                <p class="text-info">$${(elemento.precio).toFixed(2)}</p>
+            </div>
+        </div>`
+        
+        $fila_producto2.innerHTML = template;
+        cont = cont + 1;
+
+        precio = precio + parseFloat((elemento.precio).toFixed (2));
+
+        
+    });
+
+    precio = (precio.toFixed(2))
+    template2 += `
+        <div class="row">
+            <div class="col-md-10">
+                <p><i class=" text-success bi bi-cash-coin"></i> Total </p>
+            </div>
+            <div class="col-md-2" style="text-align: right;">
+                <p class="text-success">$${precio}</p>
+            </div>
+        </div>`
+        
+    $total_pedido2.innerHTML = template2;
 
     $('#modal_nuevo_pedido').modal('show');
 });
 
+function crea_indice(indice, array) {
+    if (indice == 0) {
+        return indice;
+    } else {
+        const found = array.find(elemento => elemento.indice == indice);
+        if (!found) {
+            return indice;
+        } else {
+            return crea_indice(indice + 1, array);
+        }
+    }
+}
 
+
+function limpiar_pedido(){
+    $('#modal_nuevo_pedido').trigger('reset');
+    lista_productos = [];
+    var template = ``;
+    var template2 = ``;
+    $fila_producto2.innerHTML = template;
+    $total_pedido2.innerHTML = template2;
+    $('#btn-pedido').attr('hidden','hidden');
+    $('#btn-limpia-pedido').attr('hidden','hidden');
+    get_pedidos();
+}
+
+function limpiar_pedido2(){
+    $('#modal_nuevo_pedido').trigger('reset');
+    lista_productos = [];
+    var template = ``;
+    var template2 = ``;
+    $fila_producto2.innerHTML = template;
+    $total_pedido2.innerHTML = template2;
+    $('#btn-pedido').attr('hidden','hidden');
+    $('#btn-limpia-pedido').attr('hidden','hidden');
+    get_pedidos();
+    Toast.fire({
+        icon: 'success',
+        title: 'Producto destruido'
+    })
+}
+
+
+
+function quitar_producto_pedido(id_elemento, id_contenedor, indice){
+
+
+    const found  = lista_productos.findIndex(elemento => elemento.indice == indice);
+    var indice_a_quitar = found;
+    lista_productos.splice(indice_a_quitar, 1);
+
+
+    var contenedor = '#'+id_contenedor.id;
+    $(contenedor).remove();
+
+    var template2 = ``;
+    var template3 = ``;
+    var template4 = ``;
+    var cont = 1;
+    var precio = 0;
+    lista_productos.forEach(elemento => {
+        precio = precio + (parseFloat((elemento.precio).toFixed(2)));
+    })
+    
+    template2 += `
+        <div class="row">
+            <div class="col-md-10">
+                <p><i class=" text-success bi bi-cash-coin"></i> Total </p>
+            </div>
+            <div class="col-md-2" style="text-align: right;">
+                <p class="text-success">$${precio}</p>
+            </div>
+        </div>`
+        
+    $total_pedido2.innerHTML = template2;
+    
+    if(lista_productos.length == 0){
+        $('#btn-pedido').attr('hidden','hidden');
+        $('#btn-limpia-pedido').attr('hidden','hidden');
+        $('#modal_nuevo_pedido').modal('hide');
+        $('#form_modal_nuevo_pedido').trigger('reset');
+        Toast.fire({
+            icon: 'warning',
+            title: 'El pedido quedo vacio'
+        })
+    }
+}
 
 }
