@@ -15,6 +15,7 @@
 <script src="../../../main/pages/accesorios/accesorios.js"></script>
 <script src="../../../main/pages/productos/productos.js"></script>
 <script src="../../../main/pages/almacen/almacen.js"></script>
+<script src="../../../main/pages/pedidos/pedidos.js"></script>
 
 </body>
 </html>
