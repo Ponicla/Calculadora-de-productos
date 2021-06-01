@@ -12,7 +12,7 @@
 
     <div class="row form-group">
         <div class="col-md-4 form-group">
-            <input id="producto_buscado" name="nombre" type="text" class="form-control" placeholder="Qué buscas?" autocomplete="off">
+            <input id="producto_buscado" name="nombre" type="text" class="form-control" placeholder="Qué producto buscas?" autocomplete="off">
         </div>
         
         <div class="col-md-3">
@@ -22,6 +22,13 @@
                 <option value="2">Precio de menor a mayor</option>
                 <option value="3" data-content='<i class="bi bi-sort-alpha-down">'></i>Nombre A - Z</option>
                 <option value="4">Nombre Z - A</option>
+            </select> 
+        </div>
+        <div class="col-md-2">
+            <select id="criterio_boveda" class="form-control" onchange="boveda(this.value)">
+                <option value="0" selected>Ocultar boveda</option>
+                <option value="2">Solo boveda</option>
+                <option value="1">Todos</option>
             </select> 
         </div>
     </div>
