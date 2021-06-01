@@ -125,17 +125,18 @@ if(window.location.pathname == ruta+'pedidos/pedidos.php'){
                 var array = JSON.parse(res);
                 var template = ``;
                 array.forEach((producto) => {
-                  console.log(producto);
+                    // console.log(producto);
                     if(parseInt(producto.cantidad_cera) > 0 ){
-                        let precio_actual = parseFloat(producto.precio_pedido);
-                        let cantidad_de_cera = parseInt(producto.cantidad_cera);
-                        var precio_subtotal = precio_actual - 30;
-                        var precio_final = precio_subtotal + ((cantidad_de_cera*valor_cera)/100);
-                        
+                        // console.log('cambiar el precio');
+                        var precio_actual = parseFloat(producto.precio_pedido);
+                        var cantidad_de_cera = parseInt(producto.cantidad_cera);
+                        // console.log(valor_cera);
+                        var precio_subtotal = parseFloat(precio_actual) - (parseInt(producto.unidades_cera) * parseFloat(valor_cera));
+                        var precio_final = parseFloat(precio_subtotal) + ((cantidad_de_cera*valor_cera)/100);
                         producto.precio_pedido = precio_final; 
+                        
                     }
-           
-
+                    
                     let nombre_vela = capitalize(producto.nombre);
                     template += `<div class="col-sm-3 mt-1">
                                 <div class='card' style="max-width: 24rem;">
@@ -177,6 +178,7 @@ if(window.location.pathname == ruta+'pedidos/pedidos.php'){
             .done(function (res) {
                 var precio = JSON.parse(res);
                 valor_cera = parseInt(precio[0].precio);
+                // console.log(valor_cera);
             })
             .fail(function (e) {
                 console.log('Err');
@@ -208,17 +210,19 @@ if(window.location.pathname == ruta+'pedidos/pedidos.php'){
                 
 
 
-                if(parseInt(elemento.cantidad_cera) > 0 ){
-                    let precio_actual = parseFloat(elemento.precio);
-                    let cantidad_de_cera = parseInt(elemento.cantidad_cera);
-                    var precio_subtotal = precio_actual - 30;
-                    var precio_final = precio_subtotal + ((cantidad_de_cera*valor_cera)/100);
-                    elemento.precio = precio_final; 
-                }
+             
+                    if(parseInt(elemento.cantidad_cera) > 0 ){
+                        var precio_actual = parseFloat(elemento.precio);
+                        var cantidad_de_cera = parseInt(elemento.cantidad_cera);
+                        console.log(valor_cera);
+                        var precio_subtotal = parseFloat(precio_actual) - parseFloat(valor_cera);
+                        var precio_final = parseFloat(precio_subtotal) + ((cantidad_de_cera*valor_cera)/100);
+                        elemento.precio = precio_final; 
+                        
+                    }
+                   
 
-                
-
-
+        
 
                 if (array2.some(item => item.nombre === elemento.nombre)){
                     array2.findIndex(function(post, index) {
@@ -277,13 +281,17 @@ if(window.location.pathname == ruta+'pedidos/pedidos.php'){
             // console.log(array);
             var template = ``;
         array.forEach((accesorio) => {
-                if(parseInt(accesorio.cantidad_cera) > 0 ){
-                    let precio_actual = parseFloat(accesorio.precio);
-                    let cantidad_de_cera = parseInt(accesorio.cantidad_cera);
-                    var precio_subtotal = precio_actual - 30;
-                    var precio_final = precio_subtotal + ((cantidad_de_cera*valor_cera)/100);
-                    accesorio.precio = precio_final; 
-                }
+            
+                    if(parseInt(accesorio.cantidad_cera) > 0 ){
+                        var precio_actual = parseFloat(accesorio.precio);
+                        var cantidad_de_cera = parseInt(accesorio.cantidad_cera);
+                        // console.log(valor_cera);
+                        var precio_subtotal = parseFloat(precio_actual) - parseFloat(valor_cera);
+                        var precio_final = parseFloat(precio_subtotal) + ((cantidad_de_cera*valor_cera)/100);
+                        accesorio.precio = precio_final; 
+                        
+                    }
+                
 
                 template += `<div class="col-sm-3 mt-1">
                                 <div class='card' style="max-width: 24rem;">

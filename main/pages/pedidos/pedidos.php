@@ -39,13 +39,13 @@
 
 
 
-<!-- MODAL MUESTRA PRODUCTO -->
+<!-- MODAL MUESTRA PEDIDO -->
 <div class="modal fade" id="modal_vista_pedido" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
     aria-hidden="true">
     <div class="modal-dialog" role="document">
-        <div class="modal-content">
+        <div class="modal-content">  
             <div class="modal-header bg-success text-white">
-                <h5 class="modal-title" id="titulo_modal_vista_producto">Pedido <i id="id_pedido"></i></h5>
+                <h5 class="modal-title" id="titulo_modal_vista_producto">Pedido n° <p class="d-inline-flex" id="id_pedido"></p></h5>
                 <button type="button" class="close text-white" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
