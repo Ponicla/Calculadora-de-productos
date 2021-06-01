@@ -338,14 +338,16 @@ if(window.location.pathname == ruta+'pedidos/pedidos.php'){
 
     function filtrado_lista(criterio) {
         switch (criterio) {
+            case "0": {
+                get_pedidos()
+                };
+              break;
             case "1": {
                 get_pedidos_filtrado(2)
-                console.log("1");
                 };
               break;
             case "2": {
                 get_pedidos_filtrado(1)
-                console.log("2");
                 };
               break;
           }
