@@ -4,20 +4,21 @@ require_once('../../../../db/conexion.php');
 session_start();
 //
 $sql = "SELECT
-	pedido.id,
-	sum( accesorio.precio ) AS precio_pedido
+pedido.id,
+sum( accesorio.precio ) AS precio_pedido,
+producto.cantidad_cera
 FROM
-	pedido
-	INNER JOIN pedido_producto
-	 ON pedido.id = pedido_producto.fk_id_pedido
-	INNER JOIN producto
-	 ON pedido_producto.fk_id_producto = producto.id
-	INNER JOIN accesorio_producto
-	 ON producto.id = accesorio_producto.fk_id_producto
-	INNER JOIN accesorio
-	 ON accesorio_producto.fk_id_accesorio = accesorio.id
+pedido
+INNER JOIN pedido_producto
+ ON pedido.id = pedido_producto.fk_id_pedido
+INNER JOIN producto
+ ON pedido_producto.fk_id_producto = producto.id
+INNER JOIN accesorio_producto
+ ON producto.id = accesorio_producto.fk_id_producto
+INNER JOIN accesorio
+ ON accesorio_producto.fk_id_accesorio = accesorio.id
 GROUP BY
-    pedido.id
+pedido.id
     ";
 // $sql = "SELECT * FROM pedido
 //         ORDER BY id

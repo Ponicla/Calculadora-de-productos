@@ -7,10 +7,12 @@ $id = $_POST['id'];
 
 
 //sum(accesorio.precio) as precio <<<no separa los productos, es mejor hacerlo afuera
-//GROUP BY
+//GROUP BY 
 //producto.id"
-$sql = " SELECT
-        producto.nombre, accesorio.precio
+        $sql = "SELECT
+        producto.nombre,
+        sum(accesorio.precio) as precio,
+        producto.cantidad_cera
         FROM
         producto
         INNER JOIN pedido_producto
@@ -22,7 +24,9 @@ $sql = " SELECT
         INNER JOIN accesorio
         ON accesorio_producto.fk_id_accesorio = accesorio.id
         WHERE
-        pedido.id = :id";
+        pedido.id = :id
+        GROUP BY
+        pedido_producto.id";
 // $sql = "SELECT producto.nombre
 // FROM producto
 // INNER JOIN pedido_producto
