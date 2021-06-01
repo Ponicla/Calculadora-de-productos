@@ -4,7 +4,7 @@ require_once('../../../../db/conexion.php');
 session_start();
 
 $lista = $_POST['lista_productos'];
-$sql = "INSERT INTO pedido VALUES (DEFAULT)";
+$sql = "INSERT INTO pedido VALUES (DEFAULT, DEFAULT)";
 $req = $bdd->prepare($sql);
 $req->execute();
 $id_pedido = $bdd->lastInsertId();

@@ -30,6 +30,64 @@ if(window.location.pathname == ruta+'pedidos/pedidos.php'){
 
 
     /* FUNCIONES JQUERY */
+
+    $("#producto_buscado").keyup(function () {
+        lista_productos = [];
+        var nombre = $("#producto_buscado").val();
+        $.ajax({
+                url: "../../functions/php/almacen/get_productos_2.php",
+                type: "POST",
+                data: {
+                    nombre: nombre
+                }
+            })
+            .done(function (res) {
+                var array = JSON.parse(res);
+                console.log(array);
+                var template = ``;
+            array.forEach((accesorio) => {
+                console.log(array);
+                if (accesorio.estado == 0 ){
+                            if(parseInt(accesorio.cantidad_cera) > 0 ){
+                                var precio_actual = parseFloat(accesorio.precio);
+                                var cantidad_de_cera = parseInt(accesorio.cantidad_cera);
+                                // console.log(valor_cera);
+                                var precio_subtotal = parseFloat(precio_actual) - parseFloat(valor_cera);
+                                var precio_final = parseFloat(precio_subtotal) + ((cantidad_de_cera*valor_cera)/100);
+                                accesorio.precio = precio_final; 
+                                
+                            }
+                        
+    
+                        template += `<div class="col-sm-3 mt-1">
+                                        <div class='card' style="max-width: 24rem;">
+                                            <div class='card-body'>
+                                            <div class='row'>
+                                                <div class='col-md-10'>
+                                                <h5 class='text-success'>${accesorio.nombre}</h5>
+                                                </div>
+                                                <div class='col-md-2'>
+                                                    <a onclick="agregar_producto_al_pedido(${accesorio.id},'${accesorio.nombre}',${accesorio.precio})" role="button" class="btn btn-success btn-sm"><i class="bi bi-plus-circle"></i></a>
+                                                </div>
+                                            </div>
+                                            <div>
+                                            <div>Valor $${accesorio.precio}</div>
+                                            </div>
+                                            
+                                            </div>
+                                            
+                                        </div>
+                                    </div>`
+                        $deck_cartas_productos.innerHTML = template;
+                    }
+                    lista_productos = array;
+            })
+            })
+            .fail(function () {
+                console.log('Err');
+            });
+    })
+
     $('#form_modal_nuevo_pedido').submit(function (e) { 
         e.preventDefault();
         var lista_id_productos = [];
@@ -45,6 +103,7 @@ if(window.location.pathname == ruta+'pedidos/pedidos.php'){
             data: { lista_productos : lista_id_productos}
         })
         .done(function (res) {
+            console.log(res);
             if(res == 'true'){
                 limpiar_pedido();
                 $('#modal_nuevo_pedido').modal('hide');
@@ -115,16 +174,44 @@ if(window.location.pathname == ruta+'pedidos/pedidos.php'){
 
 
     /* DECLARACION DE FUNCIONES */
+    function cambiar_estado_de_pedido(id, nuevo_estado) {
+        console.log(id,nuevo_estado);
+        $.ajax({
+            url: "../../functions/php/pedidos/cambiar_estado_pedido.php",
+            type: "POST", 
+            data: { id : id,
+            nuevo_estado: nuevo_estado
+            },
+        })
+        .done(function (res) {
+            get_pedidos();
+        })
+        .fail(function () {
+            console.log('Err');
+        });
+    }
+
+
     function get_pedidos() {
         $.ajax({
                 url: "../../functions/php/pedidos/get_pedidos_1.php",
                 type: "GET"
             })
             .done(function (res) {
-    
+                $('#criterio_sort').val(0); 
                 var array = JSON.parse(res);
+                console.log(array);
                 var template = ``;
                 array.forEach((producto) => {
+                    var texto_estado;
+                    var estado_distinto;
+                    if (producto.estado == 1) {
+                        texto_estado = "Pendiente";
+                        estado_distinto = 2;
+                    } else {
+                        texto_estado = "Entregado";
+                        estado_distinto = 1;
+                    }
                     // console.log(producto);
                     if(parseInt(producto.cantidad_cera) > 0 ){
                         // console.log('cambiar el precio');
@@ -142,15 +229,22 @@ if(window.location.pathname == ruta+'pedidos/pedidos.php'){
                                 <div class='card' style="max-width: 24rem;">
                                     <div class='card-body'>
                                     <div class='row'>
-                                        <div class='col-md-10'>
-                                        <h5 class='text-success'>Pedido ${producto.id}</h5>
+                                        <div class='col-md-12 d-flex'>
+                                            <div class='col-md-5 pl-0'>
+                                            <h5 class='text-success'>Pedido ${producto.id}</h5>
+                                            </div>
+                                            <div class='col-md-5 pl-0 pr-0'>
+                                            <div> Estado: ${texto_estado}</div>
+                                            
+                                            </div>
                                         </div>
                                     </div>
                                         <div>Total $${producto.precio_pedido}</div>
                                     </div>
 
                                     <div class='card-footer'>
-                                            <button onclick="ver_detalles_pedido(${producto.id},${producto.precio_pedido})" class="btn btn-success btn-block">Ver detalles</button>
+                                    <button class="btn btn-block btn-primary" onclick="cambiar_estado_de_pedido(${producto.id},${estado_distinto})">Cambiar estado</button>
+                                            <button onclick="ver_detalles_pedido(${producto.id}, ${producto.precio_pedido})" class="btn btn-success btn-block">Ver detalles</button>
                                         </div>
                                 </div>
                             </div>`
@@ -165,9 +259,98 @@ if(window.location.pathname == ruta+'pedidos/pedidos.php'){
             
     }
 
+    function get_pedidos_filtrado(estado) {
+        $.ajax({
+                url: "../../functions/php/pedidos/get_pedidos_1.php",
+                type: "GET",
+                
+            })
+            .done(function (res) {
+                
+                var array = JSON.parse(res);
+                console.log(array);
+                var template = ``;
+                array.forEach((producto) => {
+                    if (producto.estado == estado) {
+
+                    
+                    var texto_estado;
+                    var estado_distinto;
+                    if (producto.estado == 1) {
+                        texto_estado = "Pendiente";
+                        estado_distinto = 2;
+                    } else {
+                        texto_estado = "Entregado";
+                        estado_distinto = 1;
+                    }
+                    // console.log(producto);
+                    if(parseInt(producto.cantidad_cera) > 0 ){
+                        // console.log('cambiar el precio');
+                        var precio_actual = parseFloat(producto.precio_pedido);
+                        var cantidad_de_cera = parseInt(producto.cantidad_cera);
+                        // console.log(valor_cera);
+                        var precio_subtotal = parseFloat(precio_actual) - (parseInt(producto.unidades_cera) * parseFloat(valor_cera));
+                        var precio_final = parseFloat(precio_subtotal) + ((cantidad_de_cera*valor_cera)/100);
+                        producto.precio_pedido = precio_final; 
+                        
+                    }
+                    
+                    let nombre_vela = capitalize(producto.nombre);
+                    template += `<div class="col-sm-3 mt-1">
+                                <div class='card' style="max-width: 24rem;">
+                                    <div class='card-body'>
+                                    <div class='row'>
+                                        <div class='col-md-12 d-flex'>
+                                            <div class='col-md-5 pl-0'>
+                                            <h5 class='text-success'>Pedido ${producto.id}</h5>
+                                            </div>
+                                            <div class='col-md-5 pl-0 pr-0'>
+                                            <div> Estado: ${texto_estado}</div>
+                                            
+                                            </div>
+                                        </div>
+                                    </div>
+                                        <div>Total $${producto.precio_pedido}</div>
+                                    </div>
+
+                                    <div class='card-footer'>
+                                    <button class="btn btn-block btn-primary" onclick="cambiar_estado_de_pedido(${producto.id},${estado_distinto})">Cambiar estado</button>
+                                            <button onclick="ver_detalles_pedido(${producto.id}, ${producto.precio_pedido})" class="btn btn-success btn-block">Ver detalles</button>
+                                        </div>
+                                </div>
+                            </div>`
+                    $deck_cartas_pedidos.innerHTML = template;
+                }
+                })
+                
+            })
+            .fail(function () {
+                console.log('Err');
+            });
+
+            
+    }
+
     function capitalize(s){
         if (typeof s !== 'string') return ''
         return s.charAt(0).toUpperCase() + s.slice(1)
+    }
+
+    function filtrado_lista(criterio) {
+        switch (criterio) {
+            case "1": {
+                get_pedidos_filtrado(2)
+                console.log("1");
+                };
+              break;
+            case "2": {
+                get_pedidos_filtrado(1)
+                console.log("2");
+                };
+              break;
+          }
+        
+        
     }
 
     function obtener_valor_cera() {
@@ -193,7 +376,7 @@ if(window.location.pathname == ruta+'pedidos/pedidos.php'){
         })
         .done(function (res) {
             var array1 = JSON.parse(res);
-            // console.log(array1);
+            console.log(array1);
             var template = ``;
             var cont = 1;
             var array2 = [];
@@ -278,41 +461,42 @@ if(window.location.pathname == ruta+'pedidos/pedidos.php'){
         })
         .done(function (res) {
             var array = JSON.parse(res);
-            // console.log(array);
+            console.log(array);
             var template = ``;
         array.forEach((accesorio) => {
-            
-                    if(parseInt(accesorio.cantidad_cera) > 0 ){
-                        var precio_actual = parseFloat(accesorio.precio);
-                        var cantidad_de_cera = parseInt(accesorio.cantidad_cera);
-                        // console.log(valor_cera);
-                        var precio_subtotal = parseFloat(precio_actual) - parseFloat(valor_cera);
-                        var precio_final = parseFloat(precio_subtotal) + ((cantidad_de_cera*valor_cera)/100);
-                        accesorio.precio = precio_final; 
-                        
-                    }
-                
+            if (accesorio.estado == 0 ){
+                        if(parseInt(accesorio.cantidad_cera) > 0 ){
+                            var precio_actual = parseFloat(accesorio.precio);
+                            var cantidad_de_cera = parseInt(accesorio.cantidad_cera);
+                            // console.log(valor_cera);
+                            var precio_subtotal = parseFloat(precio_actual) - parseFloat(valor_cera);
+                            var precio_final = parseFloat(precio_subtotal) + ((cantidad_de_cera*valor_cera)/100);
+                            accesorio.precio = precio_final; 
+                            
+                        }
+                    
 
-                template += `<div class="col-sm-3 mt-1">
-                                <div class='card' style="max-width: 24rem;">
-                                    <div class='card-body'>
-                                    <div class='row'>
-                                        <div class='col-md-10'>
-                                        <h5 class='text-success'>${accesorio.nombre}</h5>
+                    template += `<div class="col-sm-3 mt-1">
+                                    <div class='card' style="max-width: 24rem;">
+                                        <div class='card-body'>
+                                        <div class='row'>
+                                            <div class='col-md-10'>
+                                            <h5 class='text-success'>${accesorio.nombre}</h5>
+                                            </div>
+                                            <div class='col-md-2'>
+                                                <a onclick="agregar_producto_al_pedido(${accesorio.id},'${accesorio.nombre}',${accesorio.precio})" role="button" class="btn btn-success btn-sm"><i class="bi bi-plus-circle"></i></a>
+                                            </div>
                                         </div>
-                                        <div class='col-md-2'>
-                                            <a onclick="agregar_producto_al_pedido(${accesorio.id},'${accesorio.nombre}',${accesorio.precio})" role="button" class="btn btn-success btn-sm"><i class="bi bi-plus-circle"></i></a>
+                                        <div>
+                                        <div>Valor $${accesorio.precio}</div>
                                         </div>
+                                        
+                                        </div>
+                                        
                                     </div>
-                                    <div>
-                                    <div>Valor $${accesorio.precio}</div>
-                                    </div>
-                                    
-                                    </div>
-                                    
-                                </div>
-                            </div>`
-                $deck_cartas_productos.innerHTML = template;
+                                </div>`
+                    $deck_cartas_productos.innerHTML = template;
+                }
         })
         })
         .fail(function () {

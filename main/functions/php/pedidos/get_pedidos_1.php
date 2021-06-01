@@ -3,12 +3,13 @@ require_once('../../../../db/conexion.php');
 
 session_start();
 //
-$sql = "SELECT id, precio AS precio_pedido, SUM(cantidad_cera) AS cantidad_cera, SUM(total_de_productos_con_cera) AS unidades_cera
+$sql = "SELECT id, precio AS precio_pedido, SUM(cantidad_cera) AS cantidad_cera, SUM(total_de_productos_con_cera) AS unidades_cera, estado
 FROM (
 SELECT
  pedido.id AS id,
  0 AS cantidad_cera, SUM(accesorio.precio) AS precio,
- 0 AS total_de_productos_con_cera
+ 0 AS total_de_productos_con_cera,
+ pedido.estado AS estado
 FROM
  pedido
 INNER JOIN pedido_producto ON pedido.id = pedido_producto.fk_id_pedido
@@ -18,7 +19,10 @@ INNER JOIN accesorio ON accesorio_producto.fk_id_accesorio = accesorio.id
 GROUP BY
  pedido.id UNION ALL
 SELECT
-					pedido_producto.fk_id_pedido AS id, SUM(producto.cantidad_cera) AS cantidad_cera, NULL AS precio, COUNT(producto.cantidad_cera) AS total_de_productos_con_cera
+					pedido_producto.fk_id_pedido AS id, SUM(producto.cantidad_cera) AS cantidad_cera, 
+					NULL AS precio, 
+					COUNT(producto.cantidad_cera) AS total_de_productos_con_cera,
+					0 AS estado
 FROM
 					producto
 INNER JOIN pedido_producto ON producto.id = pedido_producto.fk_id_producto
