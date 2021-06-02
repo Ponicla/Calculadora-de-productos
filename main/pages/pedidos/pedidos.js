@@ -30,8 +30,7 @@ if(window.location.pathname == ruta+'pedidos/pedidos.php'){
 
 
     /* FUNCIONES JQUERY */
-
-    $("#producto_buscado").keyup(function () {
+    $("#producto_buscado").keyup(function () {  
         lista_productos = [];
         var nombre = $("#producto_buscado").val();
         $.ajax({
@@ -60,7 +59,7 @@ if(window.location.pathname == ruta+'pedidos/pedidos.php'){
                         
     
                         template += `<div class="col-sm-3 mt-1">
-                                        <div class='card' style="max-width: 24rem;">
+                                        <div class='card' style="max-width: 20rem;">
                                             <div class='card-body'>
                                             <div class='row'>
                                                 <div class='col-md-10'>
@@ -91,19 +90,20 @@ if(window.location.pathname == ruta+'pedidos/pedidos.php'){
     $('#form_modal_nuevo_pedido').submit(function (e) { 
         e.preventDefault();
         var lista_id_productos = [];
-    
-        
+        var descripcion = $('#detalle_pedido').val();
+
         lista_productos.forEach(elemento => {
             lista_id_productos.push(elemento.id_producto);
         });
-        console.log(lista_id_productos);
         $.ajax({
             url: "../../functions/php/pedidos/nuevo_pedido.php",
             type: "POST",
-            data: { lista_productos : lista_id_productos}
+            data: { 
+                lista_productos : lista_id_productos,
+                descripcion : descripcion 
+            }
         })
         .done(function (res) {
-            console.log(res);
             if(res == 'true'){
                 limpiar_pedido();
                 $('#modal_nuevo_pedido').modal('hide');
@@ -191,7 +191,6 @@ if(window.location.pathname == ruta+'pedidos/pedidos.php'){
         });
     }
 
-
     function get_pedidos() {
         $.ajax({
                 url: "../../functions/php/pedidos/get_pedidos_1.php",
@@ -200,17 +199,23 @@ if(window.location.pathname == ruta+'pedidos/pedidos.php'){
             .done(function (res) {
                 $('#criterio_sort').val(0); 
                 var array = JSON.parse(res);
-                console.log(array);
+                // console.log(array);
                 var template = ``;
                 array.forEach((producto) => {
                     var texto_estado;
                     var estado_distinto;
+                    var color;
+                    var icono;
                     if (producto.estado == 1) {
                         texto_estado = "Pendiente";
                         estado_distinto = 2;
+                        color = 'orange';
+                        icono = '<i style="color: orange" class="bi bi-stopwatch"></i>';
                     } else {
                         texto_estado = "Entregado";
                         estado_distinto = 1;
+                        color = 'green';
+                        icono = '<i style="color: green" class="bi bi-bag-check"></i>';
                     }
                     // console.log(producto);
                     if(parseInt(producto.cantidad_cera) > 0 ){
@@ -225,26 +230,23 @@ if(window.location.pathname == ruta+'pedidos/pedidos.php'){
                     }
                     
                     let nombre_vela = capitalize(producto.nombre);
-                    template += `<div class="col-sm-3 mt-1">
-                                <div class='card' style="max-width: 24rem;">
+                    template += `<div class="col-sm-3 mt-3">
+                                <div class='card' style="max-width: 20rem;">
                                     <div class='card-body'>
                                     <div class='row'>
-                                        <div class='col-md-12 d-flex'>
-                                            <div class='col-md-5 pl-0'>
-                                            <h5 class='text-success'>Pedido ${producto.id}</h5>
+                                            <div class='col-md-6'>
+                                                <h5 class='text-info'>Pedido ${producto.id}</h5>
                                             </div>
-                                            <div class='col-md-5 pl-0 pr-0'>
-                                            <div> Estado: ${texto_estado}</div>
-                                            
+                                            <div class='col-md-6' style="text-align: right !important">
+                                                <p style="color : ${color}">${icono} ${texto_estado}</p>
                                             </div>
-                                        </div>
                                     </div>
                                         <div>Total $${producto.precio_pedido}</div>
+                                            <small class="text-info">${producto.descripcion}</small>
                                     </div>
-
                                     <div class='card-footer'>
                                     <button class="btn btn-block btn-primary" onclick="cambiar_estado_de_pedido(${producto.id},${estado_distinto})">Cambiar estado</button>
-                                            <button onclick="ver_detalles_pedido(${producto.id}, ${producto.precio_pedido})" class="btn btn-success btn-block">Ver detalles</button>
+                                            <button onclick="ver_detalles_pedido(${producto.id}, ${producto.precio_pedido}, '${producto.descripcion}')" class="btn btn-success btn-block">Ver detalles</button>
                                         </div>
                                 </div>
                             </div>`
@@ -279,11 +281,15 @@ if(window.location.pathname == ruta+'pedidos/pedidos.php'){
                     if (producto.estado == 1) {
                         texto_estado = "Pendiente";
                         estado_distinto = 2;
+                        color = 'orange';
+                        icono = '<i style="color: orange" class="bi bi-stopwatch"></i>';
                     } else {
                         texto_estado = "Entregado";
                         estado_distinto = 1;
+                        color = 'green';
+                        icono = '<i style="color: green" class="bi bi-bag-check"></i>';
                     }
-                    // console.log(producto);
+                    
                     if(parseInt(producto.cantidad_cera) > 0 ){
                         // console.log('cambiar el precio');
                         var precio_actual = parseFloat(producto.precio_pedido);
@@ -296,29 +302,26 @@ if(window.location.pathname == ruta+'pedidos/pedidos.php'){
                     }
                     
                     let nombre_vela = capitalize(producto.nombre);
-                    template += `<div class="col-sm-3 mt-1">
-                                <div class='card' style="max-width: 24rem;">
-                                    <div class='card-body'>
-                                    <div class='row'>
-                                        <div class='col-md-12 d-flex'>
-                                            <div class='col-md-5 pl-0'>
-                                            <h5 class='text-success'>Pedido ${producto.id}</h5>
-                                            </div>
-                                            <div class='col-md-5 pl-0 pr-0'>
-                                            <div> Estado: ${texto_estado}</div>
-                                            
-                                            </div>
-                                        </div>
-                                    </div>
-                                        <div>Total $${producto.precio_pedido}</div>
-                                    </div>
-
-                                    <div class='card-footer'>
-                                    <button class="btn btn-block btn-primary" onclick="cambiar_estado_de_pedido(${producto.id},${estado_distinto})">Cambiar estado</button>
-                                            <button onclick="ver_detalles_pedido(${producto.id}, ${producto.precio_pedido})" class="btn btn-success btn-block">Ver detalles</button>
-                                        </div>
+                    template += `<div class="col-sm-3 mt-3">
+                    <div class='card' style="max-width: 20rem;">
+                        <div class='card-body'>
+                        <div class='row'>
+                                <div class='col-md-6'>
+                                    <h5 class='text-info'>Pedido ${producto.id}</h5>
                                 </div>
-                            </div>`
+                                <div class='col-md-6' style="text-align: right !important">
+                                    <p style="color : ${color}">${icono} ${texto_estado}</p>
+                                </div>
+                        </div>
+                            <div>Total $${producto.precio_pedido}</div>
+                                <small class="text-info">${producto.descripcion}</small>
+                        </div>
+                        <div class='card-footer'>
+                        <button class="btn btn-block btn-primary" onclick="cambiar_estado_de_pedido(${producto.id},${estado_distinto})">Cambiar estado</button>
+                                <button onclick="ver_detalles_pedido(${producto.id}, ${producto.precio_pedido}, '${producto.descripcion}')" class="btn btn-success btn-block">Ver detalles</button>
+                            </div>
+                    </div>
+                </div>`
                     $deck_cartas_pedidos.innerHTML = template;
                 }
                 })
@@ -370,7 +373,7 @@ if(window.location.pathname == ruta+'pedidos/pedidos.php'){
             })
     }
 
-    function ver_detalles_pedido(id, precio){ 
+    function ver_detalles_pedido(id, precio, descripcion){ 
         $.ajax({
             url: "../../functions/php/pedidos/get_pedidos.php",
             type: "POST", 
@@ -379,36 +382,21 @@ if(window.location.pathname == ruta+'pedidos/pedidos.php'){
         .done(function (res) {
             var array1 = JSON.parse(res);
             console.log(array1);
+            $('#descripcion_pedido').text(descripcion);
             var template = ``;
             var cont = 1;
             var array2 = [];
             var contador = 0;
             $id_pedido.innerHTML= id;
-            /* for (let j = 0; j < array1.length; j++) {
-                const elemento = array1[j];
-                if(parseInt(elemento.cantidad_cera) > 0 ){
-                    console.log('Acomodar precio por cera en elemento ',elemento);
-                    break;
-                }
-            } */
             array1.forEach(elemento => {
-                
-
-
-             
                     if(parseInt(elemento.cantidad_cera) > 0 ){
                         var precio_actual = parseFloat(elemento.precio);
                         var cantidad_de_cera = parseInt(elemento.cantidad_cera);
                         console.log(valor_cera);
                         var precio_subtotal = parseFloat(precio_actual) - parseFloat(valor_cera);
                         var precio_final = parseFloat(precio_subtotal) + ((cantidad_de_cera*valor_cera)/100);
-                        elemento.precio = precio_final; 
-                        
+                        elemento.precio = precio_final;  
                     }
-                   
-
-        
-
                 if (array2.some(item => item.nombre === elemento.nombre)){
                     array2.findIndex(function(post, index) {
                     if(post.nombre == elemento.nombre) {
@@ -433,11 +421,30 @@ if(window.location.pathname == ruta+'pedidos/pedidos.php'){
                 
                 template += `
                 <div class="row" id=${id_contenedor}>
-                    <div class="col-md-6">
-                        <p> ${elemento.nombre} x ${elemento.cantidad}</p>
+                    <div class="col-md-7">
+                        <div class="row">
+                            <div class="col-md-1 mr-0 ml-0 pr-0">
+                                <p style="font-size: 0.9rem;" > ${elemento.cantidad} </p>
+                            </div>
+                            <div class="col-md-1 mr-0 ml-0 pr-0 pl-0">
+                                <p style="font-size: 0.9rem;" > - </p>
+                            </div>
+                            <div class="col-md-10 mr-0 ml-0 pl-0 pr-0">
+                                <p style="font-size: 0.9rem;" >  ${elemento.nombre}</p>
+                            </div>
+                        </div>
+
+
+                        
                     </div>
-                    <div class="col-md-6" style="text-align: right;">
-                        <p> PU $${elemento.unidad} | Subtotal $${elemento.total}</p>
+                    <div class="col-md-5">
+                        <div class="row" >
+                            <div class="col-md-2"></div>
+                            <div class="col-md-5 m-0 pr-3" style="font-size: 0.8rem; text-align: right;"><p class=" text-info"> $${elemento.unidad}</p></div>
+                            <!-- <div class="col-md-2 m-0 pr-3" style="font-size: 0.8rem;  text-align: right;"></div> -->
+                            <div class="col-md-5 m-0 pr-3" style="font-size: 0.8rem;  text-align: right;"><p class="text-danger"> $${elemento.total}</p></div>    
+                        </div>
+                         
                     </div>
                 </div>`
                 
@@ -445,8 +452,13 @@ if(window.location.pathname == ruta+'pedidos/pedidos.php'){
                 cont = cont + 1; 
             });
             $fila_producto_total.innerHTML = 
-                `<div>
-                Total: $ ${precio}
+                `<div class="row">
+                    <div class="col-md-10">
+                        <p><i class=" text-success bi bi-cash-coin"></i> Total </p>
+                    </div>
+                    <div class="col-md-2" style="text-align: right;">
+                        <p class="text-success">$${precio}</p>
+                    </div>
                 </div>`;
 
             $('#modal_vista_pedido').modal('show');
@@ -463,7 +475,7 @@ if(window.location.pathname == ruta+'pedidos/pedidos.php'){
         })
         .done(function (res) {
             var array = JSON.parse(res);
-            console.log(array);
+            // console.log(array);
             var template = ``;
         array.forEach((accesorio) => {
             if (accesorio.estado == 0 ){
@@ -479,7 +491,7 @@ if(window.location.pathname == ruta+'pedidos/pedidos.php'){
                     
 
                     template += `<div class="col-sm-3 mt-1">
-                                    <div class='card' style="max-width: 24rem;">
+                                    <div class='card' style="max-width: 20rem;">
                                         <div class='card-body'>
                                         <div class='row'>
                                             <div class='col-md-10'>
@@ -521,7 +533,8 @@ if(window.location.pathname == ruta+'pedidos/pedidos.php'){
                 title: 'Agregaste ' + nombre + ' al Pedido'
             })
             lista_productos.push(obj);
-            //ordenar_lista(lista_productos);
+            //ordenar_lista(lista_productos); 
+            $('#contenderdor_botones').removeAttr('hidden');
             $('#btn-pedido').removeAttr('hidden');
             $('#btn-limpia-pedido').removeAttr('hidden');
         
@@ -550,6 +563,7 @@ if(window.location.pathname == ruta+'pedidos/pedidos.php'){
         var template2 = ``;
         $fila_producto2.innerHTML = template;
         $total_pedido2.innerHTML = template2;
+        $('#contenderdor_botones').attr('hidden','hidden');
         $('#btn-pedido').attr('hidden','hidden');
         $('#btn-limpia-pedido').attr('hidden','hidden');
         get_pedidos();
@@ -562,6 +576,7 @@ if(window.location.pathname == ruta+'pedidos/pedidos.php'){
         var template2 = ``;
         $fila_producto2.innerHTML = template;
         $total_pedido2.innerHTML = template2;
+        $('#contenderdor_botones').attr('hidden','hidden');
         $('#btn-pedido').attr('hidden','hidden');
         $('#btn-limpia-pedido').attr('hidden','hidden');
         get_pedidos();
@@ -604,6 +619,7 @@ if(window.location.pathname == ruta+'pedidos/pedidos.php'){
         $total_pedido2.innerHTML = template2;
         
         if(lista_productos.length == 0){
+            $('#contenderdor_botones').attr('hidden','hidden');
             $('#btn-pedido').attr('hidden','hidden');
             $('#btn-limpia-pedido').attr('hidden','hidden');
             $('#modal_nuevo_pedido').modal('hide');

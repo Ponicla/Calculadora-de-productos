@@ -4,8 +4,10 @@ require_once('../../../../db/conexion.php');
 session_start();
 
 $lista = $_POST['lista_productos'];
-$sql = "INSERT INTO pedido VALUES (DEFAULT, DEFAULT)";
+$descripcion = $_POST['descripcion'];
+$sql = "INSERT INTO pedido VALUES (DEFAULT, DEFAULT, :descripcion)";
 $req = $bdd->prepare($sql);
+$req->bindParam(":descripcion", $descripcion);
 $req->execute();
 $id_pedido = $bdd->lastInsertId();
 if (!$id_pedido) {
