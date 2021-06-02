@@ -149,26 +149,30 @@ if (window.location.pathname == ruta + 'almacen/almacen.php') {
             })
             .done(function (res) {
                 var array = JSON.parse(res);
+                console.log(array);
                 ordena_lista_por_precio(array);
                 var template = ``;
                 var cont = 0;
                 array.forEach((producto) => {
-                    cont = cont + 1;
-                    var id_contenedor_cantidad = "cantidad_cera_traida_" + cont;
-                    var nombre_vela = capitalize(producto.nombre);
+                        cont = cont + 1;
+                        var id_contenedor_cantidad = "cantidad_cera_traida_" + cont;
+                        var nombre_vela = capitalize(producto.nombre);
 
-                    if (producto.cantidad_cera > 0) {
-                        producto.precio = parseInt(producto.precio) - parseInt(valor_cera);
-                        producto.precio += ((parseInt(producto.cantidad_cera) * parseInt(valor_cera)) / 100);
-                        template += dibujar_producto(producto, id_contenedor_cantidad, nombre_vela);
-                        $deck_cartas_productos.innerHTML = template; 
-                    } else {
-                        template += dibujar_producto(producto, id_contenedor_cantidad, nombre_vela);
-                        $deck_cartas_productos.innerHTML = template; 
-                    }
+                        if (producto.cantidad_cera > 0) {
+                            producto.precio = parseInt(producto.precio) - parseInt(valor_cera);
+                            producto.precio += ((parseInt(producto.cantidad_cera) * parseInt(valor_cera)) / 100);
+                            template += dibujar_producto(producto, id_contenedor_cantidad, nombre_vela);
+                            $deck_cartas_productos.innerHTML = template; 
+                        } else {
+                            template += dibujar_producto(producto, id_contenedor_cantidad, nombre_vela);
+                            $deck_cartas_productos.innerHTML = template; 
+                        }
 
-                    lista_productos = array;
+                        lista_productos = array;
+                        
                 })
+                //console.log($('#criterio_boveda').val());
+                boveda($('#criterio_boveda').val());
             })
             .fail(function () {
                 console.log('Err');
@@ -261,38 +265,44 @@ if (window.location.pathname == ruta + 'almacen/almacen.php') {
     }
 
     function dibujar_producto(producto, id_contenedor_cantidad, nombre_vela){
-        template =`<div class="col-md-2 mt-1">
-        <div class='card' style="max-width: 18rem; ">
-            <div class='card-body ' >
-            <div class='row'>
-                <div class='col-md-12   '>
-                    <h6 >${nombre_vela}</h6>
-                </div>
-            </div>
-                <hr>
+        if (producto.estado == false ) {
+            color_bg = "bg-success";
+            boton_funcion = `deshabilitar_o_habilitar_producto(${producto.id}, 1)`;
+            boton_texto = "Boveda";
+        } else {
+            color_bg = "bg-danger";
+            boton_funcion = `deshabilitar_o_habilitar_producto(${producto.id}, 0)`;
+            boton_texto = "Activar";   
+        }
+        
+        template =`
+        <div class=" col-sm-6 col-md-4 col-lg-3 col-xl-3 mt-1">
+            <div class='card mx-auto'  style="width: 15rem; height: 14rem;">
+                <div class='card-body ' >
                     <div class='row'>
-                    <div class='col-md-12'>
-                        <h6 >$${producto.precio}</h6>
+                        <div class='col-md-12'>
+                            <h6 >${nombre_vela}</h6>
+                        </div>
+                    </div>
+                        <hr>
+                            <div class='row'>
+                                <div class='col-md-12'>
+                                    <h6 >Precio: $${producto.precio}</h6>
+                                </div>
+                            </div>
+                        <input hidden type="number" class="form-control" id="${id_contenedor_cantidad}" value="${producto.cantidad_cera}">
+                    </div>
+                    <div class='card-footer ${color_bg}  d-flex'>
+                        <div class='p-0 col-md-7'>
+                            <button onclick="ver_detalles_producto(${producto.id}, '${nombre_vela}', '${id_contenedor_cantidad}', ${producto.cantidad_cera}, '${producto.descripcion}')" class="btn btn-light btn-block btn-sm">Ver detalles</button>
+                        </div>
+                        <div class='p-0 col-md-5'>
+                        <button onclick="${boton_funcion}" class=" ml-1 btn btn-outline-light btn-block btn-sm  pt-6 pb-6">${boton_texto}</button>
+                        </div>
                     </div>
                 </div>
-                <input hidden type="number" class="form-control" id="${id_contenedor_cantidad}" value="${producto.cantidad_cera}">
-            </div>`
-        if (producto.estado == false ) {
-            template += `<div class='card-footer bg-success  d-flex'>
-            <div class='p-0 col-md-7'>
-                <button onclick="ver_detalles_producto(${producto.id}, '${nombre_vela}', '${id_contenedor_cantidad}', ${producto.cantidad_cera}, '${producto.descripcion}')" class="btn btn-light btn-block btn-sm">Ver detalles</button>
             </div>
-            <div class='p-0 col-md-5'>
-                <button onclick="deshabilitar_producto(${producto.id})" class=" ml-1 btn btn-outline-light btn-block btn-sm  pt-6 pb-6">Boveda</button>`;
-        } else {
-            template += `<div class='card-footer bg-danger  d-flex'>
-            <div class='p-0 col-md-7'>
-                <button onclick="ver_detalles_producto(${producto.id}, '${nombre_vela}', '${id_contenedor_cantidad}', ${producto.cantidad_cera}, '${producto.descripcion}')" class="btn btn-light btn-block btn-sm">Ver detalles</button>
-            </div>
-            <div class='p-0 col-md-5'>
-                <button onclick="habilitar_producto(${producto.id})" class=" ml-1 btn btn-outline-light btn-block btn-sm  pt-6 pb-6">Activar</button>`;
-        }
-        template += `</div></div></div></div>`;
+        </div>`;
         
         return template;
         /* $deck_cartas_productos.innerHTML = template; */
@@ -489,18 +499,17 @@ if (window.location.pathname == ruta + 'almacen/almacen.php') {
                     cont = cont + 1;
                     var id_contenedor_cantidad = "cantidad_cera_traida_" + cont;
                     var nombre_vela = capitalize(producto.nombre);
-
                     if (producto.cantidad_cera > 0) {
                         producto.precio = parseInt(producto.precio) - parseInt(valor_cera);
                         producto.precio += ((parseInt(producto.cantidad_cera) * parseInt(valor_cera)) / 100);
 
                         template += dibujar_producto(producto, id_contenedor_cantidad, nombre_vela);
-                        $deck_cartas_productos.innerHTML = template;
+                        //$deck_cartas_productos.innerHTML = template;
                     } else {
                         template += dibujar_producto(producto, id_contenedor_cantidad, nombre_vela);
-                        $deck_cartas_productos.innerHTML = template;
+                        //$deck_cartas_productos.innerHTML = template;
                     }
-
+                    $deck_cartas_productos.innerHTML = template;
                 })
                 lista_productos = array;
             })
@@ -509,13 +518,13 @@ if (window.location.pathname == ruta + 'almacen/almacen.php') {
             });
     }
 
-    function deshabilitar_producto(id) {
+    function deshabilitar_o_habilitar_producto(id, nuevo_estado) {
         $.ajax({
             url: "../../functions/php/almacen/cambiar_estado_producto.php",
             type: "POST",
             data: {
                 id: id,
-                nuevo_estado: 1
+                nuevo_estado: nuevo_estado
             },
         })
         .done(function (res) {
@@ -523,34 +532,17 @@ if (window.location.pathname == ruta + 'almacen/almacen.php') {
             $('#criterio_boveda').val('1');
             $('#criterio_sort').val('');
             $('#producto_buscado').val('');
-            Toast.fire({
-                icon: 'error',
-                title: 'Producto enviado a la boveda, no estara disponible para pedidos'
-            })
-        })
-        .fail(function () {
-            console.log('Err');
-        });
-    }
-
-    function habilitar_producto(id) {
-        $.ajax({
-            url: "../../functions/php/almacen/cambiar_estado_producto.php",
-            type: "POST",
-            data: {
-                id: id,
-                nuevo_estado: 0
-            },
-        })
-        .done(function (res) {
-            get_productos();
-            $('#criterio_boveda').val('1');
-            $('#criterio_sort').val('');
-            $('#producto_buscado').val('');
-            Toast.fire({
-                icon: 'success',
-                title: 'Producto activado, estara disponible para pedidos'
-            })
+            if ( nuevo_estado == 1) {
+                Toast.fire({
+                    icon: 'error',
+                    title: 'Producto enviado a la boveda, no estara disponible para pedidos'
+                })
+            } else {
+                Toast.fire({
+                    icon: 'success',
+                    title: 'Producto activado, estara disponible para pedidos'
+                })
+            }
         })
         .fail(function () {
             console.log('Err');
@@ -627,9 +619,9 @@ if (window.location.pathname == ruta + 'almacen/almacen.php') {
         let croterio_beveda = $('#criterio_boveda').val()
         switch (croterio_beveda) {
             case '0':
-                for (let j = 0; j < lista_productos.length; j++) {
+                for (let j = 0; j < lista_productos.length; j++) {        
                     const elemento = lista_productos[j];
-                    if(elemento.estado == 0){
+                    if(elemento.estado === 0){
                         lista.push(elemento);
                     };
                 }

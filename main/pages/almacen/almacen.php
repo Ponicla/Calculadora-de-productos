@@ -45,7 +45,7 @@
       </div>
 </div>
 
-<div id="deck_cartas_productos" class="card-deck"></div>
+<div id="deck_cartas_productos" class="card-deck d-flex flex-wrap  " style="align-content: center;"></div>
 
 
 <!-- MODAL MUESTRA PRODUCTO -->
