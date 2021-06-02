@@ -29,8 +29,14 @@ include '../nav.php';
         </form>
     </div>
 
+    <div hidden id='indicador_de_que_no_hay_nada' class="container-fluid">
+        <div class="alert alert-danger" role="alert">
+            No hay nada por aquí, intente agregar accesorios  <i class="bi bi-emoji-frown"></i>
+        </div>
+    </div>
+
     <!-- TABLA DE ACCESORIOS -->
-    <div class="container-fluid mt-4">
+    <div hidden id="contenedor_tabla_accesorios" class="container-fluid mt-4">
         <hr>
         <p class="text-success">Listado de accesorios</p>
 

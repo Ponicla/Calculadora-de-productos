@@ -48,6 +48,10 @@ if(window.location.pathname == ruta+'accesorios/accesorios.php'){
         })
         .done(function (res) {
           let accesorio = JSON.parse(res);
+          
+          $('#indicador_de_que_no_hay_nada').attr('hidden', 'hidden');
+          
+          $('#contenedor_tabla_accesorios').removeAttr('hidden');
           tabla_accesorios.row.add([
                 accesorio[0].id,
                 accesorio[0].nombre,
@@ -192,6 +196,11 @@ if(window.location.pathname == ruta+'accesorios/accesorios.php'){
         })
         .done(function (res) {
           var array = JSON.parse(res);
+          if(array.length == 0){
+            $('#indicador_de_que_no_hay_nada').removeAttr('hidden');
+          }else{
+            $('#contenedor_tabla_accesorios').removeAttr('hidden');
+          }
           array.forEach((accesorio) => {
             tabla_accesorios.row.add([
                   accesorio.id,

@@ -193,9 +193,10 @@ if(window.location.pathname == ruta+'productos/productos.php'){
                 }
         })
         .done(function (res) {
-            if(res == 'true'){
+            if(res == 'true'){ 
                 limpiar_producto();
                 $('#modal_nuevo_producto').modal('hide');
+                $('#indicador_de_que_no_hay_nada').attr('hidden', 'hidden');
                 Swal.fire({
                     title: 'Felicitaciones por tu nuevo producto '+nombre,
                     width: 600,
@@ -245,6 +246,9 @@ if(window.location.pathname == ruta+'productos/productos.php'){
         })
         .done(function (res) {
             var array = JSON.parse(res);
+            if(array.length == 0){
+                $('#indicador_de_que_no_hay_nada').removeAttr('hidden');
+            }
             var template = ``;
           array.forEach((accesorio) => {
             

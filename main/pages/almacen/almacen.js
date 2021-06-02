@@ -251,18 +251,18 @@ if (window.location.pathname == ruta + 'almacen/almacen.php') {
 
                                             <div class='card-footer d-flex'>
                                             <div class='p-0 col-md-8'>
-                                                <button onclick="ver_detalles_producto(${producto.id}, '${nombre_vela}', '${id_contenedor_cantidad}', ${producto.cantidad_cera}, '${producto.descripcion}')" class="btn btn-success btn-block">Ver detalles</button>
+                                                <button onclick="ver_detalles_producto(${producto.id}, '${nombre_vela}', '${id_contenedor_cantidad}', ${producto.cantidad_cera}, '${producto.descripcion}')" class="btn btn-success btn-block  btn-sm">Ver detalles</button>
                                             </div>
                                             <div class='p-0 col-md-4'>`
 
 
                             if (producto.estado == false ) {
                             template += `
-                                                <button onclick="deshabilitar_producto(${producto.id})" class=" ml-1 btn btn-danger btn-block pt-6 pb-6">Boveda</button>
+                                                <button onclick="deshabilitar_producto(${producto.id})" class=" ml-1 btn btn-danger  btn-sm btn-block pt-6 pb-6">Boveda</button>
                                                 `;
                             } else {
                                 template += `
-                                <button onclick="habilitar_producto(${producto.id})" class=" ml-1 btn btn-primary btn-block pt-6 pb-6">Activar</button>
+                                <button onclick="habilitar_producto(${producto.id})" class=" ml-1 btn btn-primary btn-block  btn-sm pt-6 pb-6">Activar</button>
                                 `;
                             }
                         
@@ -292,18 +292,18 @@ if (window.location.pathname == ruta + 'almacen/almacen.php') {
 
                                         <div class='card-footer d-flex'>
                                             <div class='p-0 col-md-8'>
-                                                <button onclick="ver_detalles_producto(${producto.id}, '${nombre_vela}', '${id_contenedor_cantidad}', ${producto.cantidad_cera}, '${producto.descripcion}')" class="btn btn-success btn-block">Ver detalles</button>
+                                                <button onclick="ver_detalles_producto(${producto.id}, '${nombre_vela}', '${id_contenedor_cantidad}', ${producto.cantidad_cera}, '${producto.descripcion}')" class="btn btn-success btn-block btn-sm">Ver detalles</button>
                                             </div>
                                             <div class='p-0 col-md-4'>`
 
 
                             if (producto.estado == false ) {
                             template += `
-                                                <button onclick="deshabilitar_producto(${producto.id})" class=" ml-1 btn btn-danger btn-block pt-6 pb-6">Boveda</button>
+                                                <button onclick="deshabilitar_producto(${producto.id})" class=" ml-1 btn btn-danger  btn-sm btn-block pt-6 pb-6">Boveda</button>
                                                 `;
                             } else {
                                 template += `
-                                <button onclick="habilitar_producto(${producto.id})" class=" ml-1 btn btn-primary btn-block pt-6 pb-6">Activar</button>
+                                <button onclick="habilitar_producto(${producto.id})" class=" ml-1 btn btn-primary btn-block  btn-sm pt-6 pb-6">Activar</button>
                                 `;
                             }
                         
@@ -533,6 +533,10 @@ if (window.location.pathname == ruta + 'almacen/almacen.php') {
                 var array = JSON.parse(res);
                 var template = ``;
                 var cont = 0;
+                // console.log(array);
+                if(array.length == 0){
+                    $('#indicador_de_que_no_hay_nada').removeAttr('hidden');
+                }
                 array.forEach((producto) => {
                     // console.log(producto);
                     if (producto.cantidad_cera > 0) {
@@ -557,18 +561,18 @@ if (window.location.pathname == ruta + 'almacen/almacen.php') {
 
                                             <div class='card-footer d-flex'>
                                             <div class='p-0 col-md-8'>
-                                                <button onclick="ver_detalles_producto(${producto.id}, '${nombre_vela}', '${id_contenedor_cantidad}', ${producto.cantidad_cera}, '${producto.descripcion}')" class="btn btn-success btn-block">Ver detalles</button>
+                                                <button onclick="ver_detalles_producto(${producto.id}, '${nombre_vela}', '${id_contenedor_cantidad}', ${producto.cantidad_cera}, '${producto.descripcion}')" class="btn btn-success btn-block btn-sm">Ver detalles</button>
                                             </div>
                                             <div class='p-0 col-md-4'>`
 
 
                             if (producto.estado == false ) {
                             template += `
-                                            <button onclick="deshabilitar_producto(${producto.id})" class=" ml-1 btn btn-danger btn-block pt-6 pb-6">Boveda</button>
+                                            <button onclick="deshabilitar_producto(${producto.id})" class=" ml-1 btn btn-danger btn-block  btn-sm pt-6 pb-6">Boveda</button>
                                         `;
                             } else {
                                 template += `
-                                <button onclick="habilitar_producto(${producto.id})" class=" ml-1 btn btn-primary btn-block pt-6 pb-6">Activar</button>
+                                <button onclick="habilitar_producto(${producto.id})" class=" ml-1 btn btn-primary btn-block pt-6  btn-sm pb-6">Activar</button>
                                 `;
                             }
                             template += `             
@@ -598,18 +602,18 @@ if (window.location.pathname == ruta + 'almacen/almacen.php') {
 
                                         <div class='card-footer d-flex'>
                                             <div class='p-0 col-md-8'>
-                                                <button onclick="ver_detalles_producto(${producto.id}, '${nombre_vela}', '${id_contenedor_cantidad}', ${producto.cantidad_cera}, '${producto.descripcion}')" class="btn btn-success btn-block">Ver detalles</button>
+                                                <button onclick="ver_detalles_producto(${producto.id}, '${nombre_vela}', '${id_contenedor_cantidad}', ${producto.cantidad_cera}, '${producto.descripcion}')" class="btn btn-success btn-block btn-sm">Ver detalles</button>
                                             </div>
                                             <div class='p-0 col-md-4'>`
 
 
                             if (producto.estado == false ) {
                             template += `
-                                            <button onclick="deshabilitar_producto(${producto.id})" class=" ml-1 btn btn-danger btn-block pt-6 pb-6">Boveda</button>
+                                            <button onclick="deshabilitar_producto(${producto.id})" class=" ml-1 btn btn-danger btn-block btn-sm  pt-6 pb-6">Boveda</button>
                                         `;
                             } else {
                                 template += `
-                                                <button onclick="habilitar_producto(${producto.id})" class=" ml-1 btn btn-primary btn-block pt-6 pb-6">Activar</button>
+                                                <button onclick="habilitar_producto(${producto.id})" class=" ml-1 btn btn-primary btn-block btn-sm  pt-6 pb-6">Activar</button>
                                             `;
                             }
                         
@@ -739,18 +743,18 @@ if (window.location.pathname == ruta + 'almacen/almacen.php') {
 
                             <div class='card-footer d-flex'>
                                             <div class='p-0 col-md-8'>
-                                                <button onclick="ver_detalles_producto(${producto.id}, '${nombre_vela}', '${id_contenedor_cantidad}', ${producto.cantidad_cera}, '${producto.descripcion}')" class="btn btn-success btn-block">Ver detalles</button>
+                                                <button onclick="ver_detalles_producto(${producto.id}, '${nombre_vela}', '${id_contenedor_cantidad}', ${producto.cantidad_cera}, '${producto.descripcion}')" class="btn btn-success btn-block btn-sm">Ver detalles</button>
                                             </div>
                                             <div class='p-0 col-md-4'>`
 
 
                             if (producto.estado == false ) {
                             template += `
-                                                <button onclick="deshabilitar_producto(${producto.id})" class=" ml-1 btn btn-danger btn-block pt-6 pb-6">Boveda</button>
+                                                <button onclick="deshabilitar_producto(${producto.id})" class=" ml-1 btn btn-danger btn-block btn-sm  pt-6 pb-6">Boveda</button>
                                                 `;
                             } else {
                                 template += `
-                                <button onclick="habilitar_producto(${producto.id})" class=" ml-1 btn btn-primary btn-block pt-6 pb-6">Activar</button>
+                                <button onclick="habilitar_producto(${producto.id})" class=" ml-1 btn btn-primary btn-block pt-6 pb-6 btn-sm ">Activar</button>
                                 `;
                             }
                         
@@ -786,18 +790,18 @@ if (window.location.pathname == ruta + 'almacen/almacen.php') {
 
                             <div class='card-footer d-flex'>
                                             <div class='p-0 col-md-8'>
-                                                <button onclick="ver_detalles_producto(${producto.id}, '${nombre_vela}', '${id_contenedor_cantidad}', ${producto.cantidad_cera}, '${producto.descripcion}')" class="btn btn-success btn-block">Ver detalles</button>
+                                                <button onclick="ver_detalles_producto(${producto.id}, '${nombre_vela}', '${id_contenedor_cantidad}', ${producto.cantidad_cera}, '${producto.descripcion}')" class="btn btn-success btn-block btn-sm">Ver detalles</button>
                                             </div>
                                             <div class='p-0 col-md-4'>`
 
 
                             if (producto.estado == false ) {
                             template += `
-                                                <button onclick="deshabilitar_producto(${producto.id})" class=" ml-1 btn btn-danger btn-block pt-6 pb-6">Boveda</button>
+                                                <button onclick="deshabilitar_producto(${producto.id})" class=" ml-1 btn btn-danger btn-block pt-6 pb-6 btn-sm ">Boveda</button>
                                                 `;
                             } else {
                                 template += `
-                                <button onclick="habilitar_producto(${producto.id})" class=" ml-1 btn btn-primary btn-block pt-6 pb-6">Activar</button>
+                                <button onclick="habilitar_producto(${producto.id})" class=" ml-1 btn btn-primary btn-block pt-6 pb-6 btn-sm ">Activar</button>
                                 `;
                             }
                         
@@ -908,8 +912,13 @@ if (window.location.pathname == ruta + 'almacen/almacen.php') {
                 type: "GET"
             })
             .done(function (res) {
-                var precio = JSON.parse(res);
-                valor_cera = parseInt(precio[0].precio);
+                var respuesta = JSON.parse(res);
+                if(respuesta.length == 0){
+                    valor_cera = 0;
+                }else{  
+                    valor_cera = parseInt(respuesta[0].precio);
+                    // console.log(valor_cera);
+                }
             })
             .fail(function (e) {
                 console.log('Err');
@@ -936,6 +945,8 @@ if (window.location.pathname == ruta + 'almacen/almacen.php') {
                 var template2 = ``;
                 var cont = 1;
                 var precio = 0;
+                
+                
                 for (let i = 0; i < array.length; i++) {
                     const elemento = array[i];
                     elemento.indice = crea_indice(array.length, array);

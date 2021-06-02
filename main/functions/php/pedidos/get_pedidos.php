@@ -10,6 +10,7 @@ $id = $_POST['id'];
 //GROUP BY 
 //producto.id"
         $sql = "SELECT
+        pedido.id,
         producto.nombre,
         sum(accesorio.precio) as precio,
         producto.cantidad_cera

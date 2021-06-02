@@ -39,8 +39,18 @@ include '../nav.php';
         </div>
     </div>
 </div> -->
+<div hidden id='indicador_de_que_no_hay_nada' class="container-fluid">
+        <div class="alert alert-danger" role="alert">
+            No hay nada por aquí, intente crear productos en el laboratio  <i class="bi bi-emoji-frown"></i>
+            <div class="col-md-2 pl-0 mt-2">
+                <a role="button" class="btn btn-dark btn-block btn-sm" href="../productos/productos.php">Entrar al laboratorio</a>
+            </div>
+        </div>
+        
+    </div>
 
 <div id="deck_cartas_productos" class="card-deck"></div>
+
 
 
 
@@ -50,6 +60,7 @@ include '../nav.php';
 </div>
 
 <div class="container-fluid">
+    
     <div class="row form-group">
         <!-- <div class="col-md-4 form-group">
             <input id="producto_buscado" name="nombre" type="text" class="form-control" placeholder="Qué buscas?" autocomplete="off">
@@ -65,6 +76,11 @@ include '../nav.php';
     </div>
 </div>
 
+<div  id='indicador_de_que_no_hay_nada2' hidden class="container-fluid">
+        <div class="alert alert-danger" role="alert">
+            No hay pedidos realizados  <i class="bi bi-emoji-frown"></i>
+        </div>
+</div>
 <div id="deck_cartas_pedidos" class="card-deck"></div>
 
 
@@ -83,7 +99,8 @@ include '../nav.php';
             <div class="modal-body">
                 <form id="form_modal_vista_producto">
                     <p class="text-success" style="font-size: 0.7rem;">Detalles</p>
-                    <p id="descripcion_pedido"></p>
+                    <div id="update_descripcion_del_pedido"></div>
+                    
                     <hr>
                     <p class="text-success" style="font-size: 0.7rem;">Productos del pedido</p>
                     <div class="row">

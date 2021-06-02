@@ -31,6 +31,18 @@
     </div>
 </div>
 
+<div  hidden id='indicador_de_que_no_hay_nada' class="container-fluid">
+    <div class="alert alert-danger" role="alert">
+        No hay nada por aquí, intente agregar accesorios  <i class="bi bi-emoji-frown"></i>
+
+        <div class="row mt-2">
+            <div class="col-md-2">
+                <a role="button" class="btn btn-dark btn-block btn-sm" href="../accesorios/accesorios.php">Ir por accesorios</a>
+            </div>
+        </div>
+    </div>
+</div>
+
 <!-- DECK -->
 <div id="deck_cartas" class="card-deck"></div>
 
