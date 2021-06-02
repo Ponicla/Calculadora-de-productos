@@ -26,8 +26,6 @@ if(window.location.pathname == ruta+'pedidos/pedidos.php'){
 
     /* LLAMADO A FUNCIONES */
     obtener_valor_cera();
-    get_pedidos();
-    get_productos();
 
 
     /* FUNCIONES JQUERY */
@@ -174,6 +172,34 @@ if(window.location.pathname == ruta+'pedidos/pedidos.php'){
         $('#modal_nuevo_pedido').modal('show');
     });
 
+
+    /* DECLARACION DE FUNCIONES */
+    function llamar_funciones_iniciales(){
+        get_pedidos();
+        get_productos(); 
+    }
+
+    function obtener_valor_cera() {
+        $.ajax({
+                url: "../../functions/php/pedidos/get_valor_cera.php",
+                type: "GET"
+            })
+            .done(function (res) {
+                var respuesta = JSON.parse(res);
+                if(respuesta.length == 0){
+                    valor_cera = 0;
+                    llamar_funciones_iniciales();
+                }else{  
+                    valor_cera = parseInt(respuesta[0].precio);
+                    llamar_funciones_iniciales();
+                }
+            })
+            .fail(function (e) {
+                console.log('Err');
+                window.location.reload();
+            })
+    }
+
     function update_descripcion(id){
         var descripcion = $('#descripcion_pedido').val(); 
         // console.log(descripcion);
@@ -243,7 +269,6 @@ if(window.location.pathname == ruta+'pedidos/pedidos.php'){
         
     }
 
-    /* DECLARACION DE FUNCIONES */
     function cambiar_estado_de_pedido(id, nuevo_estado) {
         // console.log(id,nuevo_estado);
         $.ajax({
@@ -446,26 +471,7 @@ if(window.location.pathname == ruta+'pedidos/pedidos.php'){
         
     }
 
-    function obtener_valor_cera() {
-        $.ajax({
-                url: "../../functions/php/pedidos/get_valor_cera.php",
-                type: "GET"
-            })
-            .done(function (res) {
-                var respuesta = JSON.parse(res);
-                if(respuesta.length == 0){
-                    valor_cera = 0;
-                }else{  
-                    valor_cera = parseInt(respuesta[0].precio);
-                    // console.log(valor_cera);
-                }
-                
-                // console.log(valor_cera);
-            })
-            .fail(function (e) {
-                console.log('Err');
-            })
-    }
+    
 
     function ver_detalles_pedido(id, precio, descripcion){ 
         $.ajax({

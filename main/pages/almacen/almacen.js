@@ -23,11 +23,11 @@ if (window.location.pathname == ruta + 'almacen/almacen.php') {
     });
 
     
+
+    
     /* LLAMADO A FUNCIONES */
     obtener_valor_cera();
-    get_productos();
-    get_accesorios();
-
+  
 
     /* FUNCIONES JQUERY */
     $('#criterio_boveda').val('1');
@@ -381,6 +381,32 @@ if (window.location.pathname == ruta + 'almacen/almacen.php') {
 
 
     /* DECLARACION DE FUNCIONES */
+    function llamar_funciones_iniciales(){
+        get_productos();
+        get_accesorios(); 
+    }
+
+    function obtener_valor_cera() {
+        $.ajax({
+                url: "../../functions/php/almacen/get_valor_cera.php",
+                type: "GET"
+            })
+            .done(function (res) {
+                var respuesta = JSON.parse(res);
+                if(respuesta.length == 0){
+                    valor_cera = 0;
+                    llamar_funciones_iniciales();
+                }else{  
+                    valor_cera =  parseInt(respuesta[0].precio);
+                    llamar_funciones_iniciales();
+                }
+            })
+            .fail(function (e) {
+                console.log('Err');
+                window.location.reload();
+            })
+    }
+
     function ordena_lista_por_precio(lista) {
         lista.sort(function (a, b) {
             if (a.precio > b.precio) {
@@ -906,24 +932,7 @@ if (window.location.pathname == ruta + 'almacen/almacen.php') {
         return s.charAt(0).toUpperCase() + s.slice(1)
     }
 
-    function obtener_valor_cera() {
-        $.ajax({
-                url: "../../functions/php/almacen/get_valor_cera.php",
-                type: "GET"
-            })
-            .done(function (res) {
-                var respuesta = JSON.parse(res);
-                if(respuesta.length == 0){
-                    valor_cera = 0;
-                }else{  
-                    valor_cera = parseInt(respuesta[0].precio);
-                    // console.log(valor_cera);
-                }
-            })
-            .fail(function (e) {
-                console.log('Err');
-            })
-    }
+    
 
     function ver_detalles_producto(id, nombre, id_contenedor_cantidad, cantidad_cera, descripcion) {
         lista_ingredientes = [];
