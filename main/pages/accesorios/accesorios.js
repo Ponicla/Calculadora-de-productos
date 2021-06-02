@@ -8,6 +8,8 @@ if(window.location.pathname == ruta+'accesorios/accesorios.php'){
         "language": {
             "url": "//cdn.datatables.net/plug-ins/1.10.24/i18n/Spanish.json"
         },
+        pageLength : 5,
+        lengthMenu: [[5, 10, 20, -1], [5, 10, 20, 'Mostrar todo']],
         "columnDefs": [
             {
                 "targets": [ 5 ],

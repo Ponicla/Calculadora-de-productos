@@ -22,9 +22,7 @@ if (window.location.pathname == ruta + 'almacen/almacen.php') {
         }
     });
 
-    
-
-    
+      
     /* LLAMADO A FUNCIONES */
     obtener_valor_cera();
   
@@ -86,97 +84,41 @@ if (window.location.pathname == ruta + 'almacen/almacen.php') {
 
         /* FUNCION QUE FUCIONA LAS CERAS ACTUALES */
         var buscado = lista_ingredientes.find(elemento => elemento.id_tipo == 2);
+        var template = ``;
+        var template2 = ``;
+        var cont = 1;
+        var precio = 0;
         if (buscado) {
-            console.log(buscado.precio);
-            console.log(parseFloat((precio).toFixed(2)));
             var sumar_este_valor_cera = parseFloat((precio).toFixed(2))
-
             buscado.nombre = 'Cera de soja ' + nueva_cera + ' gramos';
             buscado.precio = buscado.precio + sumar_este_valor_cera;
             buscado.precio = parseFloat((buscado.precio).toFixed(2));
-
             Toast.fire({
                 icon: 'success',
                 title: 'Agregaste ' + nombre.toLowerCase() + ' a la preparación'
             })
-
-
-            var template = ``;
-            var template2 = ``;
-            var cont = 1;
-            var precio = 0;
             lista_ingredientes.forEach(function (elemento, index, object) {
                 var id_contenedor_cantidad = "cantidad_cera_traida_" + cont;
-
                 var id_contenedor = "ingrediente_fila_" + cont;
-
-                template += `
-                <div class="row" id=${id_contenedor}>
-                    <div class="col-md-10">
-                        <p><i onclick="quitar_accesorio_producto(${elemento.id}, ${id_contenedor}, ${elemento.indice}, ${elemento.id_tipo}, '${id_contenedor_cantidad}')" class="text-danger bi bi-trash"></i> ${elemento.nombre}</p>
-                    </div>
-                    <div class="col-md-2" style="text-align: right;">
-                        <p class="text-info">$${elemento.precio}</p>
-                    </div>
-                </div>`
-
+                template += dibujar_accesorio(id_contenedor, elemento, id_contenedor_cantidad);
                 $fila_producto.innerHTML = template;
                 cont = cont + 1;
                 precio = precio + parseFloat(elemento.precio);
-
             });
-
-
-            template2 += `
-                <div class="row">
-                    <div class="col-md-10">
-                        <p><i class=" text-success bi bi-cash-coin"></i> Total </p>
-                    </div>
-                    <div class="col-md-2" style="text-align: right;">
-                        <p class="text-success">$${precio}</p>
-                    </div>
-                </div>`
-
+            template2 += dibujar_precio(precio);
             $total_producto.innerHTML = template2;
-
-            $('#lista_accesorios_para_sumar').trigger('change');
-            $('#lista_accesorios_para_sumar').val('');
-            $('#icono_bnt_suma_accesorio').addClass('text-dark');
-            $('#icono_bnt_suma_accesorio').removeClass('text-success');
-            $('#bnt_suma_accesorio').attr('disabled', true);
-            $('#div_lista_accesorios_para_sumar').css('display', 'none');
-
-            $('#modal_cantidad_cera').modal('hide');
-
-
+            resetear_modal();   
         } else {
             Toast.fire({
                 icon: 'success',
                 title: 'Agregaste ' + nombre.toLowerCase() + ' a la preparación'
             })
-
             lista_ingredientes.push(obj);
             ordena_lista_por_precio(lista_ingredientes);
-
-            var template = ``;
-            var template2 = ``;
-            var cont = 1;
-            var precio = 0;
             lista_ingredientes.forEach(function (elemento, index, object) {
                 var id_contenedor_cantidad = "cantidad_cera_traida_" + cont;
-
                 var id_contenedor = "ingrediente_fila_" + cont;
-
-                template += `
-                <div class="row" id=${id_contenedor}>
-                    <div class="col-md-10">
-                        <p><i onclick="quitar_accesorio_producto(${elemento.id}, ${id_contenedor}, ${elemento.indice}, ${elemento.id_tipo}, '${id_contenedor_cantidad}')" class="text-danger bi bi-trash"></i> ${elemento.nombre}</p>
-                    </div>
-                    <div class="col-md-2" style="text-align: right;">
-                        <p class="text-info">$${elemento.precio}</p>
-                    </div>
-                </div>`
-
+                template += dibujar_accesorio(id_contenedor, elemento, id_contenedor_cantidad);
                 $fila_producto.innerHTML = template;
                 cont = cont + 1;
                 precio = precio + parseFloat(elemento.precio);
@@ -184,27 +126,9 @@ if (window.location.pathname == ruta + 'almacen/almacen.php') {
 
             });
             precio = precio;
-
-            template2 += `
-                <div class="row">
-                    <div class="col-md-10">
-                        <p><i class=" text-success bi bi-cash-coin"></i> Total </p>
-                    </div>
-                    <div class="col-md-2" style="text-align: right;">
-                        <p class="text-success">$${precio}</p>
-                    </div>
-                </div>`
-
+            template2 += dibujar_precio(precio);
             $total_producto.innerHTML = template2;
-
-            $('#lista_accesorios_para_sumar').trigger('change');
-            $('#lista_accesorios_para_sumar').val('');
-            $('#icono_bnt_suma_accesorio').addClass('text-dark');
-            $('#icono_bnt_suma_accesorio').removeClass('text-success');
-            $('#bnt_suma_accesorio').attr('disabled', true);
-            $('#div_lista_accesorios_para_sumar').css('display', 'none');
-
-            $('#modal_cantidad_cera').modal('hide');
+            resetear_modal();
         }
 
     });
@@ -229,91 +153,20 @@ if (window.location.pathname == ruta + 'almacen/almacen.php') {
                 var template = ``;
                 var cont = 0;
                 array.forEach((producto) => {
+                    cont = cont + 1;
+                    var id_contenedor_cantidad = "cantidad_cera_traida_" + cont;
+                    var nombre_vela = capitalize(producto.nombre);
+
                     if (producto.cantidad_cera > 0) {
                         producto.precio = parseInt(producto.precio) - parseInt(valor_cera);
                         producto.precio += ((parseInt(producto.cantidad_cera) * parseInt(valor_cera)) / 100);
-                        cont = cont + 1;
-                        var id_contenedor_cantidad = "cantidad_cera_traida_" + cont;
-                        let nombre_vela = capitalize(producto.nombre);
-                        template += `<div class="col-sm-3 mt-1">
-                                        <div class='card' style="max-width: 24rem;">
-                                            <div class='card-body'>
-                                            <div class='row'>
-                                                <div class='col-md-10'>
-                                                <h5 class='text-success'>${nombre_vela}</h5>
-                                                </div>
-                                            </div>
-                                                <hr>
-                                                <p class='card-text'>$${producto.precio}</p>
-                                                <input hidden type="number" class="form-control" id="${id_contenedor_cantidad}" value="${producto.cantidad_cera}">
-                                                
-                                            </div>
-
-                                            <div class='card-footer d-flex'>
-                                            <div class='p-0 col-md-8'>
-                                                <button onclick="ver_detalles_producto(${producto.id}, '${nombre_vela}', '${id_contenedor_cantidad}', ${producto.cantidad_cera}, '${producto.descripcion}')" class="btn btn-success btn-block  btn-sm">Ver detalles</button>
-                                            </div>
-                                            <div class='p-0 col-md-4'>`
-
-
-                            if (producto.estado == false ) {
-                            template += `
-                                                <button onclick="deshabilitar_producto(${producto.id})" class=" ml-1 btn btn-danger  btn-sm btn-block pt-6 pb-6">Boveda</button>
-                                                `;
-                            } else {
-                                template += `
-                                <button onclick="habilitar_producto(${producto.id})" class=" ml-1 btn btn-primary btn-block  btn-sm pt-6 pb-6">Activar</button>
-                                `;
-                            }
-                        
-                                                template += `             
-                                                </div>
-                                        </div>
-                                    </div>
-                                </div>`;
-                        $deck_cartas_productos.innerHTML = template;
+                        template += dibujar_producto(producto, id_contenedor_cantidad, nombre_vela);
+                        $deck_cartas_productos.innerHTML = template; 
                     } else {
-                        cont = cont + 1;
-                        var id_contenedor_cantidad = "cantidad_cera_traida_" + cont;
-                        let nombre_vela = capitalize(producto.nombre);
-                        template += `<div class="col-sm-3 mt-1">
-                                    <div class='card' style="max-width: 24rem;">
-                                        <div class='card-body'>
-                                        <div class='row'>
-                                            <div class='col-md-10'>
-                                            <h5 class='text-success'>${nombre_vela}</h5>
-                                            </div>
-                                        </div>
-                                            <hr>
-                                            <p class='card-text'>$${producto.precio}</p>
-                                            <input hidden type="number" class="form-control" id="${id_contenedor_cantidad}" value="${producto.cantidad_cera}">
-                                            
-                                        </div>
-
-                                        <div class='card-footer d-flex'>
-                                            <div class='p-0 col-md-8'>
-                                                <button onclick="ver_detalles_producto(${producto.id}, '${nombre_vela}', '${id_contenedor_cantidad}', ${producto.cantidad_cera}, '${producto.descripcion}')" class="btn btn-success btn-block btn-sm">Ver detalles</button>
-                                            </div>
-                                            <div class='p-0 col-md-4'>`
-
-
-                            if (producto.estado == false ) {
-                            template += `
-                                                <button onclick="deshabilitar_producto(${producto.id})" class=" ml-1 btn btn-danger  btn-sm btn-block pt-6 pb-6">Boveda</button>
-                                                `;
-                            } else {
-                                template += `
-                                <button onclick="habilitar_producto(${producto.id})" class=" ml-1 btn btn-primary btn-block  btn-sm pt-6 pb-6">Activar</button>
-                                `;
-                            }
-                        
-                                                template += `             
-                                                </div>
-                                        </div>
-                                    </div>
-                                </div>`;
-                        $deck_cartas_productos.innerHTML = template;
+                        template += dibujar_producto(producto, id_contenedor_cantidad, nombre_vela);
+                        $deck_cartas_productos.innerHTML = template; 
                     }
+
                     lista_productos = array;
                 })
             })
@@ -381,6 +234,80 @@ if (window.location.pathname == ruta + 'almacen/almacen.php') {
 
 
     /* DECLARACION DE FUNCIONES */
+    function dibujar_accesorio(id_contenedor, elemento, id_contenedor_cantidad){
+        template = `
+        <div class="row" id=${id_contenedor}>
+            <div class="col-md-10">
+                <p><i onclick="quitar_accesorio_producto(${elemento.id}, ${id_contenedor}, ${elemento.indice}, ${elemento.id_tipo}, '${id_contenedor_cantidad}')" class="text-danger bi bi-trash"></i> ${elemento.nombre}</p>
+            </div>
+            <div class="col-md-2" style="text-align: right;">
+                <p class="text-info">$${elemento.precio}</p>
+            </div>
+        </div>`
+        return template;
+    }
+
+    function dibujar_precio(precio){
+        template = `
+        <div class="row">
+            <div class="col-md-10">
+                <p><i class=" text-success bi bi-cash-coin"></i> Total </p>
+            </div>
+            <div class="col-md-2" style="text-align: right;">
+                <p class="text-success">$${precio}</p>
+            </div>
+        </div>`
+        return template;
+    }
+
+    function dibujar_producto(producto, id_contenedor_cantidad, nombre_vela){
+        template =`<div class="col-md-2 mt-1">
+        <div class='card' style="max-width: 18rem; ">
+            <div class='card-body ' >
+            <div class='row'>
+                <div class='col-md-12   '>
+                    <h6 >${nombre_vela}</h6>
+                </div>
+            </div>
+                <hr>
+                    <div class='row'>
+                    <div class='col-md-12'>
+                        <h6 >$${producto.precio}</h6>
+                    </div>
+                </div>
+                <input hidden type="number" class="form-control" id="${id_contenedor_cantidad}" value="${producto.cantidad_cera}">
+            </div>`
+        if (producto.estado == false ) {
+            template += `<div class='card-footer bg-success  d-flex'>
+            <div class='p-0 col-md-7'>
+                <button onclick="ver_detalles_producto(${producto.id}, '${nombre_vela}', '${id_contenedor_cantidad}', ${producto.cantidad_cera}, '${producto.descripcion}')" class="btn btn-light btn-block btn-sm">Ver detalles</button>
+            </div>
+            <div class='p-0 col-md-5'>
+                <button onclick="deshabilitar_producto(${producto.id})" class=" ml-1 btn btn-outline-light btn-block btn-sm  pt-6 pb-6">Boveda</button>`;
+        } else {
+            template += `<div class='card-footer bg-danger  d-flex'>
+            <div class='p-0 col-md-7'>
+                <button onclick="ver_detalles_producto(${producto.id}, '${nombre_vela}', '${id_contenedor_cantidad}', ${producto.cantidad_cera}, '${producto.descripcion}')" class="btn btn-light btn-block btn-sm">Ver detalles</button>
+            </div>
+            <div class='p-0 col-md-5'>
+                <button onclick="habilitar_producto(${producto.id})" class=" ml-1 btn btn-outline-light btn-block btn-sm  pt-6 pb-6">Activar</button>`;
+        }
+        template += `</div></div></div></div>`;
+        
+        return template;
+        /* $deck_cartas_productos.innerHTML = template; */
+    }
+
+    function resetear_modal(){
+        $('#lista_accesorios_para_sumar').trigger('change');
+        $('#lista_accesorios_para_sumar').val('');
+        $('#icono_bnt_suma_accesorio').addClass('text-dark');
+        $('#icono_bnt_suma_accesorio').removeClass('text-success');
+        $('#bnt_suma_accesorio').attr('disabled', true);
+        $('#div_lista_accesorios_para_sumar').css('display', 'none');
+        $('#modal_cantidad_cera').modal('hide');
+    }
+
     function llamar_funciones_iniciales(){
         get_productos();
         get_accesorios(); 
@@ -531,12 +458,8 @@ if (window.location.pathname == ruta + 'almacen/almacen.php') {
                 var array = JSON.parse(res);
                 lista_accesorios = array;
                 var template = '';
-                // console.log(array);
-
-
                 template += `<option class="form-control" selected disabled value=''>Qué agregamos?</option>`;
                 array.forEach(OBJ => {
-                    // console.log(OBJ);
                     template += `<option class="form-control" value="${OBJ.id}">${OBJ.nombre} por $${OBJ.precio}</option>`;
                 });
                 $lista_accesorios_para_sumar.innerHTML = template;
@@ -559,95 +482,22 @@ if (window.location.pathname == ruta + 'almacen/almacen.php') {
                 var array = JSON.parse(res);
                 var template = ``;
                 var cont = 0;
-                // console.log(array);
                 if(array.length == 0){
                     $('#indicador_de_que_no_hay_nada').removeAttr('hidden');
                 }
                 array.forEach((producto) => {
-                    // console.log(producto);
+                    cont = cont + 1;
+                    var id_contenedor_cantidad = "cantidad_cera_traida_" + cont;
+                    var nombre_vela = capitalize(producto.nombre);
+
                     if (producto.cantidad_cera > 0) {
                         producto.precio = parseInt(producto.precio) - parseInt(valor_cera);
                         producto.precio += ((parseInt(producto.cantidad_cera) * parseInt(valor_cera)) / 100);
-                        cont = cont + 1;
-                        var id_contenedor_cantidad = "cantidad_cera_traida_" + cont;
-                        let nombre_vela = capitalize(producto.nombre);
-                        template += `<div class="col-sm-3 mt-1">
-                                        <div class='card' style="max-width: 24rem;">
-                                            <div class='card-body'>
-                                            <div class='row'>
-                                                <div class='col-md-10'>
-                                                <h5 class='text-success'>${nombre_vela}</h5>
-                                                </div>
-                                            </div>
-                                                <hr>
-                                                <p class='card-text'>$${producto.precio}</p>
-                                                <input hidden type="number" class="form-control" id="${id_contenedor_cantidad}" value="${producto.cantidad_cera}">
-                                                
-                                            </div>
 
-                                            <div class='card-footer d-flex'>
-                                            <div class='p-0 col-md-8'>
-                                                <button onclick="ver_detalles_producto(${producto.id}, '${nombre_vela}', '${id_contenedor_cantidad}', ${producto.cantidad_cera}, '${producto.descripcion}')" class="btn btn-success btn-block btn-sm">Ver detalles</button>
-                                            </div>
-                                            <div class='p-0 col-md-4'>`
-
-
-                            if (producto.estado == false ) {
-                            template += `
-                                            <button onclick="deshabilitar_producto(${producto.id})" class=" ml-1 btn btn-danger btn-block  btn-sm pt-6 pb-6">Boveda</button>
-                                        `;
-                            } else {
-                                template += `
-                                <button onclick="habilitar_producto(${producto.id})" class=" ml-1 btn btn-primary btn-block pt-6  btn-sm pb-6">Activar</button>
-                                `;
-                            }
-                            template += `             
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>`;
+                        template += dibujar_producto(producto, id_contenedor_cantidad, nombre_vela);
                         $deck_cartas_productos.innerHTML = template;
                     } else {
-                        cont = cont + 1;
-                        var id_contenedor_cantidad = "cantidad_cera_traida_" + cont;
-                        let nombre_vela = capitalize(producto.nombre);
-
-                        template += `<div class="col-sm-3 mt-1">
-                                    <div class='card' style="max-width: 24rem;">
-                                        <div class='card-body'>
-                                        <div class='row'>
-                                            <div class='col-md-10'>
-                                            <h5 class='text-success'>${nombre_vela}</h5>
-                                            </div>
-                                        </div>
-                                            <hr>
-                                            <p class='card-text'>$${producto.precio}</p>
-                                            <input hidden type="number" class="form-control" id="${id_contenedor_cantidad}" value="${producto.cantidad_cera}">
-                                            
-                                        </div>
-
-                                        <div class='card-footer d-flex'>
-                                            <div class='p-0 col-md-8'>
-                                                <button onclick="ver_detalles_producto(${producto.id}, '${nombre_vela}', '${id_contenedor_cantidad}', ${producto.cantidad_cera}, '${producto.descripcion}')" class="btn btn-success btn-block btn-sm">Ver detalles</button>
-                                            </div>
-                                            <div class='p-0 col-md-4'>`
-
-
-                            if (producto.estado == false ) {
-                            template += `
-                                            <button onclick="deshabilitar_producto(${producto.id})" class=" ml-1 btn btn-danger btn-block btn-sm  pt-6 pb-6">Boveda</button>
-                                        `;
-                            } else {
-                                template += `
-                                                <button onclick="habilitar_producto(${producto.id})" class=" ml-1 btn btn-primary btn-block btn-sm  pt-6 pb-6">Activar</button>
-                                            `;
-                            }
-                        
-                            template += `             
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>`;
+                        template += dibujar_producto(producto, id_contenedor_cantidad, nombre_vela);
                         $deck_cartas_productos.innerHTML = template;
                     }
 
@@ -752,43 +602,9 @@ if (window.location.pathname == ruta + 'almacen/almacen.php') {
         array.forEach((producto) => {
             cont = cont + 1;
             var id_contenedor_cantidad = "cantidad_cera_traida_" + cont;
-            let nombre_vela = capitalize(producto.nombre);
-            template += `<div class="col-sm-3 mt-1">
-                        <div class='card' style="max-width: 24rem;">
-                            <div class='card-body'>
-                            <div class='row'>
-                                <div class='col-md-10'>
-                                <h5 class='text-success'>${nombre_vela}</h5>
-                                </div>
-                            </div>
-                                <hr>
-                                <p class='card-text'>$${producto.precio}</p>
-                                <input hidden type="number" class="form-control" id="${id_contenedor_cantidad}" value="${producto.cantidad_cera}">
+            var nombre_vela = capitalize(producto.nombre);
 
-                            </div>
-
-                            <div class='card-footer d-flex'>
-                                            <div class='p-0 col-md-8'>
-                                                <button onclick="ver_detalles_producto(${producto.id}, '${nombre_vela}', '${id_contenedor_cantidad}', ${producto.cantidad_cera}, '${producto.descripcion}')" class="btn btn-success btn-block btn-sm">Ver detalles</button>
-                                            </div>
-                                            <div class='p-0 col-md-4'>`
-
-
-                            if (producto.estado == false ) {
-                            template += `
-                                                <button onclick="deshabilitar_producto(${producto.id})" class=" ml-1 btn btn-danger btn-block btn-sm  pt-6 pb-6">Boveda</button>
-                                                `;
-                            } else {
-                                template += `
-                                <button onclick="habilitar_producto(${producto.id})" class=" ml-1 btn btn-primary btn-block pt-6 pb-6 btn-sm ">Activar</button>
-                                `;
-                            }
-                        
-                                                template += `             
-                                                </div>
-                                        </div>
-                                    </div>
-                                </div>`;
+            template += dibujar_producto(producto, id_contenedor_cantidad, nombre_vela);
             $deck_cartas_productos.innerHTML = template;
         })
     }
@@ -800,51 +616,15 @@ if (window.location.pathname == ruta + 'almacen/almacen.php') {
             cont = cont + 1;
             var id_contenedor_cantidad = "cantidad_cera_traida_" + cont;
             let nombre_vela = capitalize(producto.nombre);
-            template += `<div class="col-sm-3 mt-1">
-                        <div class='card' style="max-width: 24rem;">
-                            <div class='card-body'>
-                            <div class='row'>
-                                <div class='col-md-10'>
-                                <h5 class='text-success'>${nombre_vela}</h5>
-                                </div>
-                            </div>
-                                <hr>
-                                <p class='card-text'>$${producto.precio}</p>
-                                <input hidden type="number" class="form-control" id="${id_contenedor_cantidad}" value="${producto.cantidad_cera}">
 
-                            </div>
-
-                            <div class='card-footer d-flex'>
-                                            <div class='p-0 col-md-8'>
-                                                <button onclick="ver_detalles_producto(${producto.id}, '${nombre_vela}', '${id_contenedor_cantidad}', ${producto.cantidad_cera}, '${producto.descripcion}')" class="btn btn-success btn-block btn-sm">Ver detalles</button>
-                                            </div>
-                                            <div class='p-0 col-md-4'>`
-
-
-                            if (producto.estado == false ) {
-                            template += `
-                                                <button onclick="deshabilitar_producto(${producto.id})" class=" ml-1 btn btn-danger btn-block pt-6 pb-6 btn-sm ">Boveda</button>
-                                                `;
-                            } else {
-                                template += `
-                                <button onclick="habilitar_producto(${producto.id})" class=" ml-1 btn btn-primary btn-block pt-6 pb-6 btn-sm ">Activar</button>
-                                `;
-                            }
-                        
-                                                template += `             
-                                                </div>
-                                        </div>
-                                    </div>
-                                </div>`;
+            template += dibujar_producto(producto, id_contenedor_cantidad, nombre_vela);
             $deck_cartas_productos.innerHTML = template;
         })
     }
 
     function filtrado_lista(criterio) {
-        // console.log(lista_productos);
         let lista = [];
         let croterio_beveda = $('#criterio_boveda').val()
-        // console.log($('#criterio_boveda').val());
         switch (croterio_beveda) {
             case '0':
                 for (let j = 0; j < lista_productos.length; j++) {
@@ -931,8 +711,6 @@ if (window.location.pathname == ruta + 'almacen/almacen.php') {
         if (typeof s !== 'string') return ''
         return s.charAt(0).toUpperCase() + s.slice(1)
     }
-
-    
 
     function ver_detalles_producto(id, nombre, id_contenedor_cantidad, cantidad_cera, descripcion) {
         lista_ingredientes = [];

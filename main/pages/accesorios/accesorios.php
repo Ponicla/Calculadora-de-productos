@@ -40,7 +40,7 @@ include '../nav.php';
         <hr>
         <p class="text-success">Listado de accesorios</p>
 
-            <table id="tabla_accesorios" class="table table-striped mt-4" style="width:100%">
+            <table id="tabla_accesorios" class="table mt-4" style="background-color: #F2FFEE; width:100%">
                 <thead>
                     <tr>
                         <th>Id accessorio</th>
