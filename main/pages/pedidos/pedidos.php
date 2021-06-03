@@ -67,7 +67,7 @@ include '../nav.php';
         </div> -->
 
         <div class="col-md-3">
-            <select id="criterio_sort" class="form-control" onchange="filtrado_lista(this.value)">
+            <select id="criterio_pedido" class="form-control" onchange="filtrado_lista(this.value)">
                 <option value="0" selected default>Todos los pedidos</option>
                 <option value="1">Pedidos entregados</option>
                 <option value="2">Pedidos pendientes</option>

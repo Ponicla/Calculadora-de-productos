@@ -144,14 +144,12 @@ if(window.location.pathname == ruta+'pedidos/pedidos.php'){
     }
 
     function dibujar_no_coincidencias(){
-        template = `
-        <div class="container-fluid">
-            <div class="container-fluid">
+        template = 
+            `<div class="container-fluid">
                 <div class="alert alert-danger" role="alert">
                     <i class="bi bi-emoji-frown"></i> No hay coincidencias
                 </div>
-            </div>
-        </div>`
+            </div>`
         return template;
     }
 
@@ -192,7 +190,7 @@ if(window.location.pathname == ruta+'pedidos/pedidos.php'){
                                     <small class="text-info">${pedido.descripcion}</small>
                             </div>
                             <div class='card-footer'>
-                            <button class="btn btn-block btn-primary btn-sm" onclick="cambiar_estado_de_pedido(${pedido.id},${pedido.estado_distinto}, ${id_contenedor})">Cambiar estado</button>
+                            <button class="btn btn-block btn-primary btn-sm" onclick="cambiar_estado_de_pedido(${pedido.id},${pedido.estado_distinto}, '${id_contenedor}')">Cambiar estado</button>
                                 <div class="row mt-1 ">
                                     <div class="col-8">
                                         <button onclick="ver_detalles_pedido(${pedido.id}, ${pedido.precio_pedido})" class="btn btn-success btn-sm btn-block">Ver detalles</button>
@@ -360,8 +358,33 @@ if(window.location.pathname == ruta+'pedidos/pedidos.php'){
             }
         })
         .done(function (res) {
-            $(id_contenedor).remove();
-            //get_pedidos();
+            var template = ``;
+            var lista = [];
+            var estado_actual = $('#criterio_pedido').val();
+            id_contenedor = '#'+id_contenedor;
+            const buscado = lista_de_pedidos_inalterable.find(elemtno => elemtno.id == id);
+            
+            if(buscado){
+                buscado.estado = nuevo_estado;
+            }
+            
+            lista_de_pedidos_inalterable.forEach(pedido => {
+                if(pedido.estado != estado_actual || estado_actual == 0){
+                    lista.push(pedido);
+                }
+            });
+
+            if(lista.length == 0){
+                template = dibujar_no_coincidencias();
+                
+            }else{
+                lista.forEach(pedido => {
+                    pedido = refactor_predido(pedido, 1);
+                    template += dibuja_pedidos(pedido);
+                });
+            }
+            $deck_cartas_pedidos.innerHTML = template;
+            
         })
         .fail(function () {
             console.log('Err');
@@ -382,7 +405,7 @@ if(window.location.pathname == ruta+'pedidos/pedidos.php'){
             }
             array.forEach((pedido) => {
                 var id_contenedor = "carta_pedido_numero_"+pedido.id;
-                predido = refactor_predido(pedido);
+                predido = refactor_predido(pedido, 0);
                 template += dibuja_pedidos(pedido, id_contenedor);
                 $deck_cartas_pedidos.innerHTML = template;
             })
@@ -394,7 +417,8 @@ if(window.location.pathname == ruta+'pedidos/pedidos.php'){
         });      
     }
 
-    function refactor_predido(pedido){
+    function refactor_predido(pedido, viene_de_filtrado){
+        // console.log(pedido.estado);
         if (pedido.estado == 1) {
             pedido.texto_estado = "Pendiente";
             pedido.estado_distinto = 2;
@@ -406,12 +430,15 @@ if(window.location.pathname == ruta+'pedidos/pedidos.php'){
             pedido.color = 'green';
             pedido.icono = '<i style="color: green" class="bi bi-bag-check"></i>';
         }
-        if(parseInt(pedido.cantidad_cera) > 0 ){
-            var precio_actual = parseFloat(pedido.precio_pedido);
-            var cantidad_de_cera = parseInt(pedido.cantidad_cera);
-            var precio_subtotal = parseFloat(precio_actual) - (parseInt(pedido.unidades_cera) * parseFloat(valor_cera));
-            var precio_final = parseFloat(precio_subtotal) + ((cantidad_de_cera*valor_cera)/100);
-            pedido.precio_pedido = precio_final; 
+        if(viene_de_filtrado == 0){
+            if(parseInt(pedido.cantidad_cera) > 0 ){
+                var precio_actual = parseFloat(pedido.precio_pedido);
+                var cantidad_de_cera = parseInt(pedido.cantidad_cera);
+                var precio_subtotal = parseFloat(precio_actual) - (parseInt(pedido.unidades_cera) * parseFloat(valor_cera));
+     
+                var precio_final = parseFloat(precio_subtotal) + (((cantidad_de_cera*valor_cera))/100);
+                pedido.precio_pedido = precio_final; 
+            }
         }
         return pedido;
     }
@@ -425,21 +452,19 @@ if(window.location.pathname == ruta+'pedidos/pedidos.php'){
             }
         });
         if(lista.length == 0){
-            template = mostar_filtrada_vacia();
+            template = dibuja_lista_filtrada_vacia();
             $deck_cartas_pedidos.innerHTML = template;
         }else{
             lista.forEach((pedido) => {
                 var id_contenedor = "carta_pedido_numero_"+pedido.id;
-                if(pedido.estado == estado){
-                    pedido = refactor_predido(pedido);
-                    template += dibuja_pedidos(pedido, id_contenedor);
-                    $deck_cartas_pedidos.innerHTML = template;
-                }
+                pedido = refactor_predido(pedido, 1);
+                template += dibuja_pedidos(pedido, id_contenedor);
+                $deck_cartas_pedidos.innerHTML = template; 
             }) 
         }
     }
 
-    function mostar_filtrada_vacia(){
+    function dibuja_lista_filtrada_vacia(){
         template = 
             `<div class="container-fluid">
                 <div class="alert alert-danger" role="alert">
