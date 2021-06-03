@@ -8,7 +8,8 @@ $sql = "SELECT id, precio AS precio_pedido, SUM(cantidad_cera) AS cantidad_cera,
  FROM (
 SELECT
  pedido.id AS id,
- 0 AS cantidad_cera, SUM(accesorio.precio) AS precio,
+ 0 AS cantidad_cera, 
+ SUM(pedido_producto.precio_producto) AS precio,
  0 AS total_de_productos_con_cera,
  pedido.estado AS estado,
  pedido.descripcion AS descripcion
