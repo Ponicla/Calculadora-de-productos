@@ -1,5 +1,6 @@
 if(window.location.pathname == ruta+'accesorios/accesorios.php'){
 
+  
     /* DEFINICION VARIABLES */
     var fila;
     var $tipos_accesorio = document.querySelector('#tipo');
@@ -29,10 +30,12 @@ if(window.location.pathname == ruta+'accesorios/accesorios.php'){
           toast.addEventListener('mouseleave', Swal.resumeTimer)
         }
     })
+
       
     /* LLAMADO FUNCIONES */
     get_accesorios();
     get_tipos_accesorio();
+
 
     /* LANZADORES JQUERY */
     $("#form_modal_edicion_accesorio").on("hidden.bs.modal", function () {
@@ -49,21 +52,10 @@ if(window.location.pathname == ruta+'accesorios/accesorios.php'){
             data: data
         })
         .done(function (res) {
-          let accesorio = JSON.parse(res);
-          
+          var accesorio = JSON.parse(res);
           $('#indicador_de_que_no_hay_nada').attr('hidden', 'hidden');
-          
           $('#contenedor_tabla_accesorios').removeAttr('hidden');
-          tabla_accesorios.row.add([
-                accesorio[0].id,
-                accesorio[0].nombre,
-                accesorio[0].tipo,
-                accesorio[0].precio,
-                accesorio[0].edicion,
-                accesorio[0].id_tipo,
-                "<div class='text-center'><div id='bt-group'><a style='color: orange' class='btn_editar_accesorio'><i class='bi bi-pen'></i></a></div></div>",
-                "<div class='text-center'><div id='bt-group'><a style='color: red' class='btn_quitar_accesorio'><i class='bi bi-trash2'></i></a></div></div>",
-              ]).draw();
+          row_add(tabla_accesorios, accesorio[0]);
              $('#form_nuevo_accesorio').trigger("reset");
              Toast.fire({
                 icon: 'success',
@@ -78,19 +70,15 @@ if(window.location.pathname == ruta+'accesorios/accesorios.php'){
 
     $('#form_modal_edicion_accesorio').submit(function (e) { 
         e.preventDefault();
-        // fila = $(this).closest("tr");
         var data = $('#form_modal_edicion_accesorio').serialize();
-        // console.log(data);   
         $.ajax({
             url: "../../functions/php/accesorios/actualizar_accesorio.php",
             type: "POST",
             data: data
         })
         .done(function (res) {
-            // console.log(res);
             let accesorio = JSON.parse(res);
             var id = (tabla_accesorios.row( fila ).index());
-            // console.log(id);
             fila.find("td:eq(1)").text(accesorio[0].nombre);
             fila.find("td:eq(2)").text(accesorio[0].tipo);
             fila.find("td:eq(3)").text(accesorio[0].precio);
@@ -109,8 +97,6 @@ if(window.location.pathname == ruta+'accesorios/accesorios.php'){
 
     $(document).on("click", ".btn_editar_accesorio", function () {
         fila = $(this).closest("tr");
-        // console.log(tabla_accesorios.row( fila ).index());
-        // console.log(fila);
         id = parseInt(fila.find("td:eq(0)").text());
         nombre = fila.find("td:eq(1)").text();
         precio = fila.find("td:eq(3)").text();
@@ -167,6 +153,7 @@ if(window.location.pathname == ruta+'accesorios/accesorios.php'){
           })
     });
 
+
     /* DEFINICION DE FUNCIONES */
     function get_tipos_accesorio(){
         $.ajax({
@@ -179,7 +166,6 @@ if(window.location.pathname == ruta+'accesorios/accesorios.php'){
                     var array = JSON.parse(res);
                     template += `<option class="form-control" selected disabled value=''>Tipo del accesorio?</option>`;
                     array.forEach(OBJ => {
-                        // console.log(OBJ);
                         template += `<option class="form-control" value="${OBJ.id}">${OBJ.tipo}</option>`;
                     });
                     $tipos_accesorio.innerHTML = template;
@@ -204,16 +190,7 @@ if(window.location.pathname == ruta+'accesorios/accesorios.php'){
             $('#contenedor_tabla_accesorios').removeAttr('hidden');
           }
           array.forEach((accesorio) => {
-            tabla_accesorios.row.add([
-                  accesorio.id,
-                  accesorio.nombre,
-                  accesorio.tipo,
-                  accesorio.precio,
-                  accesorio.edicion,
-                  accesorio.id_tipo,
-                  "<div class='text-center'><div id='bt-group'><a style='color: orange' class='btn_editar_accesorio'><i class='bi bi-pen'></i></a></div></div>",
-                  "<div class='text-center'><div id='bt-group'><a style='color: red' class='btn_quitar_accesorio'><i class='bi bi-trash2'></i></a></div></div>",
-                ]).draw();
+            row_add(tabla_accesorios, accesorio);
           })
         })
         .fail(function () {
@@ -221,6 +198,19 @@ if(window.location.pathname == ruta+'accesorios/accesorios.php'){
         });
     }
 
-}
+    function row_add(tabla, objeto){
+      tabla.row.add([
+        objeto.id,
+        objeto.nombre,
+        objeto.tipo,
+        objeto.precio,
+        objeto.edicion,
+        objeto.id_tipo,
+        "<div class='text-center'><div id='bt-group'><a style='color: orange' class='btn_editar_accesorio'><i class='bi bi-pen'></i></a></div></div>",
+        "<div class='text-center'><div id='bt-group'><a style='color: red' class='btn_quitar_accesorio'><i class='bi bi-trash2'></i></a></div></div>",
+      ]).draw();
+    }
+
+  }
 
 
