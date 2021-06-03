@@ -12,6 +12,7 @@ $id = $_POST['id'];
         $sql = "SELECT
         pedido.id,
         producto.nombre,
+        pedido.descripcion,
         sum(accesorio.precio) as precio,
         producto.cantidad_cera
         FROM
