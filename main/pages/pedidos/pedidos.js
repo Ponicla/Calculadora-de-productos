@@ -349,9 +349,6 @@ if(window.location.pathname == ruta+'pedidos/pedidos.php'){
                 });
             }
           })
-
-
-        
     }
 
     function cambiar_estado_de_pedido(id, nuevo_estado) {
@@ -420,22 +417,34 @@ if(window.location.pathname == ruta+'pedidos/pedidos.php'){
 
     function get_pedidos_filtrado(estado) {
         var template = ``;
-        lista_de_pedidos_inalterable.forEach((pedido) => {
-            var id_contenedor = "carta_pedido_numero_"+pedido.id;
-            if(pedido.estado == estado){
-                pedido = refactor_predido(pedido);
-                template += dibuja_pedidos(pedido, id_contenedor);
-                $deck_cartas_pedidos.innerHTML = template;
+        var lista = [];
+        lista_de_pedidos_inalterable.forEach(element => {
+            if(element.estado == estado){
+                lista.push(element);
             }
-        }) 
+        });
+        if(lista.length == 0){
+            template = mostar_filtrada_vacia();
+            $deck_cartas_pedidos.innerHTML = template;
+        }else{
+            lista.forEach((pedido) => {
+                var id_contenedor = "carta_pedido_numero_"+pedido.id;
+                if(pedido.estado == estado){
+                    pedido = refactor_predido(pedido);
+                    template += dibuja_pedidos(pedido, id_contenedor);
+                    $deck_cartas_pedidos.innerHTML = template;
+                }
+            }) 
+        }
     }
 
     function mostar_filtrada_vacia(){
-        template = `<div  id='indicador_de_que_no_hay_nada2' hidden class="container-fluid">
-                        <div class="alert alert-danger" role="alert">
-                            No hay pedidos realizados  <i class="bi bi-emoji-frown"></i>
-                        </div>
-                    </div>`;
+        template = 
+            `<div class="container-fluid">
+                <div class="alert alert-danger" role="alert">
+                    <i class="bi bi-emoji-frown"></i> No hay pedidos que cumplan esta condicion
+                </div>
+            </div>`;
         return template;
     }
 
