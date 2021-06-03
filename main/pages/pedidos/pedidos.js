@@ -329,8 +329,8 @@ if(window.location.pathname == ruta+'pedidos/pedidos.php'){
                     
                     let nombre_vela = capitalize(producto.nombre);
                     var id_contenedor = "carta_pedido_numero_"+producto.id;
-                    template += `<div class="col-sm-3 mt-3" id="carta_pedido_numero_${producto.id}">
-                                <div class='card' style="max-width: 20rem;">
+                    template += `<div class="col-sm-6 col-md-4 col-lg-4 col-xl-3 mt-1" id="carta_pedido_numero_${producto.id}">
+                                <div class='card mx-auto' style=" width: 17rem; min-height: 14rem;">
                                     <div class='card-body'>
                                     <div class='row'>
                                             <div class='col-md-6'>
@@ -345,11 +345,11 @@ if(window.location.pathname == ruta+'pedidos/pedidos.php'){
                                     </div>
                                     <div class='card-footer'>
                                     <button class="btn btn-block btn-primary btn-sm" onclick="cambiar_estado_de_pedido(${producto.id},${estado_distinto})">Cambiar estado</button>
-                                        <div class="row mt-1">
-                                            <div class="col-md-8">
+                                        <div class="row mt-1 ">
+                                            <div class="col-8">
                                                 <button onclick="ver_detalles_pedido(${producto.id}, ${producto.precio_pedido}, '${producto.descripcion}')" class="btn btn-success btn-sm btn-block">Ver detalles</button>
                                             </div>
-                                            <div class="col-md-4">
+                                            <div class="col-4">
                                                 <button onclick="eliminar_pedido(${producto.id}, '${id_contenedor}')" class="btn btn-danger btn-sm btn-block">Quitar</button>
                                             </div>
                                         </div>
@@ -615,14 +615,14 @@ if(window.location.pathname == ruta+'pedidos/pedidos.php'){
                         }
                     
 
-                    template += `<div class="col-sm-3 mt-1">
-                                    <div class='card' style="max-width: 20rem;">
+                    template += `<div class="col-sm-6 col-md-4 col-lg-4 col-xl-3 mt-1">
+                                    <div class='card mx-auto' style="width: 17rem; height: 6rem;">
                                         <div class='card-body'>
                                         <div class='row'>
-                                            <div class='col-md-10'>
+                                            <div class='col-9'>
                                             <h5 class='text-success'>${accesorio.nombre}</h5>
                                             </div>
-                                            <div class='col-md-2'>
+                                            <div class='col-2'>
                                                 <a onclick="agregar_producto_al_pedido(${accesorio.id},'${accesorio.nombre}',${accesorio.precio})" role="button" class="btn btn-success btn-sm"><i class="bi bi-plus-circle"></i></a>
                                             </div>
                                         </div>

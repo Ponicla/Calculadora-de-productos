@@ -49,7 +49,7 @@ include '../nav.php';
         
     </div>
 
-<div id="deck_cartas_productos" class="card-deck"></div>
+<div id="deck_cartas_productos" class="card-deck mr-0 ml-0"></div>
 
 
 
@@ -81,7 +81,7 @@ include '../nav.php';
             No hay pedidos realizados  <i class="bi bi-emoji-frown"></i>
         </div>
 </div>
-<div id="deck_cartas_pedidos" class="card-deck"></div>
+<div id="deck_cartas_pedidos" class="card-deck  mr-0 ml-0"></div>
 
 
 
