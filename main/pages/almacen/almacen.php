@@ -11,13 +11,15 @@
     <p class="text-success">Encuentre información sobre sus porductos</p>
 
     <div class="row form-group">
+       
         <div class="col-md-4 form-group">
             <input id="producto_buscado" name="nombre" type="text" class="form-control" placeholder="Qué producto buscas?" autocomplete="off">
         </div>
         
         <div class="col-md-3">
-            <select id="criterio_sort" class="form-control" onchange="filtrado_lista(this.value)">
-                <option value="" selected>Ordenar por</option>
+            <!-- <select id="criterio_sort" class="form-control" onchange="filtrado_lista(this.value)"> -->
+            <select id="criterio_sort" class="form-control" onchange="mostrar_lista()">
+                <option value="0" selected>Ordenar por</option>
                 <option value="1">Precio de mayor a menor</option>
                 <option value="2">Precio de menor a mayor</option>
                 <option value="3" data-content='<i class="bi bi-sort-alpha-down">'></i>Nombre A - Z</option>
@@ -25,10 +27,11 @@
             </select> 
         </div>
         <div class="col-md-2">
-            <select id="criterio_boveda" class="form-control" onchange="boveda(this.value)">
+            <!-- <select id="criterio_boveda" class="form-control" onchange="boveda(this.value)"> -->
+            <select id="criterio_boveda" class="form-control" onchange="mostrar_lista()">
                 <option value="0" selected>Ocultar boveda</option>
-                <option value="2">Solo boveda</option>
-                <option value="1">Todos</option>
+                <option value="1">Solo boveda</option>
+                <option value="2">Todos</option>
             </select> 
         </div>
     </div>
@@ -44,6 +47,8 @@
         </div>
       </div>
 </div>
+
+
 
 <div id="deck_cartas_productos" class="card-deck d-flex flex-wrap  " style="align-content: center;"></div>
 

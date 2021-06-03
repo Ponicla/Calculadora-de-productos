@@ -9,6 +9,8 @@ if (window.location.pathname == ruta + 'almacen/almacen.php') {
     var lista_productos = [];
     var lista_ingredientes = [];
     var lista_accesorios = [];
+    var lista_nueva_general = [];
+    var lista_filtrada_general = [];
     var lista_alternativa_de_productos = [];
     const Toast = Swal.mixin({
         toast: true,
@@ -28,7 +30,7 @@ if (window.location.pathname == ruta + 'almacen/almacen.php') {
   
 
     /* FUNCIONES JQUERY */
-    $('#criterio_boveda').val('1');
+    $('#criterio_boveda').val('2');
 
     $("#modal_vista_producto").on("hidden.bs.modal", function () {
         $('#lista_accesorios_para_sumar').trigger('change');
@@ -132,51 +134,9 @@ if (window.location.pathname == ruta + 'almacen/almacen.php') {
         }
 
     });
-
+ 
     $("#producto_buscado").keyup(function () {
-        if($("#producto_buscado").val() == ''){
-            $('#criterio_boveda').val('1');
-            $('#criterio_sort').val('');
-        }
-        lista_productos = [];
-        var nombre = $("#producto_buscado").val();
-        $.ajax({
-                url: "../../functions/php/almacen/get_productos_2.php",
-                type: "POST",
-                data: {
-                    nombre: nombre
-                }
-            })
-            .done(function (res) {
-                var array = JSON.parse(res);
-                console.log(array);
-                ordena_lista_por_precio(array);
-                var template = ``;
-                var cont = 0;
-                array.forEach((producto) => {
-                        cont = cont + 1;
-                        var id_contenedor_cantidad = "cantidad_cera_traida_" + cont;
-                        var nombre_vela = capitalize(producto.nombre);
-
-                        if (producto.cantidad_cera > 0) {
-                            producto.precio = parseInt(producto.precio) - parseInt(valor_cera);
-                            producto.precio += ((parseInt(producto.cantidad_cera) * parseInt(valor_cera)) / 100);
-                            template += dibujar_producto(producto, id_contenedor_cantidad, nombre_vela);
-                            $deck_cartas_productos.innerHTML = template; 
-                        } else {
-                            template += dibujar_producto(producto, id_contenedor_cantidad, nombre_vela);
-                            $deck_cartas_productos.innerHTML = template; 
-                        }
-
-                        lista_productos = array;
-                        
-                })
-                //console.log($('#criterio_boveda').val());
-                boveda($('#criterio_boveda').val());
-            })
-            .fail(function () {
-                console.log('Err');
-            });
+        mostrar_lista();
     })
 
     $('#form_modal_vista_producto').submit(function (e) {
@@ -238,6 +198,18 @@ if (window.location.pathname == ruta + 'almacen/almacen.php') {
 
 
     /* DECLARACION DE FUNCIONES */
+    function dibujar_no_coincidencias(){
+        template = `
+        <div class="container-fluid">
+            <div class="container-fluid">
+                <div class="alert alert-danger" role="alert">
+                    <i class="bi bi-emoji-frown"></i> No hay coincidencias
+                </div>
+            </div>
+        </div>`
+        return template;
+    }
+
     function dibujar_accesorio(id_contenedor, elemento, id_contenedor_cantidad){
         template = `
         <div class="row" id=${id_contenedor}>
@@ -502,16 +474,15 @@ if (window.location.pathname == ruta + 'almacen/almacen.php') {
                     if (producto.cantidad_cera > 0) {
                         producto.precio = parseInt(producto.precio) - parseInt(valor_cera);
                         producto.precio += ((parseInt(producto.cantidad_cera) * parseInt(valor_cera)) / 100);
-
                         template += dibujar_producto(producto, id_contenedor_cantidad, nombre_vela);
-                        //$deck_cartas_productos.innerHTML = template;
                     } else {
                         template += dibujar_producto(producto, id_contenedor_cantidad, nombre_vela);
-                        //$deck_cartas_productos.innerHTML = template;
                     }
                     $deck_cartas_productos.innerHTML = template;
                 })
                 lista_productos = array;
+                lista_nueva_general = array;
+                lista_filtrada_general = array;
             })
             .fail(function () {
                 console.log('Err');
@@ -549,98 +520,54 @@ if (window.location.pathname == ruta + 'almacen/almacen.php') {
         });
     }
 
-    function boveda(criterio){
-        var lista_productos_filtada = [];
-        switch (criterio) {
-            case '0':
-                console.log('QUITAR LOS DE LA BOVEDA');
-                for (let j = 0; j < lista_productos.length; j++) {
-                    const elemento = lista_productos[j];
-                    if(elemento.estado == 0){
-                        lista_productos_filtada.push(elemento);
-                    };
+    function mostrar_lista(){
+        var lista = [];
+        var crit_bov = $('#criterio_boveda').val();
+        var crit_sor = $('#criterio_sort').val();
+        var crit_nom = $('#producto_buscado').val();
+        // console.log(crit_bov ,crit_sor ,crit_nom);
+        lista_productos.forEach(elemento => {
+            // console.log(elemento);
+            let buscado = crit_nom.toLowerCase();
+            let nombre = elemento.nombre.toLowerCase();
+            if(nombre.includes(buscado)){
+                if(crit_bov == 2){
+                    lista.push(elemento);
+                }else{
+                    if(elemento.estado == crit_bov){
+                        lista.push(elemento);
+                    }
                 }
-                mostrar_o_no_la_boveda(lista_productos_filtada);
-            break;
+            } 
+        });
+        // console.log(lista.length);
+        // console.log(filtrado_lista(lista, crit_sor));
 
-            case '1':
-                console.log('TODOS');
-                mostrar_o_no_la_boveda(lista_productos);
-            break;
+        mostrar_lista_ordenada_por_criterio(filtrado_lista(lista, crit_sor));
 
-            case '2':
-                console.log('SOLO BOVEDA');
-                for (let j = 0; j < lista_productos.length; j++) {
-                    const elemento = lista_productos[j];
-                    if(elemento.estado == 1){
-                        lista_productos_filtada.push(elemento);
-                    };
-                }
-                if(lista_productos_filtada.length == 0){
-                    Toast.fire({
-                        icon: 'warning',
-                        title: 'No hay nada en la boveda'
-                    })
-                    $('#criterio_boveda').val('1');
-                }
-                mostrar_o_no_la_boveda(lista_productos_filtada);
-            break;
-        }
-    }
-
-    function mostrar_o_no_la_boveda(array){
-        var template = ``;
-        var cont = 0;
-        array.forEach((producto) => {
-            cont = cont + 1;
-            var id_contenedor_cantidad = "cantidad_cera_traida_" + cont;
-            var nombre_vela = capitalize(producto.nombre);
-
-            template += dibujar_producto(producto, id_contenedor_cantidad, nombre_vela);
-            $deck_cartas_productos.innerHTML = template;
-        })
     }
 
     function mostrar_lista_ordenada_por_criterio(array) {
         var template = ``;
-        var cont = 0;
-        array.forEach((producto) => {
-            cont = cont + 1;
-            var id_contenedor_cantidad = "cantidad_cera_traida_" + cont;
-            let nombre_vela = capitalize(producto.nombre);
-
-            template += dibujar_producto(producto, id_contenedor_cantidad, nombre_vela);
+        $deck_cartas_productos.innerHTML = template;
+        if(array.length == 0){
+            template += dibujar_no_coincidencias();
             $deck_cartas_productos.innerHTML = template;
-        })
+        }else{
+            var cont = 0;
+            array.forEach((producto) => {
+                cont = cont + 1;
+                var id_contenedor_cantidad = "cantidad_cera_traida_" + cont;
+                var nombre_vela = capitalize(producto.nombre);
+    
+                template += dibujar_producto(producto, id_contenedor_cantidad, nombre_vela);
+                $deck_cartas_productos.innerHTML = template;
+            })
+        }
+        
     }
 
-    function filtrado_lista(criterio) {
-        let lista = [];
-        let croterio_beveda = $('#criterio_boveda').val()
-        switch (croterio_beveda) {
-            case '0':
-                for (let j = 0; j < lista_productos.length; j++) {        
-                    const elemento = lista_productos[j];
-                    if(elemento.estado === 0){
-                        lista.push(elemento);
-                    };
-                }
-                
-            break;
-            case '1':
-                lista = lista_productos;
-            break;
-            case '2':
-                for (let j = 0; j < lista_productos.length; j++) {
-                    const elemento = lista_productos[j];
-                    if(elemento.estado == 1){
-                        lista.push(elemento);
-                    };
-                }
-            break;   
-        }
-
-
+    function filtrado_lista(lista, criterio) {
         switch (criterio) {
             case "1":
                 lista.sort(function (a, b) {
@@ -652,7 +579,6 @@ if (window.location.pathname == ruta + 'almacen/almacen.php') {
                     }
                     return 0;
                 });
-                mostrar_lista_ordenada_por_criterio(lista);
             break;
 
             case "2":
@@ -665,7 +591,7 @@ if (window.location.pathname == ruta + 'almacen/almacen.php') {
                     }
                     return 0;
                 });
-                mostrar_lista_ordenada_por_criterio(lista);
+            
             break;
 
             case "3":
@@ -679,7 +605,7 @@ if (window.location.pathname == ruta + 'almacen/almacen.php') {
                 }
                 return 0;
                 });
-                mostrar_lista_ordenada_por_criterio(lista);
+               
             break; 
 
             case "4":
@@ -692,10 +618,10 @@ if (window.location.pathname == ruta + 'almacen/almacen.php') {
                     }
                     return 0;
                 });
-                mostrar_lista_ordenada_por_criterio(lista);
+                
             break;
           }
-        
+          return lista;
         
     }
 

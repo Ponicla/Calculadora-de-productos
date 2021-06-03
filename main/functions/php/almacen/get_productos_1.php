@@ -4,6 +4,7 @@ require_once('../../../../db/conexion.php');
 session_start();
 
     $sql = "SELECT
+    producto.estado, 
     producto.id,
     producto.nombre,
     producto.descripcion,
