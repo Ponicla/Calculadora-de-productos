@@ -616,7 +616,7 @@ if(window.location.pathname == ruta+'pedidos/pedidos.php'){
                     
 
                     template += `<div class="col-sm-6 col-md-4 col-lg-4 col-xl-3 mt-1">
-                                    <div class='card mx-auto' style="width: 17rem; height: 6rem;">
+                                    <div class='card mx-auto' style="width: 17rem; min-height: 6rem;">
                                         <div class='card-body'>
                                         <div class='row'>
                                             <div class='col-9'>
