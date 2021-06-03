@@ -1,5 +1,6 @@
 if(window.location.pathname == ruta+'pedidos/pedidos.php'){
 
+
      /* DECLARACION DE VARIABLES */
      var $deck_cartas_pedidos = document.querySelector('#deck_cartas_pedidos');
      var $deck_cartas_productos = document.querySelector('#deck_cartas_productos');
@@ -12,6 +13,7 @@ if(window.location.pathname == ruta+'pedidos/pedidos.php'){
      var $update_descripcion_del_pedido = document.querySelector('#update_descripcion_del_pedido');
      var lista_productos = [];
      var lista_productos_inalterable = [];
+     var lista_de_pedidos_inalterable = [];
      var valor_cera;
      const Toast = Swal.mixin({
          toast: true,
@@ -25,9 +27,11 @@ if(window.location.pathname == ruta+'pedidos/pedidos.php'){
          }
      });
 
+
     /* LLAMADO A FUNCIONES */
     obtener_valor_cera();
  
+
     /* FUNCIONES JQUERY */
     $("#producto_buscado").keyup(function () {  
         filtrar_productos($("#producto_buscado").val());
@@ -81,40 +85,18 @@ if(window.location.pathname == ruta+'pedidos/pedidos.php'){
         var template2 = ``;
         var cont = 1;
         var precio = 0;
-        var cantidad_de_cera = 0;
         console.log(lista_productos);
         lista_productos.forEach(function(elemento, index, object) {
             var id_contenedor = "ingrediente_fila_"+cont;
-            template += `
-            <div class="row" id=${id_contenedor}>
-                <div class="col-md-10">
-                    <p><i onclick="quitar_producto_pedido(${elemento.id_producto}, ${id_contenedor}, ${elemento.indice})" class="text-danger bi bi-trash"></i> ${elemento.nombre}</p>
-                </div>
-                <div class="col-md-2" style="text-align: right;">
-                    <p class="text-info">$${(elemento.precio.toFixed(2))}</p>
-                    
-                </div>
-            </div>`
+            var precio_para_enviar = (elemento.precio.toFixed(2));
+            template += dibujar_fila_2(id_contenedor, elemento, precio_para_enviar);
             $fila_producto2.innerHTML = template;
             cont = cont + 1;
-
             precio = precio + parseFloat((elemento.precio.toFixed(2)));
-            
         });
-
-        precio = (precio.toFixed(2))
-        template2 += `
-            <div class="row">
-                <div class="col-md-10">
-                    <p><i class=" text-success bi bi-cash-coin"></i> Total </p>
-                </div>
-                <div class="col-md-2" style="text-align: right;">
-                    <p class="text-success">$${precio}</p>
-                </div>
-            </div>`
-            
+        precio = (precio.toFixed(2));
+        template2 += dibuja_precio_detalles(precio);
         $total_pedido2.innerHTML = template2;
-
         $('#modal_nuevo_pedido').modal('show');
     });
 
@@ -145,6 +127,20 @@ if(window.location.pathname == ruta+'pedidos/pedidos.php'){
             })
         }
        
+    }
+
+    function dibujar_fila_2(id_contenedor, elemento, precio){
+        template = 
+        `<div class="row" id=${id_contenedor}>
+            <div class="col-md-10">
+                <p><i onclick="quitar_producto_pedido(${elemento.id_producto}, ${id_contenedor}, ${elemento.indice})" class="text-danger bi bi-trash"></i> ${elemento.nombre}</p>
+            </div>
+            <div class="col-md-2" style="text-align: right;">
+                <p class="text-info">$${precio}</p>
+                
+            </div>
+        </div>`
+        return template;
     }
 
     function dibujar_no_coincidencias(){
@@ -388,10 +384,11 @@ if(window.location.pathname == ruta+'pedidos/pedidos.php'){
             }
             array.forEach((pedido) => {
                 var id_contenedor = "carta_pedido_numero_"+pedido.id;
-                predido = refactor_predido(pedido, 1);
+                predido = refactor_predido(pedido);
                 template += dibuja_pedidos(pedido, id_contenedor);
                 $deck_cartas_pedidos.innerHTML = template;
             })
+            lista_de_pedidos_inalterable = array;
             
         })
         .fail(function () {
@@ -399,8 +396,8 @@ if(window.location.pathname == ruta+'pedidos/pedidos.php'){
         });      
     }
 
-    function refactor_predido(pedido, compare_estado_con){
-        if (pedido.estado == compare_estado_con) {
+    function refactor_predido(pedido){
+        if (pedido.estado == 1) {
             pedido.texto_estado = "Pendiente";
             pedido.estado_distinto = 2;
             pedido.color = 'orange';
@@ -422,24 +419,24 @@ if(window.location.pathname == ruta+'pedidos/pedidos.php'){
     }
 
     function get_pedidos_filtrado(estado) {
-        $.ajax({
-                url: "../../functions/php/pedidos/get_pedidos_1.php",
-                type: "GET",
-            }) 
-            .done(function (res) {
-               
-                var array = JSON.parse(res);
-                var template = ``;
-                array.forEach((pedido) => {
-                    var id_contenedor = "carta_pedido_numero_"+pedido.id;
-                    pedido = refactor_predido(pedido, estado);
-                    template += dibuja_pedidos(pedido, id_contenedor);
-                    $deck_cartas_pedidos.innerHTML = template;
-                }) 
-            })
-            .fail(function () {
-                console.log('Err');
-            });    
+        var template = ``;
+        lista_de_pedidos_inalterable.forEach((pedido) => {
+            var id_contenedor = "carta_pedido_numero_"+pedido.id;
+            if(pedido.estado == estado){
+                pedido = refactor_predido(pedido);
+                template += dibuja_pedidos(pedido, id_contenedor);
+                $deck_cartas_pedidos.innerHTML = template;
+            }
+        }) 
+    }
+
+    function mostar_filtrada_vacia(){
+        template = `<div  id='indicador_de_que_no_hay_nada2' hidden class="container-fluid">
+                        <div class="alert alert-danger" role="alert">
+                            No hay pedidos realizados  <i class="bi bi-emoji-frown"></i>
+                        </div>
+                    </div>`;
+        return template;
     }
 
     function capitalize(s){
@@ -635,8 +632,8 @@ if(window.location.pathname == ruta+'pedidos/pedidos.php'){
             precio = precio + (parseFloat((elemento.precio).toFixed(2)));
         })
         
-        template += dibuja_precio_detalles(precio);
-        $total_pedido2.innerHTML = template2;
+        template = dibuja_precio_detalles(precio);
+        $total_pedido2.innerHTML = template;
         
         if(lista_productos.length == 0){
             $('#contenderdor_botones').attr('hidden','hidden');
@@ -650,5 +647,4 @@ if(window.location.pathname == ruta+'pedidos/pedidos.php'){
             })
         }
     }
-
 }
