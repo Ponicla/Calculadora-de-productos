@@ -42,26 +42,9 @@ if(window.location.pathname == ruta+'productos/productos.php'){
             var mes = date.toLocaleString("es-ES", { month: "long" });
             var ano = date.getFullYear();
             var edicion = dia + " " + mes + " " +ano;
+            accesorio.edicion = edicion;
             accesorio.precio = parseFloat((accesorio.precio));
-            template += `<div class="col-sm-3 mt-1">
-                            <div class='card' style="max-width: 24rem;">
-                                <div class='card-body'>
-                                <div class='row'>
-                                    <div class='col-md-10'>
-                                    <h5 class='text-success'>${accesorio.nombre}</h5>
-                                    </div>
-                                    <div class='col-md-2'>
-                                        <a onclick="agregar_accesorio_al_producto(${accesorio.id},${accesorio.precio},'${accesorio.nombre}', ${accesorio.id_tipo})" role="button" class="btn btn-success btn-sm"><i class="bi bi-plus-circle"></i></a>
-                                    </div>
-                                </div>
-                                    <hr>
-                                    <p class='card-text'>Tipo ${accesorio.tipo}</p>
-                                    <small class='card-text'><small class="text-danger" style="font-size: 1rem">$${accesorio.precio}</small> <small style="font-size: 0.6rem">(${edicion})</small></small>
-                                </div>
-                                
-                            </div>
-                        </div>` 
-
+            template += dibuja_accesorios(accesorio);
             $deck_cartas.innerHTML = template;
           })
           lista_accesorios = array;
@@ -85,37 +68,15 @@ if(window.location.pathname == ruta+'productos/productos.php'){
             }else{
                 elemento.cantidad_de_cera = 0;
             }
-             
-            template += `
-            <div class="row" id=${id_contenedor}>
-                <div class="col-md-10">
-                    <p><i onclick="quitar_accesorio_producto(${elemento.id_accesorio}, ${id_contenedor}, ${elemento.cantidad_de_cera}, ${elemento.indice})" class="text-danger bi bi-trash"></i> ${elemento.nombre}</p>
-                </div>
-                <div class="col-md-2" style="text-align: right;">
-                    <p class="text-info">$${(elemento.precio).toFixed(2)}</p>
-                </div>
-            </div>`
-            
+            template += dibuja_fila(elemento, id_contenedor);
             $fila_producto.innerHTML = template;
             cont = cont + 1;
-
             precio = precio + parseFloat((elemento.precio).toFixed (2));
-
-            
         });
 
         $('#cantidad_total_cera').val(cantidad_de_cera);
         precio = (precio.toFixed(2))
-        template2 += `
-            <div class="row">
-                <div class="col-md-10">
-                    <p><i class=" text-success bi bi-cash-coin"></i> Total </p>
-                </div>
-                <div class="col-md-2" style="text-align: right;">
-                    <p class="text-success">$${precio}</p>
-                </div>
-            </div>`
-            
+        template2 += dibuja_total_producto(precio);
         $total_producto.innerHTML = template2;
 
         $('#modal_nuevo_producto').modal('show');
@@ -225,6 +186,28 @@ if(window.location.pathname == ruta+'productos/productos.php'){
 
     
     /* DECLARACION DE FUNCIONES */
+    function dibuja_accesorios(accesorio){
+        template = `<div class="col-sm-3 mt-1">
+                        <div class='card' style="max-width: 24rem;">
+                            <div class='card-body'>
+                            <div class='row'>
+                                <div class='col-md-10'>
+                                <h5 class='text-success'>${accesorio.nombre}</h5>
+                                </div>
+                                <div class='col-md-2'>
+                                    <a onclick="agregar_accesorio_al_producto(${accesorio.id},${accesorio.precio},'${accesorio.nombre}', ${accesorio.id_tipo})" role="button" class="btn btn-success btn-sm"><i class="bi bi-plus-circle"></i></a>
+                                </div>
+                            </div>
+                                <hr>
+                                <p class='card-text'>Tipo ${accesorio.tipo}</p>
+                                <small class='card-text'><small class="text-danger" style="font-size: 1rem">$${accesorio.precio}</small> <small style="font-size: 0.6rem">(${accesorio.edicion})</small></small>
+                            </div>
+                            
+                        </div>
+                    </div>`
+        return template;
+    }
+
     function crea_indice(indice) {
         if (indice == 0) {
              return indice;
@@ -237,6 +220,31 @@ if(window.location.pathname == ruta+'productos/productos.php'){
             }
         }
     } 
+
+    function dibuja_total_producto(precio){
+        template = 
+            `<div class="row">
+                <div class="col-md-10">
+                    <p><i class=" text-success bi bi-cash-coin"></i> Total </p>
+                </div>
+                <div class="col-md-2" style="text-align: right;">
+                    <p class="text-success">$${precio}</p>
+                </div>
+            </div>`
+        return template;
+    }
+
+    function dibuja_fila(elemento, id_contenedor){
+        template = `<div class="row" id=${id_contenedor}>
+                        <div class="col-md-10">
+                            <p><i onclick="quitar_accesorio_producto(${elemento.id_accesorio}, ${id_contenedor}, ${elemento.cantidad_de_cera}, ${elemento.indice})" class="text-danger bi bi-trash"></i> ${elemento.nombre}</p>
+                        </div>
+                        <div class="col-md-2" style="text-align: right;">
+                            <p class="text-info">$${(elemento.precio).toFixed(2)}</p>
+                        </div>
+                    </div>`
+        return template;
+    }
 
     function get_accesorios(){
         lista_accesorios = [];
@@ -257,25 +265,9 @@ if(window.location.pathname == ruta+'productos/productos.php'){
             var mes = date.toLocaleString("es-ES", { month: "long" });
             var ano = date.getFullYear(); 
             var edicion = dia + " " + mes + " " +ano;
+            accesorio.edicion = edicion;
             accesorio.precio = parseFloat((accesorio.precio));
-                template += `<div class="col-sm-3 mt-1">
-                                <div class='card' style="max-width: 24rem;">
-                                    <div class='card-body'>
-                                    <div class='row'>
-                                        <div class='col-md-10'>
-                                        <h5 class='text-success'>${accesorio.nombre}</h5>
-                                        </div>
-                                        <div class='col-md-2'>
-                                            <a onclick="agregar_accesorio_al_producto(${accesorio.id},${accesorio.precio},'${accesorio.nombre}', ${accesorio.id_tipo})" role="button" class="btn btn-success btn-sm"><i class="bi bi-plus-circle"></i></a>
-                                        </div>
-                                    </div>
-                                        <hr>
-                                        <p class='card-text'>Tipo ${accesorio.tipo}</p>
-                                        <small class='card-text'><small class="text-danger" style="font-size: 1rem">$${accesorio.precio}</small> <small style="font-size: 0.6rem">(${edicion})</small></small>
-                                    </div>
-                                    
-                                </div>
-                            </div>`
+            template += dibuja_accesorios(accesorio);
                 $deck_cartas.innerHTML = template;
           })
           lista_accesorios = array;
@@ -287,7 +279,6 @@ if(window.location.pathname == ruta+'productos/productos.php'){
 
     function agregar_accesorio_al_producto(id, precio, nombre, id_tipo) {
         if (id_tipo == 2) {
-            // console.log('Es cera');
             $('#cantidad_de_cera_precio').val(precio);
             $('#cantidad_de_cera_nombre').val(nombre);
             $('#cantidad_de_cera_id').val(id);
@@ -315,40 +306,22 @@ if(window.location.pathname == ruta+'productos/productos.php'){
     }
 
     function quitar_accesorio_producto(id_elemento, id_contenedor, cantidad, indice){
-
         if(cantidad > 0){
             var cantidad_a_quitar = parseInt(cantidad);
             var cantidad_actual_de_cera = parseInt($('#cantidad_total_cera').val());
             $('#cantidad_total_cera').val(cantidad_actual_de_cera - cantidad_a_quitar);
         }   
-        
-        const found  = lista_ingredientes.findIndex(elemento => elemento.indice == indice);
+        const found = lista_ingredientes.findIndex(elemento => elemento.indice == indice);
         var indice_a_quitar = found;
-        lista_ingredientes.splice(indice_a_quitar, 1);
-
-
         var contenedor = '#'+id_contenedor.id;
-        $(contenedor).remove();
-
         var template2 = ``;
-        var template3 = ``;
-        var template4 = ``;
-        var cont = 1;
         var precio = 0;
+        lista_ingredientes.splice(indice_a_quitar, 1);
+        $(contenedor).remove();
         lista_ingredientes.forEach(elemento => {
             precio = precio + (parseFloat((elemento.precio).toFixed(2)));
         })
-        
-        template2 += `
-            <div class="row">
-                <div class="col-md-10">
-                    <p><i class=" text-success bi bi-cash-coin"></i> Total </p>
-                </div>
-                <div class="col-md-2" style="text-align: right;">
-                    <p class="text-success">$${precio}</p>
-                </div>
-            </div>`
-            
+        template2 += dibuja_total_producto(precio);
         $total_producto.innerHTML = template2;
         
         if(lista_ingredientes.length == 0){
@@ -371,7 +344,6 @@ if(window.location.pathname == ruta+'productos/productos.php'){
             if (a.precio < b.precio) {
               return -1;
             }
-            // a must be equal to b
             return 0;
           });
     }
@@ -416,30 +388,14 @@ if(window.location.pathname == ruta+'productos/productos.php'){
             var mes = date.toLocaleString("es-ES", { month: "long" });
             var ano = date.getFullYear(); 
             var edicion = dia + " " + mes + " " +ano;
-                template += `<div class="col-sm-3 mt-1">
-                                <div class='card' style="max-width: 24rem;">
-                                    <div class='card-body'>
-                                    <div class='row'>
-                                        <div class='col-md-10'>
-                                        <h5 class='text-success'>${accesorio.nombre}</h5>
-                                        </div>
-                                        <div class='col-md-2'>
-                                            <a onclick="agregar_accesorio_al_producto(${accesorio.id},${accesorio.precio},'${accesorio.nombre}', ${accesorio.id_tipo})" role="button" class="btn btn-success btn-sm"><i class="bi bi-plus-circle"></i></a>
-                                        </div>
-                                    </div>
-                                        <hr>
-                                        <p class='card-text'>Tipo ${accesorio.tipo}</p>
-                                        <small class='card-text'><small class="text-danger" style="font-size: 1rem">$${accesorio.precio}</small> <small style="font-size: 0.6rem">(${edicion})</small></small>
-                                    </div>
-                                    
-                                </div>
-                            </div>`
-                $deck_cartas.innerHTML = template;
+            accesorio.edicion = edicion;
+            accesorio.precio = parseFloat((accesorio.precio));
+            template += dibuja_accesorios(accesorio);
+            $deck_cartas.innerHTML = template;
         })
     }
 
     function filtrado_lista(criterio) {
-        // console.log(lista_accesorios);
         switch (criterio) {
             case "1":
                 lista_accesorios.sort(function (a, b) {
