@@ -192,7 +192,7 @@ if(window.location.pathname == ruta+'pedidos/pedidos.php'){
                                     <small class="text-info">${pedido.descripcion}</small>
                             </div>
                             <div class='card-footer'>
-                            <button class="btn btn-block btn-primary btn-sm" onclick="cambiar_estado_de_pedido(${pedido.id},${pedido.estado_distinto})">Cambiar estado</button>
+                            <button class="btn btn-block btn-primary btn-sm" onclick="cambiar_estado_de_pedido(${pedido.id},${pedido.estado_distinto}, ${id_contenedor})">Cambiar estado</button>
                                 <div class="row mt-1 ">
                                     <div class="col-8">
                                         <button onclick="ver_detalles_pedido(${pedido.id}, ${pedido.precio_pedido})" class="btn btn-success btn-sm btn-block">Ver detalles</button>
@@ -351,7 +351,7 @@ if(window.location.pathname == ruta+'pedidos/pedidos.php'){
           })
     }
 
-    function cambiar_estado_de_pedido(id, nuevo_estado) {
+    function cambiar_estado_de_pedido(id, nuevo_estado, id_contenedor) {
         $.ajax({
             url: "../../functions/php/pedidos/cambiar_estado_pedido.php",
             type: "POST", 
@@ -360,7 +360,8 @@ if(window.location.pathname == ruta+'pedidos/pedidos.php'){
             }
         })
         .done(function (res) {
-            get_pedidos();
+            $(id_contenedor).remove();
+            //get_pedidos();
         })
         .fail(function () {
             console.log('Err');
