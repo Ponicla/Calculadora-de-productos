@@ -11,6 +11,7 @@ if(window.location.pathname == ruta+'pedidos/pedidos.php'){
      var $id_pedido = document.querySelector('#id_pedido');
      var $update_descripcion_del_pedido = document.querySelector('#update_descripcion_del_pedido');
      var lista_productos = [];
+     var lista_productos_inalterable = [];
      var valor_cera;
      const Toast = Swal.mixin({
          toast: true,
@@ -27,40 +28,9 @@ if(window.location.pathname == ruta+'pedidos/pedidos.php'){
     /* LLAMADO A FUNCIONES */
     obtener_valor_cera();
  
-
     /* FUNCIONES JQUERY */
     $("#producto_buscado").keyup(function () {  
-        lista_productos = [];
-        var nombre = $("#producto_buscado").val();
-        $.ajax({
-                url: "../../functions/php/almacen/get_productos_2.php",
-                type: "POST",
-                data: {
-                    nombre: nombre
-                }
-            })
-            .done(function (res) {
-                var array = JSON.parse(res);
-                var template = ``;
-            array.forEach((accesorio) => {
-                if (accesorio.estado == 0 ){
-                    if(parseInt(accesorio.cantidad_cera) > 0 ){
-                        var precio_actual = parseFloat(accesorio.precio);
-                        var cantidad_de_cera = parseInt(accesorio.cantidad_cera);
-                        var precio_subtotal = parseFloat(precio_actual) - parseFloat(valor_cera);
-                        var precio_final = parseFloat(precio_subtotal) + ((cantidad_de_cera*valor_cera)/100);
-                        accesorio.precio = precio_final; 
-                        
-                    }
-                    template += dibuja_productos(accesorio);
-                    $deck_cartas_productos.innerHTML = template;
-                }
-                lista_productos = array;
-            })
-            })
-            .fail(function () {
-                console.log('Err');
-            });
+        filtrar_productos($("#producto_buscado").val());
     })
 
     $('#form_modal_nuevo_pedido').submit(function (e) { 
@@ -112,7 +82,7 @@ if(window.location.pathname == ruta+'pedidos/pedidos.php'){
         var cont = 1;
         var precio = 0;
         var cantidad_de_cera = 0;
-    
+        console.log(lista_productos);
         lista_productos.forEach(function(elemento, index, object) {
             var id_contenedor = "ingrediente_fila_"+cont;
             template += `
@@ -121,15 +91,14 @@ if(window.location.pathname == ruta+'pedidos/pedidos.php'){
                     <p><i onclick="quitar_producto_pedido(${elemento.id_producto}, ${id_contenedor}, ${elemento.indice})" class="text-danger bi bi-trash"></i> ${elemento.nombre}</p>
                 </div>
                 <div class="col-md-2" style="text-align: right;">
-                    <p class="text-info">$${(elemento.precio).toFixed(2)}</p>
+                    <p class="text-info">$${(elemento.precio.toFixed(2))}</p>
+                    
                 </div>
             </div>`
-            
             $fila_producto2.innerHTML = template;
             cont = cont + 1;
 
-            precio = precio + parseFloat((elemento.precio).toFixed (2));
-
+            precio = precio + parseFloat((elemento.precio.toFixed(2)));
             
         });
 
@@ -151,6 +120,45 @@ if(window.location.pathname == ruta+'pedidos/pedidos.php'){
 
 
     /* DECLARACION DE FUNCIONES */
+
+    function filtrar_productos(buscado) {
+        var array = lista_productos_inalterable;
+        var lista = [];
+                array.forEach(elemento => {
+                    if (elemento.nombre.toLowerCase().includes(buscado.toLowerCase()) && (elemento.estado == 0)){
+                        lista.push(elemento);
+                    } 
+                });
+                mostrar_productos(lista);
+    }
+
+    function mostrar_productos(array) { 
+        var template = ``;
+        $deck_cartas_productos.innerHTML = template;
+        if(array.length == 0){
+            template += dibujar_no_coincidencias();
+            $deck_cartas_productos.innerHTML = template;
+        }else{
+            array.forEach((producto) => {
+                template += dibuja_productos(producto);
+                $deck_cartas_productos.innerHTML = template;
+            })
+        }
+       
+    }
+
+    function dibujar_no_coincidencias(){
+        template = `
+        <div class="container-fluid">
+            <div class="container-fluid">
+                <div class="alert alert-danger" role="alert">
+                    <i class="bi bi-emoji-frown"></i> No hay coincidencias
+                </div>
+            </div>
+        </div>`
+        return template;
+    }
+
     function dibuja_productos(accesorio){
         template = `<div class="col-sm-3 mt-1">
                         <div class='card' style="max-width: 20rem;">
@@ -419,6 +427,7 @@ if(window.location.pathname == ruta+'pedidos/pedidos.php'){
                 type: "GET",
             }) 
             .done(function (res) {
+               
                 var array = JSON.parse(res);
                 var template = ``;
                 array.forEach((pedido) => {
@@ -522,24 +531,47 @@ if(window.location.pathname == ruta+'pedidos/pedidos.php'){
             type: "GET"
         })
         .done(function (res) {
+            // var array = JSON.parse(res);
+            // var template = ``;
+            // if(array.length == 0){
+            //     $('#indicador_de_que_no_hay_nada').removeAttr('hidden');
+            // }
+            // array.forEach((accesorio) => {
+            //     if (accesorio.estado == 0 ){
+            //         if(parseInt(accesorio.cantidad_cera) > 0 ){
+            //             var precio_actual = parseFloat(accesorio.precio);
+            //             var cantidad_de_cera = parseInt(accesorio.cantidad_cera);
+            //             var precio_subtotal = parseFloat(precio_actual) - parseFloat(valor_cera);
+            //             var precio_final = parseFloat(precio_subtotal) + ((cantidad_de_cera*valor_cera)/100);
+            //             accesorio.precio = precio_final; 
+            //         }
+            //         template += dibuja_productos(accesorio);
+            //         $deck_cartas_productos.innerHTML = template;
+            //     }
+            // })
+
             var array = JSON.parse(res);
-            var template = ``;
-            if(array.length == 0){
-                $('#indicador_de_que_no_hay_nada').removeAttr('hidden');
-            }
-            array.forEach((accesorio) => {
-                if (accesorio.estado == 0 ){
-                    if(parseInt(accesorio.cantidad_cera) > 0 ){
-                        var precio_actual = parseFloat(accesorio.precio);
-                        var cantidad_de_cera = parseInt(accesorio.cantidad_cera);
-                        var precio_subtotal = parseFloat(precio_actual) - parseFloat(valor_cera);
-                        var precio_final = parseFloat(precio_subtotal) + ((cantidad_de_cera*valor_cera)/100);
-                        accesorio.precio = precio_final; 
-                    }
-                    template += dibuja_productos(accesorio);
-                    $deck_cartas_productos.innerHTML = template;
+                var template = ``;
+                var cont = 0;
+                if(array.length == 0){
+                    $('#indicador_de_que_no_hay_nada').removeAttr('hidden');
                 }
-            })
+                array.forEach((producto) => {
+                    if (producto.estado == 0 ){
+                        cont = cont + 1;
+                        var id_contenedor_cantidad = "cantidad_cera_traida_" + cont;
+                        var nombre_vela = capitalize(producto.nombre);
+                        if (producto.cantidad_cera > 0) {
+                            producto.precio = parseInt(producto.precio) - parseInt(valor_cera);
+                            producto.precio += ((parseInt(producto.cantidad_cera) * parseInt(valor_cera)) / 100);
+                            template += dibuja_productos(producto, id_contenedor_cantidad, nombre_vela);
+                        } else {
+                            template += dibuja_productos(producto, id_contenedor_cantidad, nombre_vela);
+                        }
+                        $deck_cartas_productos.innerHTML = template;
+                    }   
+                })
+                lista_productos_inalterable = array;
         })
         .fail(function () {
         console.log('Err'); 
