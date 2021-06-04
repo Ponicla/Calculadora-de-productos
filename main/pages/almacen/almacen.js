@@ -258,7 +258,7 @@ if (window.location.pathname == ruta + 'almacen/almacen.php') {
                             <h6 >${nombre_vela}</h6>
                         </div>
                     </div>
-                        <hr class="mt-0 bg-dark">
+                        <hr class="mt-0 ${carta_borde}">
                             <div class='row'>
                                 <div class='col-md-12'>
                                 <div>Precio: $${producto.precio}</div>

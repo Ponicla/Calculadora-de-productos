@@ -200,7 +200,7 @@ if(window.location.pathname == ruta+'productos/productos.php'){
                                 </div>
                                 
                             </div>
-                                <hr class="mt-0 bg-dark">
+                                <hr class="mt-0 bg-primary">
                                 <p class='card-text'>Clase: ${accesorio.tipo}</p>
                                 <small class='card-text'>
                                     <small class="" style="font-size: 1rem">Precio: $${accesorio.precio}

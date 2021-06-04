@@ -210,7 +210,7 @@ if(window.location.pathname == ruta+'pedidos/pedidos.php'){
                                     </div>
                                     
                                 </div>
-                                <hr class="mt-0 bg-dark">
+                                <hr class="mt-0 bg-primary">
                                 <div>
                                     <div>Valor $${accesorio.precio}</div>
                                 </div>
@@ -227,9 +227,11 @@ if(window.location.pathname == ruta+'pedidos/pedidos.php'){
         if (pedido.estado == 2) {
             carta_borde = "border-success";
             boton_estado_color = "btn-warning";
+            boton_estado_texto = "Cambiar a pendiente";
         } else {
             carta_borde = "border-warning";
             boton_estado_color = "btn-success"
+            boton_estado_texto = "Cambiar a entregado";
         }
         template = `<div class="col-sm-6 col-md-4 col-lg-4 col-xl-3 mt-1" id="carta_pedido_numero_${pedido.id}">
                         <div class='card mb-3 mx-auto ${carta_borde}' style=" width: 17rem; min-height: 14rem;">
@@ -246,10 +248,10 @@ if(window.location.pathname == ruta+'pedidos/pedidos.php'){
                                 <div>Total $${pedido.precio_pedido}</div>   
                                 <small class="text-info">${pedido.descripcion}</small>
                             </div>
-                            <div class='card-footer'>
-                            <button class="btn btn-block ${boton_estado_color} btn-sm" onclick="cambiar_estado_de_pedido(${pedido.id},${pedido.estado_distinto}, '${id_contenedor}')">Cambiar estado</button>
+                            <div class='card-footer ${carta_borde}'>
+                            <button class="btn btn-block ${boton_estado_color} btn-sm" onclick="cambiar_estado_de_pedido(${pedido.id},${pedido.estado_distinto}, '${id_contenedor}')">${boton_estado_texto}</button>
                                 <div class="row mt-1 ">
-                                    <div class="col-8">
+                                    <div class="col-8 pr-0">
                                         <button onclick="ver_detalles_pedido(${pedido.id}, ${pedido.precio_pedido})" class="btn btn-primary btn-sm btn-block">Ver detalles</button>
                                     </div>
                                     <div class="col-4">
