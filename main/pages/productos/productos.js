@@ -37,7 +37,6 @@ if(window.location.pathname == ruta+'productos/productos.php'){
             var array = JSON.parse(res);
             var template = ``;
             $deck_cartas.innerHTML = '';
-            console.log(array);
             array.forEach((accesorio) => {
                 var date = new Date(accesorio.edicion);
                 var dia = date.getDate();
