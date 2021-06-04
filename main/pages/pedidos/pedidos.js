@@ -71,7 +71,6 @@ if(window.location.pathname == ruta+'pedidos/pedidos.php'){
                     background: '#fff url("https://static.vecteezy.com/system/resources/previews/000/776/561/non_2x/background-of-small-red-rocks-photo.jpg")',
                     backdrop: `
                     rgba(255,0,0,0.4)
-                    url("http://www.elpatinete.com/gifsanimados/felices/x_toon.gif")
                     left top
                     no-repeat
                     `

@@ -166,7 +166,6 @@ if(window.location.pathname == ruta+'productos/productos.php'){
                     background: '#fff url("https://images.vexels.com/media/users/3/166834/preview2/4213467a1f2589af7c27350ca54428f7-patron-de-flores-y-hojas-tropicales.jpg")',
                     backdrop: `
                       rgba(50,150,50,0.4)
-                      url("https://i.pinimg.com/originals/04/5f/eb/045feb8f000006137ae43ea7a7ec9be1.gif")
                       left top
                       no-repeat
                     `

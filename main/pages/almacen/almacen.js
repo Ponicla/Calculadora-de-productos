@@ -181,7 +181,6 @@ if (window.location.pathname == ruta + 'almacen/almacen.php') {
                         background: '#fff url("https://cdn.pixabay.com/photo/2013/04/14/20/24/water-103817_960_720.jpg")',
                         backdrop: `
                       rgba(0,110,225,0.4)
-                      url("https://static.wixstatic.com/media/2ff004_379adaffd3584a71b71f44ea93d7c46d~mv2.gif")
                       left top
                       no-repeat
                     `
