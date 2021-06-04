@@ -19,26 +19,10 @@ include '../nav.php';
             <Button hidden id="btn-pedido" class="btn btn-success"><i class="bi bi-recycle"></i> Pedido</Button>
             <Button hidden onclick="limpiar_pedido()" id="btn-limpia-pedido" class="btn btn-danger"><i class="bi bi-trash"></i> Destruir</Button>
         </div>
-
-        <!-- <div class="col-md-3">
-            <select id="criterio_sort" class="form-control" onchange="filtrado_lista(this.value)">
-                <option value="0" selected default>Todos los pedidos</option>
-                <option value="1">Pedidos entregados</option>
-                <option value="2">Pedidos pendientes</option>
-            </select>
-        </div> -->
     </div>
 </div>
-<!-- INFO -->
-<!-- <div  hidden id="contenderdor_botones" class="container-fluid">
 
-    <div  class="row form-group">
-        <div class="col-md-4 form-group">
-            <Button hidden id="btn-pedido" class="btn btn-success"><i class="bi bi-recycle"></i> Pedido</Button>
-            <Button hidden onclick="limpiar_pedido()" id="btn-limpia-pedido" class="btn btn-danger"><i class="bi bi-trash"></i> Destruir</Button>
-        </div>
-    </div>
-</div> -->
+
 <div hidden id='indicador_de_que_no_hay_nada' class="container-fluid">
         <div class="alert alert-danger" role="alert">
             No hay nada por aquí, intente crear productos en el laboratio  <i class="bi bi-emoji-frown"></i>
@@ -50,9 +34,6 @@ include '../nav.php';
     </div>
 
 <div id="deck_cartas_productos" class="card-deck mr-0 ml-0"></div>
-
-
-
 
 <div class="container-fluid">
     <hr>

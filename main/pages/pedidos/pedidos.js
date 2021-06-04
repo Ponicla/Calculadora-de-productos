@@ -40,12 +40,13 @@ if(window.location.pathname == ruta+'pedidos/pedidos.php'){
     $('#form_modal_nuevo_pedido').submit(function (e) { 
         e.preventDefault();
         var lista_id_productos = [];
-        var lista_precio_producto = [];
         var descripcion = $('#detalle_pedido').val();
-        
         lista_productos.forEach(elemento => {
-            lista_id_productos.push(elemento.id_producto);
-            lista_precio_producto.push(elemento.precio);
+            let el = {
+                id: elemento.id_producto,
+                precio: elemento.precio
+            }
+            lista_id_productos.push(el);
         });
 
         $.ajax({
@@ -53,8 +54,7 @@ if(window.location.pathname == ruta+'pedidos/pedidos.php'){
             type: "POST",
             data: { 
                 lista_productos : lista_id_productos,
-                descripcion : descripcion,
-                lista_precios : lista_precio_producto
+                descripcion : descripcion
             }
         })
         .done(function (res) {
