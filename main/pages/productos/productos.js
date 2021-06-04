@@ -36,17 +36,19 @@ if(window.location.pathname == ruta+'productos/productos.php'){
         .done(function (res) {
             var array = JSON.parse(res);
             var template = ``;
-          array.forEach((accesorio) => {
-            var date = new Date(accesorio.edicion);
-            var dia = date.getDate();
-            var mes = date.toLocaleString("es-ES", { month: "long" });
-            var ano = date.getFullYear();
-            var edicion = dia + " " + mes + " " +ano;
-            accesorio.edicion = edicion;
-            accesorio.precio = parseFloat((accesorio.precio));
-            template += dibuja_accesorios(accesorio);
-            $deck_cartas.innerHTML = template;
-          })
+            $deck_cartas.innerHTML = '';
+            console.log(array);
+            array.forEach((accesorio) => {
+                var date = new Date(accesorio.edicion);
+                var dia = date.getDate();
+                var mes = date.toLocaleString("es-ES", { month: "long" });
+                var ano = date.getFullYear();
+                var edicion = dia + " " + mes + " " +ano;
+                accesorio.edicion = edicion;
+                accesorio.precio = parseFloat((accesorio.precio));
+                template += dibuja_accesorios(accesorio);
+                $deck_cartas.innerHTML = template;
+            })
           lista_accesorios = array;
         })
         .fail(function () {
