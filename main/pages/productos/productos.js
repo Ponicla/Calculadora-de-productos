@@ -37,6 +37,10 @@ if(window.location.pathname == ruta+'productos/productos.php'){
             var array = JSON.parse(res);
             var template = ``;
             $deck_cartas.innerHTML = '';
+            if(array.length == 0){
+                template += dibujar_no_coincidencias();
+                $deck_cartas.innerHTML = template;
+            };
             array.forEach((accesorio) => {
                 var date = new Date(accesorio.edicion);
                 var dia = date.getDate();
@@ -220,6 +224,16 @@ if(window.location.pathname == ruta+'productos/productos.php'){
             }
         }
     } 
+
+    function dibujar_no_coincidencias(){
+        template = 
+            `<div class="container-fluid">
+                <div class="alert alert-danger" role="alert">
+                    <i class="bi bi-emoji-frown"></i> No hay coincidencias
+                </div>
+            </div>`
+        return template;
+    }
 
     function dibuja_total_producto(precio){
         template = 
