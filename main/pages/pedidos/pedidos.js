@@ -40,14 +40,16 @@ if(window.location.pathname == ruta+'pedidos/pedidos.php'){
     $('#form_modal_nuevo_pedido').submit(function (e) { 
         e.preventDefault();
         var lista_id_productos = [];
+
         var descripcion = $('#detalle_pedido').val();
+        
         lista_productos.forEach(elemento => {
             let el = {
                 id: elemento.id_producto,
                 precio: elemento.precio
             }
             lista_id_productos.push(el);
-        });
+                });
 
         $.ajax({
             url: "../../functions/php/pedidos/nuevo_pedido.php",
@@ -71,6 +73,7 @@ if(window.location.pathname == ruta+'pedidos/pedidos.php'){
                     background: '#fff url("https://static.vecteezy.com/system/resources/previews/000/776/561/non_2x/background-of-small-red-rocks-photo.jpg")',
                     backdrop: `
                     rgba(255,0,0,0.4)
+
                     left top
                     no-repeat
                     `
@@ -198,29 +201,38 @@ if(window.location.pathname == ruta+'pedidos/pedidos.php'){
     }
 
     function dibuja_productos(accesorio){
-        template = `<div class="col-sm-3 mt-3">
-                        <div class='card' style="max-width: 20rem;">
+        template = `<div class="col-sm-6 col-md-4 col-lg-3 col-xl-3 mt-1">
+                        <div class="card mb-3 border border-primary mx-auto" style="min-width: 15rem; max-width: 17rem;">
                             <div class='card-body'>
                                 <div class='row'>
-                                    <div class='col-md-10'>
-                                    <h5 class='text-success'>${accesorio.nombre}</h5>
+                                    <div class='col-md-12'>
+                                    <h6 class='text-dark '>${accesorio.nombre}</h6>
                                     </div>
-                                    <div class='col-md-2'>
-                                        <a onclick="agregar_producto_al_pedido(${accesorio.id},'${accesorio.nombre}',${accesorio.precio})" role="button" class="btn btn-success btn-sm"><i class="bi bi-plus-circle"></i></a>
-                                    </div>
+                                    
                                 </div>
+                                <hr class="mt-0 bg-dark">
                                 <div>
                                     <div>Valor $${accesorio.precio}</div>
                                 </div>
                             </div>
+                            <div class='card-footer  border-primary col-md-12'>
+                            <a onclick="agregar_producto_al_pedido(${accesorio.id},'${accesorio.nombre}',${accesorio.precio})" role="button" class="btn btn-primary btn-sm " style="width:100%">Agregar producto</a>
+                        </div>
                         </div>
                     </div>`
         return template;
     }
 
     function dibuja_pedidos(pedido, id_contenedor){
-        template = `<div class="col-sm-6 col-md-4 col-lg-4 col-xl-3 mt-3" id="carta_pedido_numero_${pedido.id}">
-                        <div class='card mx-auto' style=" width: 17rem; min-height: 14rem;">
+        if (pedido.estado == 2) {
+            carta_borde = "border-success";
+            boton_estado_color = "btn-warning";
+        } else {
+            carta_borde = "border-warning";
+            boton_estado_color = "btn-success"
+        }
+        template = `<div class="col-sm-6 col-md-4 col-lg-4 col-xl-3 mt-1" id="carta_pedido_numero_${pedido.id}">
+                        <div class='card mb-3 mx-auto ${carta_borde}' style=" width: 17rem; min-height: 14rem;">
                             <div class='card-body'>
                             <div class='row'>
                                     <div class='col-md-6'>
@@ -235,10 +247,10 @@ if(window.location.pathname == ruta+'pedidos/pedidos.php'){
                                 <small class="text-info">${pedido.descripcion}</small>
                             </div>
                             <div class='card-footer'>
-                            <button class="btn btn-block btn-primary btn-sm" onclick="cambiar_estado_de_pedido(${pedido.id},${pedido.estado_distinto}, '${id_contenedor}')">Cambiar estado</button>
+                            <button class="btn btn-block ${boton_estado_color} btn-sm" onclick="cambiar_estado_de_pedido(${pedido.id},${pedido.estado_distinto}, '${id_contenedor}')">Cambiar estado</button>
                                 <div class="row mt-1 ">
                                     <div class="col-8">
-                                        <button onclick="ver_detalles_pedido(${pedido.id}, ${pedido.precio_pedido})" class="btn btn-success btn-sm btn-block">Ver detalles</button>
+                                        <button onclick="ver_detalles_pedido(${pedido.id}, ${pedido.precio_pedido})" class="btn btn-primary btn-sm btn-block">Ver detalles</button>
                                     </div>
                                     <div class="col-4">
                                         <button onclick="eliminar_pedido(${pedido.id}, '${id_contenedor}')" class="btn btn-danger btn-sm btn-block">Quitar</button>
@@ -477,7 +489,7 @@ if(window.location.pathname == ruta+'pedidos/pedidos.php'){
             pedido.color = 'orange';
             pedido.icono = '<i style="color: orange" class="bi bi-stopwatch"></i>';
         } else {
-            predido.fecha = fecha;
+            pedido.fecha = fecha;
             pedido.texto_estado = "Entregado";
             pedido.estado_distinto = 1;
             pedido.color = 'green';

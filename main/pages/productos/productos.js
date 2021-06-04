@@ -191,21 +191,28 @@ if(window.location.pathname == ruta+'productos/productos.php'){
     
     /* DECLARACION DE FUNCIONES */
     function dibuja_accesorios(accesorio){
-        template = `<div class="col-sm-3 mt-3">
-                        <div class='card' style="max-width: 24rem;">
+        template = `<div class="col-sm-6 col-md-4 col-lg-3 col-xl-3 mt-1">
+                        <div class='card mb-3 border border-primary mx-auto' style="min-width: 15rem; max-width: 17rem;">
                             <div class='card-body'>
                             <div class='row'>
                                 <div class='col-md-10'>
-                                <h5 class='text-success'>${accesorio.nombre}</h5>
+                                <h6 class=''>${accesorio.nombre}</h6>
                                 </div>
-                                <div class='col-md-2'>
-                                    <a onclick="agregar_accesorio_al_producto(${accesorio.id},${accesorio.precio},'${accesorio.nombre}', ${accesorio.id_tipo})" role="button" class="btn btn-success btn-sm"><i class="bi bi-plus-circle"></i></a>
+                                
+                            </div>
+                                <hr class="mt-0 bg-dark">
+                                <p class='card-text'>Clase: ${accesorio.tipo}</p>
+                                <small class='card-text'>
+                                    <small class="" style="font-size: 1rem">Precio: $${accesorio.precio}
+                                    </small> 
+                                    <small style="font-size: 0.7rem">(${accesorio.edicion})
+                                    </small>
+                                </small>
+                            </div>
+
+                            <div class='card-footer  border-primary col-md-12'>
+                                    <a onclick="agregar_accesorio_al_producto(${accesorio.id},${accesorio.precio},'${accesorio.nombre}', ${accesorio.id_tipo})" role="button" class="btn btn-primary btn-sm " style="width:100%">Agregar accesorio</a>
                                 </div>
-                            </div>
-                                <hr>
-                                <p class='card-text'>Tipo ${accesorio.tipo}</p>
-                                <small class='card-text'><small class="text-danger" style="font-size: 1rem">$${accesorio.precio}</small> <small style="font-size: 0.6rem">(${accesorio.edicion})</small></small>
-                            </div>
                             
                         </div>
                     </div>`
@@ -285,6 +292,7 @@ if(window.location.pathname == ruta+'productos/productos.php'){
                 $deck_cartas.innerHTML = template;
           })
           lista_accesorios = array;
+          filtrado_lista($("#criterio_sort").val());
         })
         .fail(function () {
           console.log('Err'); 

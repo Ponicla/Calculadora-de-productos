@@ -16,7 +16,7 @@ include '../nav.php';
             <input id="producto_buscado" name="nombre" type="text" class="form-control" placeholder="Qué producto buscas?" autocomplete="off">
         </div>
         <div class="col-md-4 ">
-            <Button hidden id="btn-pedido" class="btn btn-success"><i class="bi bi-recycle"></i> Pedido</Button>
+            <Button hidden id="btn-pedido" class="btn btn-success"><i class="bi bi-recycle"></i> Administrar nuevo pedido</Button>
             <Button hidden onclick="limpiar_pedido()" id="btn-limpia-pedido" class="btn btn-danger"><i class="bi bi-trash"></i> Destruir</Button>
         </div>
     </div>
@@ -46,7 +46,7 @@ include '../nav.php';
         <div class="col-md-4 form-group">
             <input id="pedido_buscado" onchange="buscar_pedido()" name="nombre" type="text" class="form-control" placeholder="Qué pedido buscas?" autocomplete="off">
         </div>
-
+        <div class="text-muted mt-2">Mostrar:</div>
         <div class="col-md-3">
             <select id="criterio_pedido" class="form-control" onchange="filtrado_lista(this.value)">
                 <option value="0" selected default>Todos los pedidos</option>

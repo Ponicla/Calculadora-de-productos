@@ -30,7 +30,6 @@ if (window.location.pathname == ruta + 'almacen/almacen.php') {
   
 
     /* FUNCIONES JQUERY */
-    $('#criterio_boveda').val('2');
 
     $("#modal_vista_producto").on("hidden.bs.modal", function () {
         $('#lista_accesorios_para_sumar').trigger('change');
@@ -240,22 +239,26 @@ if (window.location.pathname == ruta + 'almacen/almacen.php') {
             color_bg = "bg-success";
             boton_funcion = `deshabilitar_o_habilitar_producto(${producto.id}, 1)`;
             boton_texto = "Boveda";
+            boton_color = "bg-danger"
+            carta_borde = "border-success";
         } else {
             color_bg = "bg-danger";
             boton_funcion = `deshabilitar_o_habilitar_producto(${producto.id}, 0)`;
-            boton_texto = "Activar";   
+            boton_texto = "Activar";
+            boton_color = "bg-success";           
+            carta_borde = "border-danger";
         }
         
         template =`
-        <div class=" col-sm-6 col-md-4 col-lg-3 col-xl-3 mt-3">
-            <div class='card mx-auto'  style="width: 15rem; height: 14rem;">
+        <div class=" col-sm-6 col-md-4 col-lg-3 col-xl-3 mt-1">
+            <div class='card mb-3 mx-auto border ${carta_borde}'  style="min-width: 15rem; max-width: 17rem;">
                 <div class='card-body ' >
                     <div class='row'>
                         <div class='col-md-12'>
                             <h6 >${nombre_vela}</h6>
                         </div>
                     </div>
-                        <hr>
+                        <hr class="mt-0 bg-dark">
                             <div class='row'>
                                 <div class='col-md-12'>
                                     <h6 >Precio: $${producto.precio}</h6>
@@ -263,12 +266,12 @@ if (window.location.pathname == ruta + 'almacen/almacen.php') {
                             </div>
                         <input hidden type="number" class="form-control" id="${id_contenedor_cantidad}" value="${producto.cantidad_cera}">
                     </div>
-                    <div class='card-footer ${color_bg}  d-flex'>
+                    <div class='card-footer  ${carta_borde} d-flex'>
                         <div class='p-0 col-md-7'>
-                            <button onclick="ver_detalles_producto(${producto.id}, '${nombre_vela}', '${id_contenedor_cantidad}', ${producto.cantidad_cera}, '${producto.descripcion}')" class="btn btn-light btn-block btn-sm">Ver detalles</button>
+                            <button onclick="ver_detalles_producto(${producto.id}, '${nombre_vela}', '${id_contenedor_cantidad}', ${producto.cantidad_cera}, '${producto.descripcion}')" class="btn btn-primary btn-block btn-sm">Ver detalles</button>
                         </div>
                         <div class='p-0 col-md-5'>
-                        <button onclick="${boton_funcion}" class=" ml-1 btn btn-outline-light btn-block btn-sm  pt-6 pb-6">${boton_texto}</button>
+                        <button onclick="${boton_funcion}" class=" ml-1 btn text-white btn-block btn-sm ${boton_color} pt-6 pb-6">${boton_texto}</button>
                         </div>
                     </div>
                 </div>
@@ -290,7 +293,7 @@ if (window.location.pathname == ruta + 'almacen/almacen.php') {
     }
 
     function llamar_funciones_iniciales(){
-        get_productos();
+        get_productos();   
         get_accesorios(); 
     }
 
@@ -482,6 +485,10 @@ if (window.location.pathname == ruta + 'almacen/almacen.php') {
                 lista_productos = array;
                 lista_nueva_general = array;
                 lista_filtrada_general = array;
+
+
+                mostrar_lista();
+
             })
             .fail(function () {
                 console.log('Err');
@@ -499,9 +506,6 @@ if (window.location.pathname == ruta + 'almacen/almacen.php') {
         })
         .done(function (res) {
             get_productos();
-            $('#criterio_boveda').val('1');
-            $('#criterio_sort').val('');
-            $('#producto_buscado').val('');
             if ( nuevo_estado == 1) {
                 Toast.fire({
                     icon: 'error',

@@ -10,21 +10,21 @@
     <hr>
     <p class="text-success">Cree un nuevo producto para el almacen</p>
 
-    <div class="row form-group">
-        <div class="col-md-4 form-group">
+    <div class="row form-group mb-0">
+        <div class="col-md-4 form-group ">
             <input id="nombre" id="nombre" type="text" class="form-control" placeholder="Que quieres agregar?" autocomplete="off">
         </div>
+        <div class="text-muted mt-2">Ordenar por:</div>
         <div class="col-md-3">
             <select id="criterio_sort" class="form-control" onchange="filtrado_lista(this.value)">
-                <option value="" selected>Ordenar por</option>
                 <option value="1">Precio de mayor a menor</option>
                 <option value="2">Precio de menor a mayor</option>
-                <option value="3" data-content='<i class="bi bi-sort-alpha-down">'></i>Nombre A - Z</option>
+                <option value="3" selected data-content='<i class="bi bi-sort-alpha-down">'></i>Nombre A - Z</option>
                 <option value="4">Nombre Z - A</option>
             </select> 
         </div>
-        <div class="col-md-4 form-group">
-            <Button hidden id="btn-piezas" class="btn btn-success"><i class="bi bi-recycle"></i> Formula</Button>
+        <div class="col-md-4 form-group ">
+            <Button hidden id="btn-piezas" class="btn btn-success"><i class="bi bi-recycle"></i> Administrar nuevo producto</Button>
             <Button hidden onclick="limpiar_producto2()" id="btn-limpia-producto" class="btn btn-danger"><i class="bi bi-trash"></i> Destruir</Button>
         </div>
         
@@ -44,7 +44,7 @@
 </div>
 
 <!-- DECK -->
-<div id="deck_cartas" class="card-deck"></div>
+<div id="deck_cartas" class="card-deck d-flex flex-wrap mb-4" style="align-content: center;"></div>
 
 <!-- MODAL EDICION ACCESORIO -->
 <div class="modal fade" id="modal_nuevo_producto" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
