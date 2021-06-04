@@ -2,8 +2,20 @@
 require_once('../../../../db/conexion.php'); 
 
 session_start();
-//
-$sql = "SELECT id, precio AS precio_pedido, SUM(cantidad_cera) AS cantidad_cera, SUM(total_de_productos_con_cera) AS unidades_cera, estado
+$sql = "SELECT
+		pedido.id,
+		sum(pedido_producto.precio_producto) AS precio_pedido,
+		pedido.estado,
+		pedido.descripcion,
+		sum(producto.cantidad_cera) AS cantidad_cera
+		FROM
+		pedido
+		INNER JOIN pedido_producto
+		ON pedido.id = pedido_producto.fk_id_pedido
+		INNER JOIN producto
+		ON pedido_producto.fk_id_producto = producto.id
+		GROUP BY pedido.id";
+/* $sql = "SELECT id, precio AS precio_pedido, SUM(cantidad_cera) AS cantidad_cera, SUM(total_de_productos_con_cera) AS unidades_cera, estado
 , descripcion
  FROM (
 SELECT
@@ -34,7 +46,7 @@ WHERE
 					producto.cantidad_cera > 0
 GROUP BY
 					pedido_producto.fk_id_pedido) p
-GROUP BY id";
+GROUP BY id"; */
 
 
 

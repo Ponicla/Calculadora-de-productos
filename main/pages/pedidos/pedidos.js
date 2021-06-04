@@ -47,6 +47,7 @@ if(window.location.pathname == ruta+'pedidos/pedidos.php'){
             lista_id_productos.push(elemento.id_producto);
             lista_precio_producto.push(elemento.precio);
         });
+
         $.ajax({
             url: "../../functions/php/pedidos/nuevo_pedido.php",
             type: "POST",
@@ -434,7 +435,7 @@ if(window.location.pathname == ruta+'pedidos/pedidos.php'){
             pedido.color = 'green';
             pedido.icono = '<i style="color: green" class="bi bi-bag-check"></i>';
         }
-        if(viene_de_filtrado == 0){
+        /* if(viene_de_filtrado == 0){
             if(parseInt(pedido.cantidad_cera) > 0 ){
                 var precio_actual = parseFloat(pedido.precio_pedido);
                 var cantidad_de_cera = parseInt(pedido.cantidad_cera);
@@ -443,7 +444,7 @@ if(window.location.pathname == ruta+'pedidos/pedidos.php'){
                 var precio_final = parseFloat(precio_subtotal) + (((cantidad_de_cera*valor_cera))/100);
                 pedido.precio_pedido = precio_final; 
             }
-        }
+        } */
         return pedido;
     }
 
@@ -519,13 +520,6 @@ if(window.location.pathname == ruta+'pedidos/pedidos.php'){
             $id_pedido.innerHTML= id;
 
             array1.forEach(elemento => {
-                if(parseInt(elemento.cantidad_cera) > 0 ){
-                    var precio_actual = parseFloat(elemento.precio);
-                    var cantidad_de_cera = parseInt(elemento.cantidad_cera);
-                    var precio_subtotal = parseFloat(precio_actual) - parseFloat(valor_cera);
-                    var precio_final = parseFloat(precio_subtotal) + ((cantidad_de_cera*valor_cera)/100);
-                    elemento.precio = precio_final;  
-                }
                 if (array2.some(item => item.nombre === elemento.nombre)){
                     array2.findIndex(function(post, index) {
                         if(post.nombre == elemento.nombre) {
@@ -686,4 +680,5 @@ if(window.location.pathname == ruta+'pedidos/pedidos.php'){
             })
         }
     }
+    
 }
