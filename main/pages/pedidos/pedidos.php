@@ -62,9 +62,9 @@ include '../nav.php';
 <div class="container-fluid">
     
     <div class="row form-group">
-        <!-- <div class="col-md-4 form-group">
-            <input id="producto_buscado" name="nombre" type="text" class="form-control" placeholder="Qué buscas?" autocomplete="off">
-        </div> -->
+        <div class="col-md-4 form-group">
+            <input id="pedido_buscado" onchange="buscar_pedido()" name="nombre" type="text" class="form-control" placeholder="Qué pedido buscas?" autocomplete="off">
+        </div>
 
         <div class="col-md-3">
             <select id="criterio_pedido" class="form-control" onchange="filtrado_lista(this.value)">

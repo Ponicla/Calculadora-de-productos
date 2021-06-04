@@ -105,8 +105,48 @@ if(window.location.pathname == ruta+'pedidos/pedidos.php'){
         $('#modal_nuevo_pedido').modal('show');
     });
 
+    $("#pedido_buscado").keyup(function () {
+        buscar_pedido();
+    })
+
 
     /* DECLARACION DE FUNCIONES */
+    function buscar_pedido(){
+        var lista = [];
+        var pedido_buscado = $('#pedido_buscado').val();
+        var criterio_filtro = $('#criterio_pedido').val();
+
+        lista_de_pedidos_inalterable.forEach(elemento => {
+            let buscado = pedido_buscado.toLowerCase();
+            let descripcion = elemento.descripcion.toLowerCase();
+            if(descripcion.includes(buscado)){
+                if(criterio_filtro == 0){
+                    lista.push(elemento);
+                }else{
+                    if(elemento.estado == criterio_filtro){
+                        lista.push(elemento);
+                    }
+                }
+            } 
+        });
+        mostrar_lista_pedidos_filtrada(lista);
+    }
+
+    function mostrar_lista_pedidos_filtrada(lista) {
+        var template = ``;
+        if(lista.length == 0){
+            template = dibuja_lista_filtrada_vacia();
+            $deck_cartas_pedidos.innerHTML = template;
+        }else{
+            lista.forEach((pedido) => {
+                var id_contenedor = "carta_pedido_numero_"+pedido.id;
+                pedido = refactor_predido(pedido, 1);
+                template += dibuja_pedidos(pedido, id_contenedor);
+                $deck_cartas_pedidos.innerHTML = template; 
+            }) 
+        }
+        
+    }
 
     function filtrar_productos(buscado) {
         var array = lista_productos_inalterable;
@@ -188,11 +228,12 @@ if(window.location.pathname == ruta+'pedidos/pedidos.php'){
                                         <h5 class='text-info'>Pedido ${pedido.id}</h5>
                                     </div>
                                     <div class='col-md-6' style="text-align: right !important">
-                                        <p style="color : ${pedido.color}">${pedido.icono} ${pedido.texto_estado}</p>
+                                        <p style="color : ${pedido.color}; margin-bottom: 0">${pedido.icono} ${pedido.texto_estado}</p>
+                                        <p style="margin-bottom: 0"><small class="text-info">${pedido.fecha}</small></p>
                                     </div>
                             </div>
-                                <div>Total $${pedido.precio_pedido}</div>
-                                    <small class="text-info">${pedido.descripcion}</small>
+                                <div>Total $${pedido.precio_pedido}</div>   
+                                <small class="text-info">${pedido.descripcion}</small>
                             </div>
                             <div class='card-footer'>
                             <button class="btn btn-block btn-primary btn-sm" onclick="cambiar_estado_de_pedido(${pedido.id},${pedido.estado_distinto}, '${id_contenedor}')">Cambiar estado</button>
@@ -424,12 +465,20 @@ if(window.location.pathname == ruta+'pedidos/pedidos.php'){
 
     function refactor_predido(pedido, viene_de_filtrado){
         // console.log(pedido.estado);
+        var date = new Date(pedido.fecha);
+        var dia = date.getDate();
+        var mes = date.toLocaleString("es-ES", { month: "long" });
+        var ano = date.getFullYear();
+        var fecha = dia + " " + mes + " " +ano;
+
         if (pedido.estado == 1) {
+            pedido.fecha = fecha;
             pedido.texto_estado = "Pendiente";
             pedido.estado_distinto = 2;
             pedido.color = 'orange';
             pedido.icono = '<i style="color: orange" class="bi bi-stopwatch"></i>';
         } else {
+            predido.fecha = fecha;
             pedido.texto_estado = "Entregado";
             pedido.estado_distinto = 1;
             pedido.color = 'green';
@@ -447,6 +496,7 @@ if(window.location.pathname == ruta+'pedidos/pedidos.php'){
         } */
         return pedido;
     }
+
 
     function get_pedidos_filtrado(estado) {
         var template = ``;

@@ -4,6 +4,7 @@ require_once('../../../../db/conexion.php');
 session_start();
 $sql = "SELECT
 		pedido.id,
+		pedido.fecha,
 		sum(pedido_producto.precio_producto) AS precio_pedido,
 		pedido.estado,
 		pedido.descripcion,

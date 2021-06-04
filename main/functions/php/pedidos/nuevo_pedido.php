@@ -6,7 +6,7 @@ session_start();
 $lista = $_POST['lista_productos'];
 $descripcion = $_POST['descripcion'];
 $precio = $_POST['lista_precios'];
-$sql = "INSERT INTO pedido VALUES (DEFAULT, DEFAULT, :descripcion)";
+$sql = "INSERT INTO pedido (id, estado, descripcion, fecha) VALUES (DEFAULT, DEFAULT, :descripcion, NOW())";
 $req = $bdd->prepare($sql);
 $req->bindParam(":descripcion", $descripcion);
 $req->execute();
