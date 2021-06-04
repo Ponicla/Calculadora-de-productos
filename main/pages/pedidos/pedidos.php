@@ -48,7 +48,7 @@ include '../nav.php';
         </div>
         <div class="text-muted mt-2">Mostrar:</div>
         <div class="col-md-3">
-            <select id="criterio_pedido" class="form-control" onchange="filtrado_lista(this.value)">
+            <select id="criterio_pedido" class="form-control" onchange="buscar_pedido()">
                 <option value="0" selected default>Todos los pedidos</option>
                 <option value="1">Pedidos entregados</option>
                 <option value="2">Pedidos pendientes</option>
@@ -116,7 +116,7 @@ include '../nav.php';
             <div class="modal-body">
                 <form id="form_modal_nuevo_pedido">
                     <p class="text-success" style="font-size: 0.7rem;">Detalles</p>
-                    <input required id="detalle_pedido" type="text" class="form-control" placeholder="Para quién es el pedido? Puedes poner su número" maxlength="100" >
+                        <input required id="detalle_pedido" type="text" class="form-control" placeholder="Para quién es el pedido? Puedes poner su número" maxlength="100" >
                     <hr>
                     <p class="text-success" style="font-size: 0.7rem;">Productos</p>
 

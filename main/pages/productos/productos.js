@@ -235,8 +235,10 @@ if(window.location.pathname == ruta+'productos/productos.php'){
     function dibujar_no_coincidencias(){
         template = 
             `<div class="container-fluid">
-                <div class="alert alert-danger" role="alert">
-                    <i class="bi bi-emoji-frown"></i> No hay coincidencias
+                <div class="container-fluid">
+                    <div class="alert alert-danger" role="alert">
+                        <i class="bi bi-emoji-frown"></i> No hay coincidencias
+                    </div>
                 </div>
             </div>`
         return template;

@@ -63,7 +63,7 @@ if(window.location.pathname == ruta+'pedidos/pedidos.php'){
             console.log(res);
             if(res == 'true'){
                 limpiar_pedido();
-                $('#modal_nuevo_pedido').modal('hide');
+                $('#form_modal_nuevo_pedido').trigger('reset');
                 $('#indicador_de_que_no_hay_nada2').attr('hidden', 'hidden');
                 Swal.fire({
                     html: '<h5 style="color: white">Muy bien, creaste un pedido</h5>',
@@ -92,7 +92,7 @@ if(window.location.pathname == ruta+'pedidos/pedidos.php'){
         var template2 = ``;
         var cont = 1;
         var precio = 0;
-        console.log(lista_productos);
+        // console.log(lista_productos);
         lista_productos.forEach(function(elemento, index, object) {
             var id_contenedor = "ingrediente_fila_"+cont;
             var precio_para_enviar = (elemento.precio.toFixed(2));
@@ -125,7 +125,7 @@ if(window.location.pathname == ruta+'pedidos/pedidos.php'){
                 if(criterio_filtro == 0){
                     lista.push(elemento);
                 }else{
-                    if(elemento.estado == criterio_filtro){
+                    if(elemento.estado != criterio_filtro){
                         lista.push(elemento);
                     }
                 }
@@ -249,7 +249,7 @@ if(window.location.pathname == ruta+'pedidos/pedidos.php'){
                                 <small class="text-info">${pedido.descripcion}</small>
                             </div>
                             <div class='card-footer ${carta_borde}'>
-                            <button class="btn btn-block ${boton_estado_color} btn-sm" onclick="cambiar_estado_de_pedido(${pedido.id},${pedido.estado_distinto}, '${id_contenedor}')">${boton_estado_texto}</button>
+                            <button class="text-white btn btn-block ${boton_estado_color} btn-sm" onclick="cambiar_estado_de_pedido(${pedido.id},${pedido.estado_distinto}, '${id_contenedor}')">${boton_estado_texto}</button>
                                 <div class="row mt-1 ">
                                     <div class="col-8 pr-0">
                                         <button onclick="ver_detalles_pedido(${pedido.id}, ${pedido.precio_pedido})" class="btn btn-primary btn-sm btn-block">Ver detalles</button>
@@ -442,8 +442,20 @@ if(window.location.pathname == ruta+'pedidos/pedidos.php'){
                     template += dibuja_pedidos(pedido);
                 });
             }
+
             $deck_cartas_pedidos.innerHTML = template;
             
+            if(nuevo_estado == 2){
+                Toast.fire({
+                    icon: 'success',
+                    title: 'Pedido movido a entregados'
+                })
+            }else if(nuevo_estado == 1) {
+                Toast.fire({
+                    icon: 'warning',
+                    title: 'Pedido movido a pendientes'
+                })
+            }
         })
         .fail(function () {
             console.log('Err');
@@ -702,8 +714,8 @@ if(window.location.pathname == ruta+'pedidos/pedidos.php'){
         }
     }
 
-    function limpiar_pedido(){
-        $('#modal_nuevo_pedido').trigger('reset');
+    function limpiar_pedido(){ 
+        $('#form_modal_nuevo_pedido').trigger('reset');
         lista_productos = [];
         var template = ``;
         var template2 = ``;
@@ -712,6 +724,10 @@ if(window.location.pathname == ruta+'pedidos/pedidos.php'){
         $('#contenderdor_botones').attr('hidden','hidden');
         $('#btn-pedido').attr('hidden','hidden');
         $('#btn-limpia-pedido').attr('hidden','hidden');
+        Toast.fire({
+            icon: 'success',
+            title: 'Pedido destruido'
+        })
         get_pedidos();
     }
 

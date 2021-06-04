@@ -151,8 +151,13 @@ if (window.location.pathname == ruta + 'almacen/almacen.php') {
         var cantidad_de_cera = $('#cantidad_total_cera').val();
         var nombre = $('#nombre_vela').val();
         var descripcion = $('#descripcion_vela').val();
-
-        $.ajax({
+        if(lista_ingredientes.length == 0){
+            Toast.fire({
+                icon: 'error',
+                title: 'No puede guardar el producto vacio'
+            })
+        }else{
+            $.ajax({
                 url: "../../functions/php/almacen/actualizar_producto.php",
                 type: "POST",
                 data: {
@@ -192,6 +197,8 @@ if (window.location.pathname == ruta + 'almacen/almacen.php') {
             .fail(function () {
                 console.log('Err');
             });
+        }
+        
     });
 
 
@@ -345,9 +352,9 @@ if (window.location.pathname == ruta + 'almacen/almacen.php') {
         } else {
 
             var indice = crea_indice(lista_ingredientes.length, lista_ingredientes);
-            console.log(lista_accesorios);
+            // console.log(lista_accesorios);
             var found = lista_accesorios.find(elemento => elemento.id == parseInt(valor));
-            console.log(found);
+            // console.log(found);
             let obj = {
                 id: found.id,
                 nombre: found.nombre,
@@ -359,7 +366,7 @@ if (window.location.pathname == ruta + 'almacen/almacen.php') {
                 icon: 'success',
                 title: 'Agregaste ' + found.nombre.toLowerCase() + ' a la preparación'
             })
-            console.log(obj);
+            // console.log(obj);
 
             lista_ingredientes.push(obj);
             ordena_lista_por_precio(lista_ingredientes);
@@ -370,19 +377,8 @@ if (window.location.pathname == ruta + 'almacen/almacen.php') {
             var precio = 0;
             lista_ingredientes.forEach(function (elemento, index, object) {
                 var id_contenedor_cantidad = "cantidad_cera_traida_" + cont;
-
                 var id_contenedor = "ingrediente_fila_" + cont;
-
-                template += `
-                <div class="row" id=${id_contenedor}>
-                    <div class="col-md-10">
-                        <p><i onclick="quitar_accesorio_producto(${elemento.id}, ${id_contenedor}, ${elemento.indice}, ${elemento.id_tipo}, '${id_contenedor_cantidad}')" class="text-danger bi bi-trash"></i> ${elemento.nombre}</p>
-                    </div>
-                    <div class="col-md-2" style="text-align: right;">
-                        <p class="text-info">$${elemento.precio}</p>
-                    </div>
-                </div>`
-
+                template += dibujar_accesorio(id_contenedor, elemento, id_contenedor_cantidad);
                 $fila_producto.innerHTML = template;
                 cont = cont + 1;
                 precio = precio + parseFloat(elemento.precio);
@@ -667,47 +663,18 @@ if (window.location.pathname == ruta + 'almacen/almacen.php') {
                         elemento.precio = parseInt(elemento.precio) - parseInt(valor_cera);
                         elemento.precio += ((parseInt(cantidad_cera) * parseInt(valor_cera)) / 100);
 
-
-
-
                         lista_ingredientes.push(elemento);
                         var id_contenedor = "ingrediente_fila_" + cont;
-
-                        template += `
-                                <div class="row" id=${id_contenedor}>
-                                    <div class="col-md-10">
-                                        <p><i onclick="quitar_accesorio_producto(${elemento.id}, ${id_contenedor}, ${elemento.indice}, ${elemento.id_tipo}, '${id_contenedor_cantidad}')" class="text-danger bi bi-trash"></i> ${elemento.nombre}</p>
-                                    </div>
-                                    <div class="col-md-2" style="text-align: right;">
-                                        <p class="text-info">$${elemento.precio}</p>
-                                    </div>
-                                </div>`
-
+                        template += dibujar_accesorio(id_contenedor, elemento, id_contenedor_cantidad);
                         $fila_producto.innerHTML = template;
                         cont = cont + 1;
-
                         precio = precio + parseFloat(elemento.precio);
-
-
-
-
-
 
                     } else {
                         elemento.cantidad_de_cera = 0;
                         lista_ingredientes.push(elemento);
                         var id_contenedor = "ingrediente_fila_" + cont;
-
-                        template += `
-                                <div class="row" id=${id_contenedor}>
-                                    <div class="col-md-10">
-                                        <p><i onclick="quitar_accesorio_producto(${elemento.id}, ${id_contenedor}, ${elemento.indice}, ${elemento.id_tipo}, '${id_contenedor_cantidad}')" class="text-danger bi bi-trash"></i> ${elemento.nombre}</p>
-                                    </div>
-                                    <div class="col-md-2" style="text-align: right;">
-                                        <p class="text-info">$${elemento.precio}</p>
-                                    </div>
-                                </div>`
-
+                        template += dibujar_accesorio(id_contenedor, elemento, id_contenedor_cantidad);
                         $fila_producto.innerHTML = template;
                         cont = cont + 1;
 
@@ -748,8 +715,8 @@ if (window.location.pathname == ruta + 'almacen/almacen.php') {
         }
 
         const found = lista_ingredientes.findIndex(elemento => elemento.indice == indice);
-        var indice_a_quitar = found;
-        lista_ingredientes.splice(indice_a_quitar, 1);
+        var indice_a_eliminar = found;
+        lista_ingredientes.splice(indice_a_eliminar, 1);
 
 
         var contenedor = '#' + id_contenedor.id;
@@ -775,16 +742,14 @@ if (window.location.pathname == ruta + 'almacen/almacen.php') {
 
         $total_producto.innerHTML = template2;
 
-        if (lista_ingredientes.length == 0) {
-            // $('#btn-piezas').attr('hidden','hidden');
-            // $('#btn-limpia-producto').attr('hidden','hidden');
+        /* if (lista_ingredientes.length == 0) {
             $('#modal_vista_producto').modal('hide');
             $('#form_modal_vista_producto').trigger('reset');
             Toast.fire({
                 icon: 'warning',
                 title: 'Eliminar aca esto, a la mierda'
             })
-        }
+        } */
     }
 
     function string_to_int(string) {
