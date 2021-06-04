@@ -252,7 +252,7 @@ if (window.location.pathname == ruta + 'almacen/almacen.php') {
         template =`
         <div class=" col-sm-6 col-md-4 col-lg-3 col-xl-3 mt-1">
             <div class='card mb-3 mx-auto border ${carta_borde}'  style="min-width: 15rem; max-width: 17rem;">
-                <div class='card-body ' >
+                <div class='card-body pt-3' >
                     <div class='row'>
                         <div class='col-md-12'>
                             <h6 >${nombre_vela}</h6>
@@ -261,7 +261,7 @@ if (window.location.pathname == ruta + 'almacen/almacen.php') {
                         <hr class="mt-0 bg-dark">
                             <div class='row'>
                                 <div class='col-md-12'>
-                                    <h6 >Precio: $${producto.precio}</h6>
+                                <div>Precio: $${producto.precio}</div>
                                 </div>
                             </div>
                         <input hidden type="number" class="form-control" id="${id_contenedor_cantidad}" value="${producto.cantidad_cera}">

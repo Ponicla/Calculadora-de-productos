@@ -193,7 +193,7 @@ if(window.location.pathname == ruta+'productos/productos.php'){
     function dibuja_accesorios(accesorio){
         template = `<div class="col-sm-6 col-md-4 col-lg-3 col-xl-3 mt-1">
                         <div class='card mb-3 border border-primary mx-auto' style="min-width: 15rem; max-width: 17rem;">
-                            <div class='card-body'>
+                            <div class='card-body pt-3'>
                             <div class='row'>
                                 <div class='col-md-10'>
                                 <h6 class=''>${accesorio.nombre}</h6>
@@ -211,7 +211,7 @@ if(window.location.pathname == ruta+'productos/productos.php'){
                             </div>
 
                             <div class='card-footer  border-primary col-md-12'>
-                                    <a onclick="agregar_accesorio_al_producto(${accesorio.id},${accesorio.precio},'${accesorio.nombre}', ${accesorio.id_tipo})" role="button" class="btn btn-primary btn-sm " style="width:100%">Agregar accesorio</a>
+                                    <a onclick="agregar_accesorio_al_producto(${accesorio.id},${accesorio.precio},'${accesorio.nombre}', ${accesorio.id_tipo})" role="button" class="btn btn-primary btn-sm " style="width:100%">Agregar al producto</a>
                                 </div>
                             
                         </div>

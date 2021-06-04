@@ -203,7 +203,7 @@ if(window.location.pathname == ruta+'pedidos/pedidos.php'){
     function dibuja_productos(accesorio){
         template = `<div class="col-sm-6 col-md-4 col-lg-3 col-xl-3 mt-1">
                         <div class="card mb-3 border border-primary mx-auto" style="min-width: 15rem; max-width: 17rem;">
-                            <div class='card-body'>
+                            <div class='card-body pt-3'>
                                 <div class='row'>
                                     <div class='col-md-12'>
                                     <h6 class='text-dark '>${accesorio.nombre}</h6>
@@ -216,7 +216,7 @@ if(window.location.pathname == ruta+'pedidos/pedidos.php'){
                                 </div>
                             </div>
                             <div class='card-footer  border-primary col-md-12'>
-                            <a onclick="agregar_producto_al_pedido(${accesorio.id},'${accesorio.nombre}',${accesorio.precio})" role="button" class="btn btn-primary btn-sm " style="width:100%">Agregar producto</a>
+                            <a onclick="agregar_producto_al_pedido(${accesorio.id},'${accesorio.nombre}',${accesorio.precio})" role="button" class="btn btn-primary btn-sm " style="width:100%">Agregar al pedido</a>
                         </div>
                         </div>
                     </div>`
