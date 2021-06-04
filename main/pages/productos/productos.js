@@ -191,7 +191,7 @@ if(window.location.pathname == ruta+'productos/productos.php'){
     
     /* DECLARACION DE FUNCIONES */
     function dibuja_accesorios(accesorio){
-        template = `<div class="col-sm-3 mt-1">
+        template = `<div class="col-sm-3 mt-3">
                         <div class='card' style="max-width: 24rem;">
                             <div class='card-body'>
                             <div class='row'>

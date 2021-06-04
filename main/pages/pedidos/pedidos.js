@@ -198,7 +198,7 @@ if(window.location.pathname == ruta+'pedidos/pedidos.php'){
     }
 
     function dibuja_productos(accesorio){
-        template = `<div class="col-sm-3 mt-1">
+        template = `<div class="col-sm-3 mt-3">
                         <div class='card' style="max-width: 20rem;">
                             <div class='card-body'>
                                 <div class='row'>
@@ -219,7 +219,7 @@ if(window.location.pathname == ruta+'pedidos/pedidos.php'){
     }
 
     function dibuja_pedidos(pedido, id_contenedor){
-        template = `<div class="col-sm-6 col-md-4 col-lg-4 col-xl-3 mt-1" id="carta_pedido_numero_${pedido.id}">
+        template = `<div class="col-sm-6 col-md-4 col-lg-4 col-xl-3 mt-3" id="carta_pedido_numero_${pedido.id}">
                         <div class='card mx-auto' style=" width: 17rem; min-height: 14rem;">
                             <div class='card-body'>
                             <div class='row'>

@@ -247,7 +247,7 @@ if (window.location.pathname == ruta + 'almacen/almacen.php') {
         }
         
         template =`
-        <div class=" col-sm-6 col-md-4 col-lg-3 col-xl-3 mt-1">
+        <div class=" col-sm-6 col-md-4 col-lg-3 col-xl-3 mt-3">
             <div class='card mx-auto'  style="width: 15rem; height: 14rem;">
                 <div class='card-body ' >
                     <div class='row'>
