@@ -512,8 +512,7 @@ if(window.location.pathname == ruta+'pedidos/pedidos.php'){
                     n++;
                 }
                 pedido["Pagina"] = n;
-                aux.push(pedido);      
-                     
+                aux.push(pedido);           
           });
           template = `<select id="paginador" class="form-control" onchange="buscar_pedido()">`;
                 for (i=1;i<=n;i++) {
@@ -525,7 +524,6 @@ if(window.location.pathname == ruta+'pedidos/pedidos.php'){
                 }
             template += `</select>`;
            $div_paginador.innerHTML = template;
-           // console.log(template);
         }
           return aux;
 
