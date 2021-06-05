@@ -4,6 +4,7 @@ if(window.location.pathname == ruta+'pedidos/pedidos.php'){
      /* DECLARACION DE VARIABLES */
      var $deck_cartas_pedidos = document.querySelector('#deck_cartas_pedidos');
      var $deck_cartas_productos = document.querySelector('#deck_cartas_productos');
+     var $div_paginador = document.querySelector('#div_paginador');
      var $fila_producto = document.querySelector('#fila_producto');
      var $fila_producto2 = document.querySelector('#fila_producto2');
      var $total_pedido2 = document.querySelector('#total_pedido2');
@@ -114,10 +115,10 @@ if(window.location.pathname == ruta+'pedidos/pedidos.php'){
 
     /* DECLARACION DE FUNCIONES */
     function buscar_pedido(){
+        $deck_cartas_pedidos.innerHTML = "";
         var lista = [];
         var pedido_buscado = $('#pedido_buscado').val();
         var criterio_filtro = $('#criterio_pedido').val();
-
         lista_de_pedidos_inalterable.forEach(elemento => {
             let buscado = pedido_buscado.toLowerCase();
             let descripcion = elemento.descripcion.toLowerCase();
@@ -131,7 +132,48 @@ if(window.location.pathname == ruta+'pedidos/pedidos.php'){
                 }
             } 
         });
-        mostrar_lista_pedidos_filtrada(lista);
+        
+        mostrar_lista_pedidos_filtrada(paginado(lista));
+    }
+
+    function paginado(lista) {    
+        var valor_paginador = $('#paginador').val(); 
+        if (valor_paginador == undefined) { valor_paginador = 1}
+        var aux = [];
+        var cartas_por_pagina = $('#cantidad_por_pagina').val();
+        console.log("www",cartas_por_pagina);
+        var n = 1;
+        var c = 0;
+        var template = "";
+
+        if(lista.length == 0){
+            $div_paginador.innerHTML = template;
+        }else{
+        lista.forEach(function callback(pedido, index) {
+                if (c < cartas_por_pagina) {
+                    c++;
+                } else {
+                    c = 1;
+                    n++;
+                }
+                pedido["Pagina"] = n;
+                aux.push(pedido);      
+                console.log(pedido);       
+          });
+          template = `<select id="paginador" class="form-control" onchange="buscar_pedido()">`;
+                for (i=1;i<=n;i++) {
+                    if (i == valor_paginador) {
+                        template += `<option value="${i}" selected >${i}</option>`;
+                    } else {
+                        template += `<option value="${i}">${i}</option>`;
+                    }
+                }
+            template += `</select>`;
+            $div_paginador.innerHTML = template;
+            console.log(aux);
+        }
+          return aux;
+
     }
 
     function mostrar_lista_pedidos_filtrada(lista) {
@@ -140,16 +182,17 @@ if(window.location.pathname == ruta+'pedidos/pedidos.php'){
             template = dibuja_lista_filtrada_vacia();
             $deck_cartas_pedidos.innerHTML = template;
         }else{
-            lista.forEach((pedido) => {
-                var id_contenedor = "carta_pedido_numero_"+pedido.id;
-                pedido = refactor_predido(pedido, 1);
-                template += dibuja_pedidos(pedido, id_contenedor);
-                $deck_cartas_pedidos.innerHTML = template; 
-            }) 
+                lista.forEach((pedido) => {
+                    if (pedido.Pagina == $('#paginador').val()) {                   
+                        var id_contenedor = "carta_pedido_numero_"+pedido.id;
+                        pedido = refactor_predido(pedido, 1);
+                        template += dibuja_pedidos(pedido, id_contenedor);
+                        $deck_cartas_pedidos.innerHTML = template; 
+                    }
+                }) 
+            }
         }
         
-    }
-
     function filtrar_productos(buscado) {
         var array = lista_productos_inalterable;
         var lista = [];
@@ -394,12 +437,13 @@ if(window.location.pathname == ruta+'pedidos/pedidos.php'){
                     },
                 })
                 .done(function (res) {
+                    get_pedidos();
                     console.log(res);
                     Toast.fire({
                         icon: 'success',
                         title: 'Pedido eliminado, para siempre'
                     }) 
-                    $(id_contenedor).remove();
+                    //$(id_contenedor).remove();
                 })
                 .fail(function () {
                     console.log('Err');
@@ -417,33 +461,43 @@ if(window.location.pathname == ruta+'pedidos/pedidos.php'){
             }
         })
         .done(function (res) {
-            var template = ``;
-            var lista = [];
-            var estado_actual = $('#criterio_pedido').val();
-            id_contenedor = '#'+id_contenedor;
-            const buscado = lista_de_pedidos_inalterable.find(elemtno => elemtno.id == id);
-            
-            if(buscado){
-                buscado.estado = nuevo_estado;
-            }
-            
-            lista_de_pedidos_inalterable.forEach(pedido => {
-                if(pedido.estado != estado_actual || estado_actual == 0){
-                    lista.push(pedido);
-                }
-            });
 
-            if(lista.length == 0){
-                template = dibujar_no_coincidencias();
+            get_pedidos();
+
+            buscar_pedido();
+            // var template = ``;
+            // var lista = [];
+            // var estado_actual = $('#criterio_pedido').val();
+            // id_contenedor = '#'+id_contenedor;
+            // const buscado = lista_de_pedidos_inalterable.find(elemtno => elemtno.id == id);
+            
+            // if(buscado){
+            //     buscado.estado = nuevo_estado;
+            // }
+            
+            // lista_de_pedidos_inalterable.forEach(pedido => {
+            //     if(pedido.estado != estado_actual || estado_actual == 0){
+            //         lista.push(pedido);
+            //     }
+            // });
+
+            // if(lista.length == 0){
+            //     template = dibujar_no_coincidencias();
                 
-            }else{
-                lista.forEach(pedido => {
-                    pedido = refactor_predido(pedido, 1);
-                    template += dibuja_pedidos(pedido);
-                });
-            }
+            // }else{
+            //     lista.forEach(pedido => {
+            //        console.log(pedido);
+            //         if (pedido.Pagina == $('#paginador').val()) {                   
+                        
+            //         pedido = refactor_predido(pedido, 1);
+            //         template += dibuja_pedidos(pedido);
 
-            $deck_cartas_pedidos.innerHTML = template;
+           
+            //         }
+            //     });
+            // }
+
+            // $deck_cartas_pedidos.innerHTML = template;
             
             if(nuevo_estado == 2){
                 Toast.fire({
@@ -468,19 +522,28 @@ if(window.location.pathname == ruta+'pedidos/pedidos.php'){
                 type: "GET"
         })
         .done(function (res) {
+            if($('#paginador').val() == undefined) { valor_paginador = 1} else { valor_paginador = $('#paginador').val()};
             $('#criterio_sort').val(0); 
-            var array = JSON.parse(res);
+            var array2 = JSON.parse(res);
+            //console.log("antes del paginado",array2);
+            lista_de_pedidos_inalterable = array2;
+            paginado(array2);
+
+            
+
             var template = ``;
-            if(array.length == 0){ 
+            if(array2.length == 0){ 
                 $('#indicador_de_que_no_hay_nada2').removeAttr('hidden');
             }
-            array.forEach((pedido) => {
-                var id_contenedor = "carta_pedido_numero_"+pedido.id;
-                predido = refactor_predido(pedido, 0);
-                template += dibuja_pedidos(pedido, id_contenedor);
-                $deck_cartas_pedidos.innerHTML = template;
+            array2.forEach((pedido) => {
+                if (pedido.Pagina == valor_paginador) {
+                    var id_contenedor = "carta_pedido_numero_"+pedido.id;
+                    predido = refactor_predido(pedido, 0);
+                    template += dibuja_pedidos(pedido, id_contenedor);
+                    $deck_cartas_pedidos.innerHTML = template;
+                }
             })
-            lista_de_pedidos_inalterable = array;
+            
             
         })
         .fail(function () {

@@ -35,6 +35,14 @@ include '../nav.php';
 
 <div id="deck_cartas_productos" class="card-deck mr-0 ml-0"></div>
 
+<div id="div_paginador"></div>
+
+<select id="cantidad_por_pagina" class="form-control" onchange="buscar_pedido()">
+    <option value="1"  >1</option>
+    <option value="10" selected>10</option>
+</select>`;
+
+
 <div class="container-fluid">
     <hr>
     <p class="text-success">Lista de pedidos, puedes filtrarla para obtener mejores resultados</p>
