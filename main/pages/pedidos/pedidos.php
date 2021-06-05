@@ -35,8 +35,10 @@ include '../nav.php';
 
 <div id="deck_cartas_productos" class="card-deck mr-0 ml-0"></div>
 
+<div> Estas en la pagina:</div>
 <div id="div_paginador"></div>
 
+<div>Cantidad de pedidos por pagina</div>
 <select id="cantidad_por_pagina" class="form-control" onchange="buscar_pedido()">
     <option value="1"  >1</option>
     <option value="10" selected>10</option>
