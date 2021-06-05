@@ -80,6 +80,7 @@ if(window.location.pathname == ruta+'pedidos/pedidos.php'){
                     no-repeat
                     `
                 }) 
+                $('#modal_nuevo_pedido').modal('hide');
             }
         })
         .fail(function () {
@@ -378,7 +379,13 @@ if(window.location.pathname == ruta+'pedidos/pedidos.php'){
                 Toast.fire({
                     icon: 'success',
                     title: 'Detalles actualizados'
-                })            
+                })   
+                get_pedidos();
+
+                $('#form_modal_vista_producto').trigger('reset');
+                $('#modal_vista_pedido').modal('hide');
+                
+
             })
             .fail(function () {
                 console.log('Err');
@@ -389,7 +396,7 @@ if(window.location.pathname == ruta+'pedidos/pedidos.php'){
 
     function eliminar_pedido(id, id_contenedor){
 
-        var id_contenedor = '#'+id_contenedor;
+        //var id_contenedor = '#'+id_contenedor;
 
         Swal.fire({
             html: 'Esta segura o seguro de eliminar el pedido?',
@@ -775,6 +782,8 @@ if(window.location.pathname == ruta+'pedidos/pedidos.php'){
             }
         }
     }
+
+
 
     function limpiar_pedido(){ 
         $('#form_modal_nuevo_pedido').trigger('reset');
