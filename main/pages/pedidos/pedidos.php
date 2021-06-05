@@ -35,6 +35,8 @@ include '../nav.php';
 
 <div id="deck_cartas_productos" class="card-deck mr-0 ml-0"></div>
 
+
+
 <div class="container-fluid">
     <hr>
     <p class="text-success">Lista de pedidos, puedes filtrarla para obtener mejores resultados</p>
@@ -47,11 +49,26 @@ include '../nav.php';
             <input id="pedido_buscado" onchange="buscar_pedido()" name="nombre" type="text" class="form-control" placeholder="Qué pedido buscas?" autocomplete="off">
         </div>
         <div class="text-muted mt-2">Mostrar:</div>
-        <div class="col-md-3">
-            <select id="criterio_pedido" class="form-control" onchange="buscar_pedido()">
+        <div class="col-md-2">
+            <select id="criterio_pedido" class="form-control" onchange="">
                 <option value="0" selected default>Todos los pedidos</option>
                 <option value="1">Pedidos entregados</option>
                 <option value="2">Pedidos pendientes</option>
+            </select>
+        </div>
+        <div class="text-muted mt-2">Página:</div>
+        <div class="" id="div_paginador" ></div>
+        <div class="text-muted mt-2 ml-1 " id="cantidad_paginas"></div>
+        <div class="text-muted ml-4 mt-2 mr-2">Pedidos por página:</div>
+        <div class="">
+            <select id="cantidad_por_pagina" class="form-control" onchange="buscar_pedido()">
+                <option value="5"  selected>5</option>
+                <option value="10" >10</option>
+                <option value="15" >15</option>
+                <option value="20" >20</option>
+                <option value="30" >30</option>
+                <option value="50" >50</option>
+                <option value="100" >100</option>
             </select>
         </div>
     </div>
@@ -64,7 +81,7 @@ include '../nav.php';
 </div>
 <div id="deck_cartas_pedidos" class="card-deck  mr-0 ml-0 mb-4"></div>
 
-
+   
 
 <!-- MODAL MUESTRA PEDIDO -->
 <div class="modal fade" id="modal_vista_pedido" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
@@ -134,6 +151,8 @@ include '../nav.php';
         </div>
     </div>
 </div>
+
+
 
 <?php
 include '../abajo.php';
