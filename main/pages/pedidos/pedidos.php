@@ -62,8 +62,8 @@ include '../nav.php';
         <div class="text-muted ml-4 mt-2 mr-2">Pedidos por página:</div>
         <div class="">
             <select id="cantidad_por_pagina" class="form-control" onchange="buscar_pedido()">
-                <option value="5"  selected>5</option>
-                <option value="10" >10</option>
+                <option value="5" >5</option>
+                <option value="10" selected>10</option>
                 <option value="15" >15</option>
                 <option value="20" >20</option>
                 <option value="30" >30</option>
@@ -95,7 +95,7 @@ include '../nav.php';
                 </button>
             </div>
             <div class="modal-body">
-                <form id="form_modal_vista_producto">
+                <form id="form_modal_vista_producto" >
                     <p class="text-success" style="font-size: 0.7rem;">Detalles</p>
                     <div id="update_descripcion_del_pedido"></div>
                     
@@ -108,7 +108,7 @@ include '../nav.php';
                         <div class="col-md-2" style="text-align: right;"><small>Subtotal</small> </div>
                     </div>
                     <hr>
-                    <div id="fila_producto"></div>
+                    <div id="fila_producto" style="max-height: 300px; overflow: hidden; overflow-y: scroll;"></div>
 
                     <hr>
                     <p class="text-success" style="font-size: 0.7rem;">Precios finales</p>
@@ -137,7 +137,7 @@ include '../nav.php';
                     <hr>
                     <p class="text-success" style="font-size: 0.7rem;">Productos</p>
 
-                    <div id="fila_producto2"></div>
+                    <div id="fila_producto2" style="max-height: 300px; overflow: hidden; overflow-y: scroll;"></div>
                     <hr>
                     <p class="text-success" style="font-size: 0.7rem;">Precio final</p>
                     <div id="total_pedido2"></div>

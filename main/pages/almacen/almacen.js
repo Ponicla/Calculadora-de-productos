@@ -687,10 +687,10 @@ if (window.location.pathname == ruta + 'almacen/almacen.php') {
 
                 template2 += `
                 <div class="row">
-                    <div class="col-md-10">
+                    <div class="col-md-4">
                         <p><i class=" text-success bi bi-cash-coin"></i> Total </p>
                     </div>
-                    <div class="col-md-2" style="text-align: right;">
+                    <div class="col-md-8" style="text-align: right;">
                         <p class="text-success">$${precio}</p>
                     </div>
                 </div>`

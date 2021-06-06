@@ -192,12 +192,12 @@ if(window.location.pathname == ruta+'pedidos/pedidos.php'){
 
     function dibujar_fila_2(id_contenedor, elemento, precio){
         template = 
-        `<div class="row" id=${id_contenedor}>
-            <div class="col-md-10">
+        `<div class="row" id=${id_contenedor} >
+            <div class="col-md-9">
                 <p><i onclick="quitar_producto_pedido(${elemento.id_producto}, ${id_contenedor}, ${elemento.indice})" class="text-danger bi bi-trash"></i> ${elemento.nombre}</p>
             </div>
-            <div class="col-md-2" style="text-align: right;">
-                <p class="text-info">$${precio}</p>
+            <div class="col-md-3" style="text-align:right">
+                <p class="text-info " >$${precio}</p>
                 
             </div>
         </div>`
@@ -284,11 +284,12 @@ if(window.location.pathname == ruta+'pedidos/pedidos.php'){
                         <div class="col-md-7">
                             <div class="row">
                                 <div class="col-md-1 mr-0 ml-0 pr-0">
-                                    <p style="font-size: 0.9rem;" > ${elemento.cantidad}</p>
+                                    <p style="font-size: 0.9rem;" >${elemento.cantidad}</p>
                                 </div>
                                 <div class="col-md-1 mr-0 ml-0 pr-0 pl-0">
                                     <p style="font-size: 0.9rem;" > - </p>
                                 </div>
+                               
                                 <div class="col-md-10 mr-0 ml-0 pl-0 pr-0">
                                     <p style="font-size: 0.9rem;" > ${elemento.nombre}</p>
                                 </div>
@@ -298,9 +299,9 @@ if(window.location.pathname == ruta+'pedidos/pedidos.php'){
                         <div class="col-md-5">
                             <div class="row" >
                                 <div class="col-md-2"></div>
-                                <div class="col-md-5 m-0 pr-3" style="font-size: 0.8rem; text-align: right;"><p class=" text-info"> $${elemento.unidad}</p></div>
+                                <div class="col-md-5 m-0 pr-0" style="font-size: 0.8rem; text-align: right;"><p class=" text-info"> $${elemento.unidad}</p></div>
                                 <!-- <div class="col-md-2 m-0 pr-3" style="font-size: 0.8rem;  text-align: right;"></div> -->
-                                <div class="col-md-5 m-0 pr-3" style="font-size: 0.8rem;  text-align: right;"><p class="text-danger"> $${elemento.total}</p></div>    
+                                <div class="col-md-5 m-0 pl-0" style="font-size: 0.8rem;  text-align: right;"><p class="text-danger"> $${elemento.total}</p></div>    
                             </div>
                             
                         </div>
@@ -323,10 +324,10 @@ if(window.location.pathname == ruta+'pedidos/pedidos.php'){
 
     function dibuja_precio_detalles(precio){
         template = `<div class="row">
-                        <div class="col-md-10">
+                        <div class="col-md-4">
                             <p><i class=" text-success bi bi-cash-coin"></i> Total </p>
                         </div>
-                        <div class="col-md-2" style="text-align: right;">
+                        <div class="col-md-8" style="text-align: right;">
                             <p class="text-success">$${precio}</p>
                         </div>
                     </div>`;

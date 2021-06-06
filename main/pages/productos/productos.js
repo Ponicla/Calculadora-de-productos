@@ -247,10 +247,10 @@ if(window.location.pathname == ruta+'productos/productos.php'){
     function dibuja_total_producto(precio){
         template = 
             `<div class="row">
-                <div class="col-md-10">
+                <div class="col-md-4">
                     <p><i class=" text-success bi bi-cash-coin"></i> Total </p>
                 </div>
-                <div class="col-md-2" style="text-align: right;">
+                <div class="col-md-8" style="text-align: right;">
                     <p class="text-success">$${precio}</p>
                 </div>
             </div>`
@@ -259,10 +259,10 @@ if(window.location.pathname == ruta+'productos/productos.php'){
 
     function dibuja_fila(elemento, id_contenedor){
         template = `<div class="row" id=${id_contenedor}>
-                        <div class="col-md-10">
+                        <div class="col-md-9">
                             <p><i onclick="quitar_accesorio_producto(${elemento.id_accesorio}, ${id_contenedor}, ${elemento.cantidad_de_cera}, ${elemento.indice})" class="text-danger bi bi-trash"></i> ${elemento.nombre}</p>
                         </div>
-                        <div class="col-md-2" style="text-align: right;">
+                        <div class="col-md-3" style="text-align: right;">
                             <p class="text-info">$${(elemento.precio).toFixed(2)}</p>
                         </div>
                     </div>`
