@@ -19,6 +19,13 @@ include '../nav.php';
             <Button hidden id="btn-pedido" class="btn btn-success"><i class="bi bi-recycle"></i> Administrar nuevo pedido</Button>
             <Button hidden onclick="limpiar_pedido()" id="btn-limpia-pedido" class="btn btn-danger"><i class="bi bi-trash"></i> Destruir</Button>
         </div>
+        <div>
+        <p>
+  <button class="btn btn-primary" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
+    Mostrar/Ocultar productos
+  </button>
+</p>
+        </div>
     </div>
 </div>
 
@@ -33,7 +40,14 @@ include '../nav.php';
         
     </div>
 
-<div id="deck_cartas_productos" class="card-deck mr-0 ml-0"></div>
+
+
+<div class="collapse" id="collapseExample">
+    <div id="deck_cartas_productos" class="card-deck mr-0 ml-0"></div>
+</div>
+
+
+
 
 
 
@@ -43,6 +57,8 @@ include '../nav.php';
 </div>
 
 <div class="container-fluid">
+
+
     
     <div class="row form-group">
         <div class="col-md-4 form-group">
