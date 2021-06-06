@@ -56,7 +56,7 @@ include '../nav.php';
                 <option value="2">Pedidos pendientes</option>
             </select>
         </div>
-        <div class="text-muted mt-2">Página:</div>
+        <div class="text-muted mt-2">Página: </div>
         <div class="" id="div_paginador" ></div>
         <div class="text-muted mt-2 ml-1 " id="cantidad_paginas"></div>
         <div class="text-muted ml-4 mt-2 mr-2">Pedidos por página:</div>
@@ -108,7 +108,7 @@ include '../nav.php';
                         <div class="col-md-2" style="text-align: right;"><small>Subtotal</small> </div>
                     </div>
                     <hr>
-                    <div id="fila_producto" style="max-height: 300px; overflow: hidden; overflow-y: scroll;"></div>
+                    <div id="fila_producto"   style="max-height: 150px; overflow: hidden; overflow-y: scroll; overflow-y: auto;"></div>
 
                     <hr>
                     <p class="text-success" style="font-size: 0.7rem;">Precios finales</p>
@@ -137,7 +137,7 @@ include '../nav.php';
                     <hr>
                     <p class="text-success" style="font-size: 0.7rem;">Productos</p>
 
-                    <div id="fila_producto2" style="max-height: 300px; overflow: hidden; overflow-y: scroll;"></div>
+                    <div id="fila_producto2" style="max-height: 150px; overflow: hidden; overflow-y: scroll; overflow-y: auto;"></div>
                     <hr>
                     <p class="text-success" style="font-size: 0.7rem;">Precio final</p>
                     <div id="total_pedido2"></div>
