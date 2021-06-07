@@ -68,7 +68,7 @@
                     <hr>
                     <p class="text-success" style="font-size: 0.7rem;">Ingredientes</p>
 
-                    <div id="fila_producto" style="max-height: 150px; overflow: hidden; overflow-y: scroll; overflow-y: auto; ma"></div>
+                    <div id="fila_producto" style="max-height: 150px; overflow: hidden; overflow-y: scroll; overflow-y: auto;"></div>
                     <hr>
                     <p class="text-success" style="font-size: 0.7rem;">Precio final</p>
                     <div id="total_producto"></div>

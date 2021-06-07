@@ -124,6 +124,17 @@ if(window.location.pathname == ruta+'pedidos/pedidos.php'){
 
 
     /* DECLARACION DE FUNCIONES */
+    function change_icon(){
+        let visual = $('#div_deck_cartas_productos').hasClass("show");
+        if(visual == true){
+            $('#div_boton_mostrar').removeAttr('hidden');
+            $('#div_boton_ocultar').attr('hidden', 'hidden');
+        }else{
+            $('#div_boton_ocultar').removeAttr('hidden');
+            $('#div_boton_mostrar').attr('hidden', 'hidden');
+        }
+    }
+
     function buscar_pedido(){
         var lista = [];
         var pedido_buscado = $('#pedido_buscado').val();
