@@ -13,10 +13,10 @@ include '../nav.php';
         <form id="form_nuevo_accesorio" action="">
             <div class="form-group row ">
                 <div class="col-md-3 form-group">
-                    <input required placeholder="Nombre del accesorio" id="nombre" name="nombre" type="text" class="form-control">
+                    <input required maxlength="100" placeholder="Nombre del accesorio" id="nombre" name="nombre" type="text" class="form-control">
                 </div>
                 <div class="col-md-3 form-group">
-                    <input required placeholder="Precio del accesorio" id="precio" name="precio" type="number" step="0.01" class="form-control">
+                    <input required  min="0" max="99999" placeholder="Precio del accesorio" id="precio" name="precio" type="number" step="0.01" class="form-control">
                 </div>
                 <div class="col-md-3 form-group">
                     <select required name="tipo" id="tipo"  class="form-control">

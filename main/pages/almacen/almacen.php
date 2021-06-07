@@ -69,9 +69,9 @@
                 <form id="form_modal_vista_producto">
                     <p class="text-success" style="font-size: 0.7rem;">Aquí estan los detalles de</p>
                     <!-- <h4 class="text-success" id="nombre_vela"></h4> -->
-                    <input hidden type="number" class="form-control form-group" id="id_producto">
-                    <input required type="text" class="form-control form-group" id="nombre_vela">
-                    <textarea type="text" class="form-control form-group " id="descripcion_vela" name="descripcion"
+                    <input hidden  type="number" class="form-control form-group" id="id_producto">
+                    <input required maxlength="100" type="text" class="form-control form-group" id="nombre_vela">
+                    <textarea type="text" maxlength="201" class="form-control form-group " id="descripcion_vela" name="descripcion"
                         placeholder="Cuenta algo sobre el producto" rows="4"></textarea>
                     <input hidden type="number" class="form-control" id="cantidad_total_cera">
                     <hr>

@@ -325,7 +325,7 @@ if(window.location.pathname == ruta+'pedidos/pedidos.php'){
         template =
         `<div class="row h-100">
              <div class="col-md-11">
-                 <input class="form-control" id="descripcion_pedido" value="${descripcion}">
+                 <input class="form-control" maxlength="100" id="descripcion_pedido" value="${descripcion}">
              </div>
              <div class="col-md-1 my-auto" style="text-align: right;">
                  <i onclick="update_descripcion(${id})" class=" text-success bi bi-check-circle"></i>

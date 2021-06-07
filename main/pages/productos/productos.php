@@ -60,9 +60,9 @@
             <div class="modal-body">
                 <form id="form_modal_nuevo_producto">
                     <p class="text-success" style="font-size: 0.7rem;">Nombre del producto</p>
-                    <input required type="text" class="form-control form-group" id="nombre_vela" name="nombre"
+                    <input required type="text" maxlength="100"  class="form-control form-group" id="nombre_vela" name="nombre"
                         placeholder="Como quieres llamar este producto?">
-                    <textarea required type="text" class="form-control form-group " id="descripcion_vela" name="descripcion"
+                    <textarea required type="text" maxlength="201" class="form-control form-group " id="descripcion_vela" name="descripcion"
                         placeholder="Cuenta algo sobre el" rows="4"></textarea>
                     <input hidden type="number" class="form-control form-group" id="cantidad_total_cera" name="cantidad_total_cera">   
                     <hr>

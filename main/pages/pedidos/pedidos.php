@@ -156,7 +156,7 @@ include '../nav.php';
             <div class="modal-body">
                 <form id="form_modal_nuevo_pedido">
                     <p class="text-success" style="font-size: 0.7rem;">Detalles</p>
-                    <input required id="detalle_pedido" type="text" class="form-control"
+                    <input required maxlength="100" id="detalle_pedido" type="text" class="form-control"
                         placeholder="Para quién es el pedido? Puedes poner su número" maxlength="100">
                     <hr>
                     <p class="text-success" style="font-size: 0.7rem;">Productos</p>
