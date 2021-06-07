@@ -7,7 +7,7 @@ include '../nav.php';
     <div class="container-fluid">
         <div class="alert alert-info mt-2"> Menú accesorios</div>
 
-        <hr>
+        <hr> 
         <p class="text-success">Complete y agregue y un nuevo accesorio</p>
 
         <form id="form_nuevo_accesorio" action="">
@@ -16,7 +16,7 @@ include '../nav.php';
                     <input required maxlength="100" placeholder="Nombre del accesorio" id="nombre" name="nombre" type="text" class="form-control">
                 </div>
                 <div class="col-md-3 form-group">
-                    <input required  min="0" max="99999" placeholder="Precio del accesorio" id="precio" name="precio" type="number" step="0.01" class="form-control">
+                    <input required  min="0"  placeholder="Precio del accesorio" id="precio" name="precio" type="number" pattern="/^-?\d+\.?\d*$/" onKeyPress="if(this.value.length==6) return false;" step="0.01" class="form-control">
                 </div>
                 <div class="col-md-3 form-group">
                     <select required name="tipo" id="tipo"  class="form-control">
@@ -40,7 +40,7 @@ include '../nav.php';
         <hr>
         <p class="text-success">Listado de accesorios</p>
 
-            <table id="tabla_accesorios" class="table mt-4" style="background-color: #F2FFEE; width:100%">
+            <table id="tabla_accesorios" class="table mt-4" style="background-color: #E9FFE3; width:100%">
                 <thead>
                     <tr>
                         <th>Id accessorio</th>
