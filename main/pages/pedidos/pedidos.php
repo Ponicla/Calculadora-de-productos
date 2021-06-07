@@ -23,15 +23,15 @@ include '../nav.php';
                     class="bi bi-trash"></i> Destruir</Button>
         </div>
         <div id="div_boton_mostrar" class="col-md-4" style="text-align: right;">
-            <a class="btn btn-success" data-toggle="collapse" href="#div_deck_cartas_productos" role="button" onclick="change_icon()"
+            <a class="btn btn-primary" data-toggle="collapse" style="width:200px;" href="#div_deck_cartas_productos" role="button" onclick="change_icon()"
                 aria-expanded="false" aria-controls="collapseExample">
-                <i class="bi bi-eye"></i> mostrar productos
+                <i class="bi bi-eye"></i> Mostrar productos
             </a>
         </div> 
         <div id="div_boton_ocultar" hidden class="col-md-4" style="text-align: right;">
-            <a class="btn btn-success" data-toggle="collapse" href="#div_deck_cartas_productos" role="button" onclick="change_icon()"
+            <a class="btn btn-primary" data-toggle="collapse" style="width:200px;" href="#div_deck_cartas_productos" role="button" onclick="change_icon()"
                 aria-expanded="false" aria-controls="collapseExample">
-                <i class="bi bi-eye-slash"></i> ocultar productos
+                <i class="bi bi-eye-slash"></i> Ocultar productos
             </a>
         </div>
     </div>
