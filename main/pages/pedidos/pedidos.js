@@ -37,6 +37,10 @@ if(window.location.pathname == ruta+'pedidos/pedidos.php'){
     /* FUNCIONES JQUERY */
     $("#producto_buscado").keyup(function () {  
         filtrar_productos($("#producto_buscado").val());
+        if (!$("#div_deck_cartas_productos").hasClass("show")) { 
+            change_icon();
+            $("#div_deck_cartas_productos").addClass("show");
+        };
     })
 
     $('#form_modal_nuevo_pedido').submit(function (e) { 
