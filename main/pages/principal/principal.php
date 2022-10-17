@@ -41,21 +41,24 @@
     <p class="text-success">Qué desea hacer?</p>
     
     <div class="card-deck">
-        <div class="card" style="max-width: 18rem;">
-        <div class="mt-3" id="centrador">
-            <img class="card-img-top" src="../../../resources/assets/laboratorio.png"  style="max-width: 10rem;" alt="Card image cap">
-        </div>
+
+<div class="card" style="max-width: 18rem;">
+            <div class="mt-3" id="centrador">
+                <img id="imagen" class="card-img-top" src="../../../resources/assets/bolsa.png" style="max-width: 10rem;" alt="Card image cap">
+            </div>
           <div class="card-body">
-            <h5 class="card-title">Laboratorio</h5>
-            <p class="card-text">Cree un nuevo producto para guardar en el almacen de productos</p>
+            <h5 class="card-title">Pedidos</h5>
+            <p class="card-text">Generar un nuevo pedido con productos del almacen y obtenga el presupuesto</p>
             <div class="card-footer" style="text-align: right; background-color : white; padding-left: 0; padding-right: 0;">
-                <!-- <form action="../../funciones/php/reportes/reporte_finalizados.php" method="POST"> -->
-                    <a role="button" class="btn btn-success btn-block" href="../productos/productos.php">Entrar al laboratorio</a>
+                <!-- <form action="../../funciones/php/reportes/reporte_espera.php" method="POST"> -->
+                    <a role="button" class="btn btn-success btn-block" href="../pedidos/pedidos.php">Sección pedidos</a>
                 <!-- </form> -->
             </div>
-          </div> 
+          </div>
         </div>
-        <div class="card" style="max-width: 18rem;">
+
+
+ <div class="card" style="max-width: 18rem;">
             <div class="mt-3" id="centrador">
                 <img id="imagen" class="card-img-top" src="../../../resources/assets/almacen.png" style="max-width: 10rem;" alt="Card image cap">
             </div>
@@ -71,19 +74,22 @@
         </div>
 
         <div class="card" style="max-width: 18rem;">
-            <div class="mt-3" id="centrador">
-                <img id="imagen" class="card-img-top" src="../../../resources/assets/bolsa.png" style="max-width: 10rem;" alt="Card image cap">
-            </div>
+        <div class="mt-3" id="centrador">
+            <img class="card-img-top" src="../../../resources/assets/laboratorio.png"  style="max-width: 10rem;" alt="Card image cap">
+        </div>
           <div class="card-body">
-            <h5 class="card-title">Pedidos</h5>
-            <p class="card-text">Generar un nuevo pedido con productos del almacen y obtenga el presupuesto</p>
+            <h5 class="card-title">Laboratorio</h5>
+            <p class="card-text">Cree un nuevo producto para guardar en el almacen de productos</p>
             <div class="card-footer" style="text-align: right; background-color : white; padding-left: 0; padding-right: 0;">
-                <!-- <form action="../../funciones/php/reportes/reporte_espera.php" method="POST"> -->
-                    <a role="button" class="btn btn-success btn-block" href="../pedidos/pedidos.php">Sección pedidos</a>
+                <!-- <form action="../../funciones/php/reportes/reporte_finalizados.php" method="POST"> -->
+                    <a role="button" class="btn btn-success btn-block" href="../productos/productos.php">Entrar al laboratorio</a>
                 <!-- </form> -->
             </div>
-          </div>
+          </div> 
         </div>
+       
+
+        
 
         <div class="card" style="max-width: 18rem;">
             <div class="mt-3" id="centrador">
